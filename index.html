@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║           SO'Z O'RGATUVCHI — Asosiy sahifa                  ║
+  ║  Fayl: index.html                                           ║
+  ║                                                             ║
+  ║  Loyiha tuzilmasi:                                          ║
+  ║  ├── index.html          ← siz bu yerdasiz (HTML skelet)    ║
+  ║  ├── css/                                                   ║
+  ║  │   └── styles.css      ← barcha stillar                  ║
+  ║  ├── js/                                                    ║
+  ║  │   ├── data.js         ← so'z ma'lumotlari + irregular   ║
+  ║  │   ├── core.js         ← asosiy holat, tema, XP, ekranlar║
+  ║  │   ├── flashcard.js    ← flashcard rejimi                 ║
+  ║  │   ├── quiz.js         ← yozma test rejimi                ║
+  ║  │   ├── mcq.js          ← ko'p tanlovli test               ║
+  ║  │   ├── speed.js        ← tezkor rejim (10 soniya)         ║
+  ║  │   ├── stats.js        ← statistika                       ║
+  ║  │   ├── share.js        ← ulashish va import               ║
+  ║  │   ├── units.js        ← birliklar boshqaruvi             ║
+  ║  │   ├── exercises.js    ← grammar mashqlar                 ║
+  ║  │   └── irregular.js    ← noto'g'ri fe'llar o'yinlari     ║
+  ║  └── img/                                                   ║
+  ║      └── logo.png        ← favicon                          ║
+  ║                                                             ║
+  ║  JS fayllari TARTIB MUHIM — quyidagi ketma-ketlikda yuklash ║
+  ║  shart: data.js → core.js → qolgan modullar               ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<html lang="uz">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>So'z O'rgatuvchi</title>
+<link rel="icon" type="image/png" href="img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Barcha stillar -->
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body id="body">
+<div class="xp-popup" id="xp-popup">+10 XP ⭐</div>
+<div class="card">
+
+  <!-- HOME -->
+  <div class="screen active" id="screen-home">
+    <div class="home-top">
+      <div class="streak-badge">🔥 <span id="streak-num">0</span> kun</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-icon" onclick="showScreen('stats')" title="Statistika" style="width:36px;height:36px;font-size:16px;">📊</button>
+        <button class="btn-icon" onclick="toggleTheme()" title="Tema" style="width:36px;height:36px;font-size:16px;" id="theme-btn">🌙</button>
+      </div>
+    </div>
+    <div style="font-size:44px">📚</div>
+    <h1>So'z O'rganuv</h1>
+    <p class="sub" id="home-total"></p>
+    <!-- XP / Level -->
+    <div style="width:100%">
+      <div class="level-row"><span id="level-label">Level 1</span><span id="xp-label">0 / 100 XP</span></div>
+      <div class="xp-bar-wrap" style="margin-top:5px"><div class="xp-bar" id="xp-bar" style="width:0%"></div></div>
+    </div>
+    <div class="mode-grid">
+      <div class="mode-card" onclick="goMode('flashcard')"><div class="mode-icon">🃏</div><div class="mode-name">Yod olish</div><div class="mode-desc">Flashcard + Audio</div></div>
+      <div class="mode-card" onclick="goMode('quiz')"><div class="mode-icon">✍️</div><div class="mode-name">Test</div><div class="mode-desc">So'z yozing</div></div>
+      <div class="mode-card" onclick="goMode('mcq')"><div class="mode-icon">🎯</div><div class="mode-name">Variantli</div><div class="mode-desc">4 ta variant</div></div>
+      <div class="mode-card" onclick="goMode('speed')"><div class="mode-icon">⚡</div><div class="mode-name">Tezkor</div><div class="mode-desc">10 soniya!</div></div>
+      <div class="mode-card" onclick="showExScreen()" style="grid-column:span 2"><div class="mode-icon">📝</div><div class="mode-name">Grammar Mashqlar</div><div class="mode-desc">Har unit uchun 30 ta mashq</div></div>
+      <div class="mode-card" onclick="showIrrScreen()" style="grid-column:span 2;background:linear-gradient(135deg,rgba(167,139,250,0.15),rgba(118,75,162,0.15));border-color:rgba(167,139,250,0.4)"><div class="mode-icon">🔀</div><div class="mode-name">Irregular Verbs</div><div class="mode-desc">66 ta noto'g'ri fe'l — o'yin orqali yodlash</div></div>
+    </div>
+    <div class="row">
+      <button class="btn btn-sec" onclick="showScreen('unit-manage')" style="font-size:13px;">⚙ Bo'limlar</button>
+      <button class="btn btn-sec" onclick="showScreen('share-screen')" style="font-size:13px;">🔗 Ulashish</button>
+    </div>
+    <div style="margin-top:15px;font-size:13px;color:#aaa;text-align:center;width:100%;">
+  Developed by 17_______B ❤️
+</div>
+  </div>
+
+
+
+  <!-- IRREGULAR VERBS HOME -->
+  <div class="screen" id="screen-irr-home">
+    <div class="header"><button class="back-btn" onclick="showScreen('home')">← Orqaga</button><span style="font-size:13px;color:#a78bfa">🔀 Irregular Verbs</span></div>
+    <div style="font-size:48px">🔀</div>
+    <h2>Noto'g'ri fe'llar</h2>
+    <p class="sub">66 ta eng muhim irregular verb. O'yin orqali oson yodlang!</p>
+    <div class="mode-grid">
+      <div class="mode-card" onclick="startIrrCards()"><div class="mode-icon">🃏</div><div class="mode-name">Kartochkalar</div><div class="mode-desc">3 shakl + rasm</div></div>
+      <div class="mode-card" onclick="startIrrMatch()"><div class="mode-icon">🧩</div><div class="mode-name">Juftlik o'yini</div><div class="mode-desc">Mos kel topish</div></div>
+      <div class="mode-card" onclick="startIrrFill()"><div class="mode-icon">✏️</div><div class="mode-name">To'ldirish</div><div class="mode-desc">Bo'sh shaklni yoz</div></div>
+      <div class="mode-card" onclick="startIrrQuiz()"><div class="mode-icon">🎯</div><div class="mode-name">Variantli</div><div class="mode-desc">4 ta javobdan tanla</div></div>
+    </div>
+  </div>
+
+  <!-- IRREGULAR FLASHCARD -->
+  <div class="screen" id="screen-irr-cards">
+    <div class="header">
+      <button class="back-btn" onclick="showScreen('irr-home')">⏹ Tugatish</button>
+      <span class="fc-counter" id="irr-card-counter"></span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="irr-card-progress"></div></div>
+    <div class="flashcard" id="irr-card" onclick="irrCardFlip()">
+      <button class="btn-icon flashcard-audio" id="irr-card-audio" onclick="event.stopPropagation();speakIrrCard()" title="Tinglash">🔊</button>
+      <div style="font-size:48px;margin-bottom:6px" id="irr-card-emoji"></div>
+      <div class="flashcard-label">INFINITIVE</div>
+      <div class="flashcard-word" id="irr-card-base" style="font-size:30px"></div>
+      <div class="flashcard-tr" id="irr-card-uz"></div>
+      <div id="irr-card-back" style="display:none;width:100%;margin-top:10px">
+        <div class="fc-back-divider"></div>
+        <div style="display:flex;justify-content:space-around;gap:8px;margin-top:8px">
+          <div style="text-align:center;flex:1">
+            <div class="flashcard-label">PAST SIMPLE</div>
+            <div style="font-size:22px;font-weight:600;color:#a78bfa;font-family:'Fredoka',sans-serif" id="irr-card-past"></div>
+          </div>
+          <div style="text-align:center;flex:1">
+            <div class="flashcard-label">PAST PARTICIPLE</div>
+            <div style="font-size:22px;font-weight:600;color:#4ade80;font-family:'Fredoka',sans-serif" id="irr-card-pp"></div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard-hint" id="irr-card-hint">👆 Bosing</div>
+    </div>
+    <div class="fc-nav">
+      <button class="fc-nav-btn" onclick="irrCardPrev()">← Oldingi</button>
+      <button class="fc-nav-btn" onclick="irrCardNext()">Keyingi →</button>
+    </div>
+  </div>
+
+  <!-- IRREGULAR MATCH GAME -->
+  <div class="screen" id="screen-irr-match">
+    <div class="header">
+      <button class="back-btn" onclick="showScreen('irr-home')">⏹ Tugatish</button>
+      <div class="scores"><span style="color:#a78bfa">🎯 <span id="irr-match-pairs">0</span>/<span id="irr-match-total">8</span></span></div>
+    </div>
+    <p class="sub" id="irr-match-instr">Infinitive ni o'zining Past Simple shakliga ulang!</p>
+    <div id="irr-match-grid" style="width:100%;display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+    <button class="btn btn-sec" onclick="startIrrMatch()">🔄 Yangi o'yin</button>
+  </div>
+
+  <!-- IRREGULAR FILL TABLE -->
+  <div class="screen" id="screen-irr-fill">
+    <div class="header">
+      <button class="back-btn" onclick="showScreen('irr-home')">⏹ Tugatish</button>
+      <div class="scores"><span style="color:#4ade80">✓ <span id="irr-fill-correct">0</span></span><span style="color:#f87171;margin-left:10px">✗ <span id="irr-fill-wrong">0</span></span></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="irr-fill-progress"></div></div>
+    <p class="progress-text" id="irr-fill-progress-text"></p>
+    <div class="question-box" style="text-align:center">
+      <div style="font-size:40px;margin-bottom:4px" id="irr-fill-emoji"></div>
+      <div style="display:flex;justify-content:space-around;align-items:center;gap:6px;margin-top:8px">
+        <div style="text-align:center;flex:1">
+          <div class="flashcard-label">INFINITIVE</div>
+          <div id="irr-fill-base" style="font-size:18px;font-weight:600;font-family:'Fredoka',sans-serif"></div>
+        </div>
+        <div style="font-size:20px;color:#666">→</div>
+        <div style="text-align:center;flex:1">
+          <div class="flashcard-label" id="irr-fill-target-label">PAST SIMPLE</div>
+          <input class="word-input" id="irr-fill-input" type="text" inputmode="text" enterkeyhint="done" onkeydown="irrFillKey(event)" onclick="this.focus()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="font-size:18px;padding:8px;text-align:center"/>
+        </div>
+      </div>
+      <div class="flashcard-tr" id="irr-fill-uz" style="margin-top:8px"></div>
+    </div>
+    <div class="correct-msg" id="irr-fill-correct-msg">✓ To'g'ri!</div>
+    <div class="wrong-box" id="irr-fill-wrong-msg">
+      <p class="wrong-title">✗ Xato!</p>
+      <p class="wrong-answer">To'g'ri javob: <strong id="irr-fill-answer"></strong></p>
+    </div>
+    <button class="btn" id="irr-fill-check-btn" onclick="irrFillCheck()">Tekshir</button>
+    <button class="btn" id="irr-fill-next-btn" style="display:none" onclick="irrFillNext()">Keyingisi →</button>
+  </div>
+
+  <!-- IRREGULAR QUIZ -->
+  <div class="screen" id="screen-irr-quiz">
+    <div class="header">
+      <button class="back-btn" onclick="showScreen('irr-home')">⏹ Tugatish</button>
+      <div class="scores"><span style="color:#4ade80">✓ <span id="irr-quiz-correct">0</span></span><span style="color:#f87171;margin-left:10px">✗ <span id="irr-quiz-wrong">0</span></span></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="irr-quiz-progress"></div></div>
+    <p class="progress-text" id="irr-quiz-progress-text"></p>
+    <div class="question-box" style="text-align:center">
+      <button class="btn-icon q-audio" onclick="speakIrrQuiz()" title="Tinglash">🔊</button>
+      <div style="font-size:40px;margin-bottom:4px" id="irr-quiz-emoji"></div>
+      <p class="question-label" id="irr-quiz-label">PAST SIMPLE shaklini tanlang:</p>
+      <p class="question" id="irr-quiz-word" style="font-size:26px"></p>
+      <p class="flashcard-tr" id="irr-quiz-uz"></p>
+    </div>
+    <div id="irr-quiz-options" style="width:100%;display:grid;grid-template-columns:1fr 1fr;gap:9px"></div>
+    <button class="btn" id="irr-quiz-next-btn" style="display:none" onclick="irrQuizNext()">Keyingisi →</button>
+  </div>
+
+  <!-- IRREGULAR DONE -->
+  <div class="screen" id="screen-irr-done">
+    <div style="font-size:56px">🎉</div>
+    <h1>Ajoyib!</h1>
+    <p class="sub" id="irr-done-sub"></p>
+    <div class="stats-box">
+      <div class="stat"><span style="color:#4ade80">✓ <span id="irr-final-correct">0</span></span> To'g'ri</div>
+      <div class="stat"><span style="color:#f87171">✗ <span id="irr-final-wrong">0</span></span> Xato</div>
+    </div>
+    <button class="btn" onclick="showScreen('irr-home')">🔀 Boshqa o'yin</button>
+    <button class="btn btn-sec" onclick="showScreen('home')">🏠 Bosh sahifa</button>
+  </div>
+
+  <!-- EXERCISE UNIT SELECT -->
+  <div class="screen" id="screen-ex-select">
+    <div class="header"><button class="back-btn" onclick="showScreen('home')">← Orqaga</button><span style="font-size:13px;color:#a78bfa">📝 Grammar Mashqlar</span></div>
+    <h2>Qaysi unitni mashq qilasiz?</h2>
+    <div class="unit-select-list" id="ex-unit-list"></div>
+  </div>
+
+  <!-- EXERCISE SCREEN -->
+  <div class="screen" id="screen-exercise">
+    <div class="header">
+      <button class="back-btn" onclick="showScreen('ex-select')">← Orqaga</button>
+      <div class="scores"><span style="color:#4ade80">✓ <span id="ex-correct">0</span></span><span style="color:#f87171;margin-left:10px">✗ <span id="ex-wrong">0</span></span></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="ex-progress"></div></div>
+    <p class="progress-text" id="ex-progress-text"></p>
+    <div class="question-box" style="text-align:left">
+      <p class="question-label" id="ex-type-label"></p>
+      <p class="question" id="ex-question" style="font-size:18px;line-height:1.5"></p>
+      <p style="font-size:12px;color:#a78bfa;margin-top:6px" id="ex-hint"></p>
+    </div>
+    <div id="ex-options" style="width:100%;display:flex;flex-direction:column;gap:9px"></div>
+    <input class="word-input" id="ex-gap-input" type="text" inputmode="text" enterkeyhint="done" placeholder="Javobingizni yozing..." onkeydown="exGapKey(event)" onclick="this.focus()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="display:none"/>
+    <div class="fc-rate" style="display:none" id="ex-tf-btns">
+      <button class="fc-dontknow" onclick="exTFAnswer(false)">✗ Xato (False)</button>
+      <button class="fc-know" onclick="exTFAnswer(true)">✓ To'g'ri (True)</button>
+    </div>
+    <div id="ex-feedback" style="display:none;width:100%;border-radius:12px;padding:12px 14px"></div>
+    <button class="btn" id="ex-next-btn" style="display:none" onclick="exNext()">Keyingisi →</button>
+    <button class="btn" id="ex-check-btn" style="display:none" onclick="exCheckGap()">Tekshir</button>
+  </div>
+
+  <!-- EXERCISE DONE -->
+  <div class="screen" id="screen-ex-done">
+    <div style="font-size:56px">🎉</div>
+    <h1>Barakalla!</h1>
+    <p class="sub" id="ex-done-sub"></p>
+    <div class="stats-box">
+      <div class="stat"><span style="color:#4ade80">✓ <span id="ex-final-correct">0</span></span> To'g'ri</div>
+      <div class="stat"><span style="color:#f87171">✗ <span id="ex-final-wrong">0</span></span> Xato</div>
+    </div>
+    <button class="btn" onclick="restartEx()">🔄 Qayta</button>
+    <button class="btn btn-sec" onclick="showScreen('ex-select')">📝 Boshqa unit</button>
+    <button class="btn btn-sec" onclick="showScreen('home')">🏠 Bosh sahifa</button>
+  </div>
+  <!-- UNIT SELECT -->
+  <div class="screen" id="screen-unit-select">
+    <div class="header">
+      <button class="back-btn" onclick="showScreen('home')">← Orqaga</button>
+      <span style="font-size:13px;color:#a78bfa" id="mode-label"></span>
+    </div>
+    <h2>Bo'lim tanlang</h2>
+    <div class="unit-select-list" id="unit-select-list"></div>
+    <button class="btn" onclick="launchMode()">Boshlash →</button>
+  </div>
+
+  <!-- UNIT MANAGE -->
+  <div class="screen" id="screen-unit-manage">
+    <div class="header">
+      <button class="back-btn" onclick="showScreen('home')">← Orqaga</button>
+      <button class="btn btn-sm" onclick="showAddUnit()">+ Bo'lim</button>
+    </div>
+    <h2>Bo'limlar</h2>
+    <div class="unit-list" id="unit-list"></div>
+  </div>
+
+  <!-- ADD/EDIT UNIT -->
+  <div class="screen" id="screen-unit-edit">
+    <div class="header">
+      <button class="back-btn" onclick="showScreen('unit-manage')">← Orqaga</button>
+      <span id="edit-unit-title" style="font-size:13px;color:#aaa"></span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Bo'lim nomi</label>
+      <input class="word-input text-input" id="unit-name-input" placeholder="Masalan: Unit 5.3" autocomplete="off"/>
+    </div>
+    <div class="divider"></div>
+    <p style="font-size:13px;color:#aaa;text-align:left;width:100%">So'z qo'shish — har qatorda:</p>
+    <p style="font-size:12px;color:#a78bfa;text-align:left;width:100%;font-family:monospace">inglizcha = o'zbek</p>
+    <p style="font-size:11px;color:#666;text-align:left;width:100%">Masalan: <code>book = kitob</code> &nbsp; <code>carefully = ehtiyotkorlik bilan</code></p>
+    <textarea id="words-input" rows="7" placeholder="book = kitob&#10;carefully = ehtiyotkorlik bilan&#10;hat = shlyapa"></textarea>
+    <p class="error-msg" id="edit-error"></p>
+    <button class="btn" onclick="saveUnit()">💾 Saqlash</button>
+    <div id="existing-words-section" style="width:100%;display:none;">
+      <div class="divider"></div>
+      <p style="font-size:12px;color:#aaa;margin-bottom:7px;text-align:left">Mavjud so'zlar:</p>
+      <div class="word-list" id="existing-word-list"></div>
+    </div>
+  </div>
+
+  <!-- FLASHCARD -->
+  <div class="screen" id="screen-flashcard">
+    <div class="header">
+      <button class="back-btn" onclick="showScreen('home')">⏹ Tugatish</button>
+      <div style="display:flex;gap:10px;font-size:14px;font-weight:bold;">
+        <span style="color:#4ade80">✓ <span id="fc-know-count">0</span></span>
+        <span style="color:#f87171">✗ <span id="fc-dontknow-count">0</span></span>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" id="tab-uz" onclick="setFcSide('uz')">🇺🇿 O'zbekcha</button>
+      <button class="tab" id="tab-en" onclick="setFcSide('en')">🇬🇧 Inglizcha</button>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="fc-progress"></div></div>
+    <p class="progress-text"><span id="fc-left">0</span> ta qoldi</p>
+    <div class="flashcard" id="fc-card" onclick="fcFlip()">
+      <button class="btn-icon flashcard-audio" id="fc-audio-btn" onclick="event.stopPropagation();speakCurrent()" title="Tinglash">🔊</button>
+      <div class="flashcard-label" id="fc-front-label">O'ZBEKCHA</div>
+      <div class="flashcard-word" id="fc-front-word"></div>
+      <div class="wtype" id="fc-front-type" style="display:none"></div>
+      <div id="fc-back" style="display:none;width:100%">
+        <div class="fc-back-divider"></div>
+        <div class="flashcard-label" id="fc-back-label">INGLIZCHA</div>
+        <div class="flashcard-word" id="fc-back-word"></div>
+        <div class="flashcard-tr" id="fc-back-tr"></div>
+        <div class="wtype" id="fc-back-type" style="display:none;margin-top:6px"></div>
+      </div>
+      <div class="flashcard-hint" id="fc-hint">👆 Bosing — javobni ko'ring</div>
+    </div>
+    <div class="fc-rate" id="fc-rate-btns" style="display:none;">
+      <button class="fc-dontknow" onclick="fcRate(false)">✗ Bilmadim</button>
+      <button class="fc-know" onclick="fcRate(true)">✓ Bildim</button>
+    </div>
+    <div class="fc-nav" id="fc-nav-btns">
+      <button class="fc-nav-btn" onclick="fcSkipBack()">← Oldingi</button>
+      <span class="fc-counter" id="fc-counter"></span>
+      <button class="fc-nav-btn" onclick="fcSkipNext()">Keyingi →</button>
+    </div>
+  </div>
+
+  <!-- FLASHCARD DONE -->
+  <div class="screen" id="screen-fc-done">
+    <div style="font-size:52px">🎉</div>
+    <h1>Barakalla!</h1>
+    <div class="stats-box">
+      <div class="stat"><span style="color:#4ade80">✓ <span id="fc-final-know">0</span></span> Bildim</div>
+      <div class="stat"><span style="color:#f87171">✗ <span id="fc-final-dont">0</span></span> Bilmadim</div>
+    </div>
+    <button class="btn btn-green" id="fc-retry-wrong-btn" onclick="fcRestartWrong()">🔄 Bilmaganlarni qayta</button>
+    <button class="btn" onclick="fcRestartAll()">↺ Hammasini qayta</button>
+    <button class="btn btn-sec" onclick="showScreen('home')">🏠 Bosh sahifa</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="screen" id="screen-quiz">
+    <div class="header">
+      <button class="back-btn" onclick="showScreen('home')">⏹ Tugatish</button>
+      <div class="scores">
+        <span style="color:#4ade80">✓ <span id="score-correct">0</span></span>
+        <span style="color:#f87171;margin-left:10px">✗ <span id="score-wrong">0</span></span>
+      </div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="q-progress-fill"></div></div>
+    <p class="progress-text"><span id="queue-left">0</span> ta qoldi</p>
+    <div class="question-box">
+      <button class="btn-icon q-audio" onclick="speakQuizWord()">🔊</button>
+      <p class="question-label">O'zbekcha:</p>
+      <p class="question" id="quiz-word">—</p>
+      <div class="wtype" id="quiz-type" style="display:none;margin-top:6px"></div>
+    </div>
+    <input class="word-input" id="word-input" type="text" placeholder="Inglizcha yozing..." onkeydown="handleKey(event)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+    <div class="correct-msg" id="feedback-correct">✓ To'g'ri!</div>
+    <div class="wrong-box" id="feedback-wrong">
+      <p class="wrong-title">✗ Xato!</p>
+      <p class="wrong-answer">To'g'ri javob: <strong id="correct-answer"></strong></p>
+      <p class="wrong-tr" id="correct-tr"></p>
+      <p class="retry-note">Bu so'z keyinroq qayta chiqadi</p>
+    </div>
+    <div class="row">
+      <button class="btn" id="btn-check" style="display:none" onclick="handleSubmit()">Tekshir</button>
+      <button class="btn" id="btn-next" style="display:none" onclick="handleNext()">Keyingisi →</button>
+    </div>
+  </div>
+
+  <!-- MCQ (4 variant) -->
+  <div class="screen" id="screen-mcq">
+    <div class="header">
+      <button class="back-btn" onclick="showScreen('home')">⏹ Tugatish</button>
+      <div class="scores">
+        <span style="color:#4ade80">✓ <span id="mcq-correct">0</span></span>
+        <span style="color:#f87171;margin-left:10px">✗ <span id="mcq-wrong">0</span></span>
+      </div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="mcq-progress"></div></div>
+    <p class="progress-text"><span id="mcq-left">0</span> ta qoldi</p>
+    <div class="question-box">
+      <button class="btn-icon q-audio" onclick="speakMcqWord()">🔊</button>
+      <p class="question-label">O'zbekcha:</p>
+      <p class="question" id="mcq-word">—</p>
+      <div class="wtype" id="mcq-type" style="display:none;margin-top:6px"></div>
+    </div>
+    <div class="mcq-options" id="mcq-options"></div>
+    <button class="btn" id="mcq-next-btn" style="display:none" onclick="mcqNext()">Keyingisi →</button>
+  </div>
+
+  <!-- SPEED MODE -->
+  <div class="screen" id="screen-speed">
+    <div class="header">
+      <button class="back-btn" onclick="stopSpeed()">⏹ Tugatish</button>
+      <div class="scores">
+        <span style="color:#4ade80">✓ <span id="sp-correct">0</span></span>
+        <span style="color:#f87171;margin-left:10px">✗ <span id="sp-wrong">0</span></span>
+      </div>
+    </div>
+    <div class="timer-bar-wrap"><div class="timer-bar" id="timer-bar"></div></div>
+    <p style="font-size:12px;color:#f87171;font-weight:bold"><span id="sp-timer">10</span> soniya</p>
+    <div class="question-box">
+      <button class="btn-icon q-audio" onclick="speakSpeedWord()">🔊</button>
+      <p class="question-label">O'zbekcha:</p>
+      <p class="question" id="sp-word">—</p>
+      <div class="wtype" id="sp-type" style="display:none;margin-top:6px"></div>
+    </div>
+    <input class="word-input" id="sp-input" type="text" placeholder="Inglizcha yozing..." onkeydown="spHandleKey(event)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+    <div class="correct-msg" id="sp-correct-msg" style="display:none;">✓ To'g'ri! ⚡</div>
+    <div class="wrong-box" id="sp-wrong-box" style="display:none;">
+      <p class="wrong-title">✗ Vaqt tugadi!</p>
+      <p class="wrong-answer">To'g'ri javob: <strong id="sp-correct-answer"></strong></p>
+    </div>
+  </div>
+
+  <!-- QUIZ/SPEED/MCQ DONE -->
+  <div class="screen" id="screen-done">
+    <div style="font-size:52px" id="done-emoji">🎉</div>
+    <h1 id="done-title">Barakalla!</h1>
+    <p class="sub" id="done-sub"></p>
+    <div class="stats-box">
+      <div class="stat"><span style="color:#4ade80">✓ <span id="final-correct">0</span></span> To'g'ri</div>
+      <div class="stat"><span style="color:#f87171">✗ <span id="final-wrong">0</span></span> Xato</div>
+    </div>
+    <div style="font-size:22px;font-weight:bold;color:#fbbf24" id="done-xp-earned"></div>
+    <button class="btn" id="done-restart-btn" onclick="restartCurrent()">🔄 Qayta boshlash</button>
+    <button class="btn btn-sec" onclick="showScreen('home')">🏠 Bosh sahifa</button>
+  </div>
+
+  <!-- STATS -->
+  <div class="screen" id="screen-stats">
+    <div class="header">
+      <button class="back-btn" onclick="showScreen('home')">← Orqaga</button>
+      <span style="font-size:14px;font-weight:bold">📊 Statistika</span>
+    </div>
+    <div class="stat-grid" id="stat-grid"></div>
+    <div class="divider"></div>
+    <p style="font-size:13px;color:#aaa;text-align:left;width:100%">😰 Eng qiyin so'zlar:</p>
+    <div class="word-list" id="hard-words-list" style="max-height:220px"></div>
+    <button class="btn btn-sec" onclick="resetStats()">🗑 Statistikani tozalash</button>
+  </div>
+
+  <!-- SHARE -->
+  <div class="screen" id="screen-share-screen">
+    <div class="header">
+      <button class="back-btn" onclick="showScreen('home')">← Orqaga</button>
+      <span style="font-size:14px;font-weight:bold">🔗 Ulashish</span>
+    </div>
+    <p style="font-size:13px;color:#aaa;text-align:center">Bo'limingizni o'rtoqlaringizga yuboring. Ular kodni ilovaga kiritib so'zlarni import qiladi.</p>
+    <div class="unit-list" id="share-unit-list"></div>
+    <div class="divider"></div>
+    <p style="font-size:13px;color:#aaa;text-align:left;width:100%">📥 Kod kiritish (import):</p>
+    <textarea id="import-code" rows="4" placeholder="Kodni bu yerga joylashtiring..."></textarea>
+    <p class="error-msg" id="import-error"></p>
+    <button class="btn" onclick="doImport()">📥 Import qilish</button>
+  </div>
+
+
+<!--
+  ╔════════════════════════════════════════════════╗
+  ║  JavaScript modullari — tartib muhim!          ║
+  ║  1. data.js     — barcha ma'lumotlar (avval)  ║
+  ║  2. core.js     — asosiy logika               ║
+  ║  3. Qolgan modullar — istalgan tartibda        ║
+  ╚════════════════════════════════════════════════╝
+-->
+
+<!-- 1. Ma'lumotlar (boshqa barcha modullar bunga bog'liq) -->
+<script src="js/data.js"></script>
+
+<!-- 2. Asosiy logika (holat, tema, XP, ekranlar) -->
+<script src="js/core.js"></script>
+
+<!-- 3. O'yin rejimlari -->
+<script src="js/flashcard.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/mcq.js"></script>
+<script src="js/speed.js"></script>
+
+<!-- 4. Qo'shimcha funksiyalar -->
+<script src="js/stats.js"></script>
+<script src="js/share.js"></script>
+<script src="js/units.js"></script>
+<script src="js/exercises.js"></script>
+<script src="js/irregular.js"></script>
+
+</body>
+</html>
