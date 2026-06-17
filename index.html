@@ -54,7 +54,7 @@
       </div>
     </div>
     <div style="font-size:44px">📚</div>
-    <h1>test uchun</h1>
+    <h1>So'z O'rganuv</h1>
     <p class="sub" id="home-total"></p>
     <!-- XP / Level -->
     <div style="width:100%">
@@ -74,7 +74,7 @@
       <button class="btn btn-sec" onclick="showScreen('share-screen')" style="font-size:13px;">🔗 Ulashish</button>
     </div>
     <div style="margin-top:15px;font-size:13px;color:#aaa;text-align:center;width:100%;">
-  Developed b
+  Developed by 17_______B ❤️
 </div>
   </div>
 
@@ -167,6 +167,7 @@
       <p class="wrong-title">✗ Xato!</p>
       <p class="wrong-answer">To'g'ri javob: <strong id="irr-fill-answer"></strong></p>
     </div>
+    <div id="irr-fill-ai-explain" class="ai-explain-wrap"></div>
     <button class="btn" id="irr-fill-check-btn" onclick="irrFillCheck()">Tekshir</button>
     <button class="btn" id="irr-fill-next-btn" style="display:none" onclick="irrFillNext()">Keyingisi →</button>
   </div>
@@ -187,6 +188,7 @@
       <p class="flashcard-tr" id="irr-quiz-uz"></p>
     </div>
     <div id="irr-quiz-options" style="width:100%;display:grid;grid-template-columns:1fr 1fr;gap:9px"></div>
+    <div id="irr-quiz-ai-explain" class="ai-explain-wrap"></div>
     <button class="btn" id="irr-quiz-next-btn" style="display:none" onclick="irrQuizNext()">Keyingisi →</button>
   </div>
 
@@ -230,6 +232,7 @@
       <button class="fc-know" onclick="exTFAnswer(true)">✓ To'g'ri (True)</button>
     </div>
     <div id="ex-feedback" style="display:none;width:100%;border-radius:12px;padding:12px 14px"></div>
+    <div id="ex-ai-explain" class="ai-explain-wrap"></div>
     <button class="btn" id="ex-next-btn" style="display:none" onclick="exNext()">Keyingisi →</button>
     <button class="btn" id="ex-check-btn" style="display:none" onclick="exCheckGap()">Tekshir</button>
   </div>
@@ -370,6 +373,7 @@
       <p class="wrong-tr" id="correct-tr"></p>
       <p class="retry-note">Bu so'z keyinroq qayta chiqadi</p>
     </div>
+    <div id="quiz-ai-explain" class="ai-explain-wrap"></div>
     <div class="row">
       <button class="btn" id="btn-check" style="display:none" onclick="handleSubmit()">Tekshir</button>
       <button class="btn" id="btn-next" style="display:none" onclick="handleNext()">Keyingisi →</button>
@@ -394,6 +398,7 @@
       <div class="wtype" id="mcq-type" style="display:none;margin-top:6px"></div>
     </div>
     <div class="mcq-options" id="mcq-options"></div>
+    <div id="mcq-ai-explain" class="ai-explain-wrap"></div>
     <button class="btn" id="mcq-next-btn" style="display:none" onclick="mcqNext()">Keyingisi →</button>
   </div>
 
@@ -420,6 +425,7 @@
       <p class="wrong-title">✗ Vaqt tugadi!</p>
       <p class="wrong-answer">To'g'ri javob: <strong id="sp-correct-answer"></strong></p>
     </div>
+    <div id="speed-ai-explain" class="ai-explain-wrap"></div>
   </div>
 
   <!-- QUIZ/SPEED/MCQ DONE -->
@@ -492,6 +498,9 @@
 <script src="js/units.js"></script>
 <script src="js/exercises.js"></script>
 <script src="js/irregular.js"></script>
+
+<!-- AI Tushuntirma — eng oxirida yuklansin (barcha funksiyalar tayyor bo'lgandan keyin) -->
+<script src="js/ai-explain.js"></script>
 
 </body>
 </html>

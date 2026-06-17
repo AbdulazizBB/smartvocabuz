@@ -1,0 +1,13 @@
+# ============================================================
+# Netlify konfiguratsiya fayli
+# Fayl: netlify.toml
+# ============================================================
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/explain"
+  to = "/.netlify/functions/explain"
+  status = 200
