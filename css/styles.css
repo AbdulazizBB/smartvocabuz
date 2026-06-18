@@ -311,3 +311,127 @@ body.light .ai-explain-text { color: #374151; }
 .ai-dots .dot1 { animation: blink 1.2s infinite 0s; }
 .ai-dots .dot2 { animation: blink 1.2s infinite 0.2s; }
 .ai-dots .dot3 { animation: blink 1.2s infinite 0.4s; }
+
+/* ============================================================
+   Auth, Lang Switcher, Admin Panel stillar
+   ============================================================ */
+
+/* AUTH EKRAN */
+#screen-auth { padding: 24px 4px; }
+.auth-tab {
+  flex: 1; background: none; border: none; color: #888;
+  padding: 8px; border-radius: 8px; cursor: pointer;
+  font-size: 14px; font-weight: 600; transition: all 0.2s;
+}
+.auth-tab.active { background: var(--btn); color: #fff; }
+
+.btn-google {
+  background: #fff; color: #333; border: 1px solid #ddd;
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; padding: 11px; border-radius: 12px;
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+.btn-google:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+
+/* TIL TANLASH (auth ekranida) */
+.lang-switcher {
+  display: flex; gap: 8px; justify-content: center;
+}
+.lang-btn {
+  background: #ffffff15; border: 1px solid #ffffff20;
+  color: #ccc; padding: 6px 14px; border-radius: 20px;
+  font-size: 12px; cursor: pointer; transition: all 0.2s;
+}
+.lang-btn.active, .lang-btn:hover {
+  background: var(--btn); color: #fff; border-color: transparent;
+}
+body.light .lang-btn { background: #f3f4f6; color: #555; border-color: #e5e7eb; }
+body.light .lang-btn.active { background: var(--btn); color: #fff; }
+
+/* MINI TIL TANLASH (home ekranida) */
+.lang-mini-switcher { display: flex; gap: 3px; }
+.lang-mini {
+  background: none; border: none; font-size: 16px;
+  cursor: pointer; opacity: 0.4; transition: opacity 0.2s;
+  padding: 3px; border-radius: 6px;
+}
+.lang-mini.active { opacity: 1; }
+.lang-mini:hover { opacity: 0.8; }
+
+/* ADMIN PANEL */
+.admin-top-stats {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px; margin-bottom: 4px;
+}
+.adm-stat-card {
+  background: #ffffff0d; border-radius: 12px;
+  padding: 10px 6px; text-align: center;
+  border: 1px solid #ffffff10;
+}
+.adm-stat-card.online { border-color: #34d39933; background: #34d3991a; }
+.adm-stat-num { font-size: 22px; font-weight: 800; color: #a78bfa; }
+.adm-stat-card.online .adm-stat-num { color: #34d399; }
+.adm-stat-lbl { font-size: 10px; color: #888; margin-top: 2px; }
+
+.adm-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 12px; min-width: 480px;
+}
+.adm-table th {
+  background: #ffffff10; padding: 8px 6px;
+  text-align: left; color: #a78bfa;
+  font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.5px; white-space: nowrap;
+}
+.adm-table td { padding: 8px 6px; border-bottom: 1px solid #ffffff08; }
+.adm-table tr:hover td { background: #ffffff06; }
+
+body.light .adm-table th { background: #f3f4f6; color: #6b21a8; }
+body.light .adm-table td { border-color: #e5e7eb; }
+
+.adm-online-card {
+  background: #34d3991a; border: 1px solid #34d39933;
+  border-radius: 10px; padding: 10px 12px;
+  margin-bottom: 8px; display: flex;
+  align-items: center; gap: 10px;
+}
+.adm-online-card > div:first-child { flex: 1; }
+
+/* ============================================================
+   Admin Panel — Yangi stillar
+   ============================================================ */
+.adm-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px; padding-bottom: 10px;
+  border-bottom: 1px solid #ffffff15;
+}
+.adm-title { font-size: 16px; font-weight: 800; color: #a78bfa; }
+
+.adm-tabs {
+  display: flex; gap: 4px; margin-bottom: 10px;
+  background: #ffffff0d; border-radius: 10px; padding: 4px;
+}
+.adm-tab {
+  flex: 1; background: none; border: none; color: #888;
+  padding: 7px 4px; border-radius: 8px; cursor: pointer;
+  font-size: 12px; font-weight: 600; transition: all 0.2s;
+}
+.adm-tab.active { background: #6d28d9; color: #fff; }
+
+.adm-footer {
+  font-size: 11px; color: #666; text-align: center; margin-top: 8px;
+}
+.adm-empty {
+  text-align: center; padding: 30px; color: #888; font-size: 14px;
+}
+.adm-loading { text-align: center; padding: 20px; color: #888; }
+
+/* Responsive */
+@media (max-width: 460px) {
+  .adm-top-stats { grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .adm-stat-num { font-size: 18px; }
+  .adm-stat-lbl { font-size: 9px; }
+  .adm-table { font-size: 11px; }
+  .adm-table th, .adm-table td { padding: 6px 4px; }
+}

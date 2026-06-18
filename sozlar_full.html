@@ -1,4 +1,32 @@
 <!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║           SO'Z O'RGATUVCHI — Asosiy sahifa                  ║
+  ║  Fayl: index.html                                           ║
+  ║                                                             ║
+  ║  Loyiha tuzilmasi:                                          ║
+  ║  ├── index.html          ← siz bu yerdasiz (HTML skelet)    ║
+  ║  ├── css/                                                   ║
+  ║  │   └── styles.css      ← barcha stillar                  ║
+  ║  ├── js/                                                    ║
+  ║  │   ├── data.js         ← so'z ma'lumotlari + irregular   ║
+  ║  │   ├── core.js         ← asosiy holat, tema, XP, ekranlar║
+  ║  │   ├── flashcard.js    ← flashcard rejimi                 ║
+  ║  │   ├── quiz.js         ← yozma test rejimi                ║
+  ║  │   ├── mcq.js          ← ko'p tanlovli test               ║
+  ║  │   ├── speed.js        ← tezkor rejim (10 soniya)         ║
+  ║  │   ├── stats.js        ← statistika                       ║
+  ║  │   ├── share.js        ← ulashish va import               ║
+  ║  │   ├── units.js        ← birliklar boshqaruvi             ║
+  ║  │   ├── exercises.js    ← grammar mashqlar                 ║
+  ║  │   └── irregular.js    ← noto'g'ri fe'llar o'yinlari     ║
+  ║  └── img/                                                   ║
+  ║      └── logo.png        ← favicon                          ║
+  ║                                                             ║
+  ║  JS fayllari TARTIB MUHIM — quyidagi ketma-ketlikda yuklash ║
+  ║  shart: data.js → core.js → qolgan modullar               ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
 <html lang="uz">
 <head>
 <meta charset="UTF-8"/>
@@ -325,19 +353,216 @@ body.light .ai-explain-text { color: #374151; }
 .ai-dots .dot2 { animation: blink 1.2s infinite 0.2s; }
 .ai-dots .dot3 { animation: blink 1.2s infinite 0.4s; }
 
+/* ============================================================
+   Auth, Lang Switcher, Admin Panel stillar
+   ============================================================ */
+
+/* AUTH EKRAN */
+#screen-auth { padding: 24px 4px; }
+.auth-tab {
+  flex: 1; background: none; border: none; color: #888;
+  padding: 8px; border-radius: 8px; cursor: pointer;
+  font-size: 14px; font-weight: 600; transition: all 0.2s;
+}
+.auth-tab.active { background: var(--btn); color: #fff; }
+
+.btn-google {
+  background: #fff; color: #333; border: 1px solid #ddd;
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; padding: 11px; border-radius: 12px;
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+.btn-google:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+
+/* TIL TANLASH (auth ekranida) */
+.lang-switcher {
+  display: flex; gap: 8px; justify-content: center;
+}
+.lang-btn {
+  background: #ffffff15; border: 1px solid #ffffff20;
+  color: #ccc; padding: 6px 14px; border-radius: 20px;
+  font-size: 12px; cursor: pointer; transition: all 0.2s;
+}
+.lang-btn.active, .lang-btn:hover {
+  background: var(--btn); color: #fff; border-color: transparent;
+}
+body.light .lang-btn { background: #f3f4f6; color: #555; border-color: #e5e7eb; }
+body.light .lang-btn.active { background: var(--btn); color: #fff; }
+
+/* MINI TIL TANLASH (home ekranida) */
+.lang-mini-switcher { display: flex; gap: 3px; }
+.lang-mini {
+  background: none; border: none; font-size: 16px;
+  cursor: pointer; opacity: 0.4; transition: opacity 0.2s;
+  padding: 3px; border-radius: 6px;
+}
+.lang-mini.active { opacity: 1; }
+.lang-mini:hover { opacity: 0.8; }
+
+/* ADMIN PANEL */
+.admin-top-stats {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px; margin-bottom: 4px;
+}
+.adm-stat-card {
+  background: #ffffff0d; border-radius: 12px;
+  padding: 10px 6px; text-align: center;
+  border: 1px solid #ffffff10;
+}
+.adm-stat-card.online { border-color: #34d39933; background: #34d3991a; }
+.adm-stat-num { font-size: 22px; font-weight: 800; color: #a78bfa; }
+.adm-stat-card.online .adm-stat-num { color: #34d399; }
+.adm-stat-lbl { font-size: 10px; color: #888; margin-top: 2px; }
+
+.adm-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 12px; min-width: 480px;
+}
+.adm-table th {
+  background: #ffffff10; padding: 8px 6px;
+  text-align: left; color: #a78bfa;
+  font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.5px; white-space: nowrap;
+}
+.adm-table td { padding: 8px 6px; border-bottom: 1px solid #ffffff08; }
+.adm-table tr:hover td { background: #ffffff06; }
+
+body.light .adm-table th { background: #f3f4f6; color: #6b21a8; }
+body.light .adm-table td { border-color: #e5e7eb; }
+
+.adm-online-card {
+  background: #34d3991a; border: 1px solid #34d39933;
+  border-radius: 10px; padding: 10px 12px;
+  margin-bottom: 8px; display: flex;
+  align-items: center; gap: 10px;
+}
+.adm-online-card > div:first-child { flex: 1; }
+
+/* ============================================================
+   Admin Panel — Yangi stillar
+   ============================================================ */
+.adm-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px; padding-bottom: 10px;
+  border-bottom: 1px solid #ffffff15;
+}
+.adm-title { font-size: 16px; font-weight: 800; color: #a78bfa; }
+
+.adm-tabs {
+  display: flex; gap: 4px; margin-bottom: 10px;
+  background: #ffffff0d; border-radius: 10px; padding: 4px;
+}
+.adm-tab {
+  flex: 1; background: none; border: none; color: #888;
+  padding: 7px 4px; border-radius: 8px; cursor: pointer;
+  font-size: 12px; font-weight: 600; transition: all 0.2s;
+}
+.adm-tab.active { background: #6d28d9; color: #fff; }
+
+.adm-footer {
+  font-size: 11px; color: #666; text-align: center; margin-top: 8px;
+}
+.adm-empty {
+  text-align: center; padding: 30px; color: #888; font-size: 14px;
+}
+.adm-loading { text-align: center; padding: 20px; color: #888; }
+
+/* Responsive */
+@media (max-width: 460px) {
+  .adm-top-stats { grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .adm-stat-num { font-size: 18px; }
+  .adm-stat-lbl { font-size: 9px; }
+  .adm-table { font-size: 11px; }
+  .adm-table th, .adm-table td { padding: 6px 4px; }
+}
+
 </style>
+
+<!-- Config: Bu qiymatlarni o'zingizning Supabase loyihangizdan oling -->
+<script>
+  window._SB_URL    = 'https://wzxihgjrdyokwvkpxtmf.supabase.co';
+  window._SB_ANON   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6eGloZ2pyZHlva3d2a3B4dG1mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3NDM3NzksImV4cCI6MjA5NzMxOTc3OX0.X3x9jLN3qiyfcg30vQ4NO7B1CJ9jqubd7htibi60j8U';
+  window._ADMIN_EMAIL  = 'admin@gmail.com';
+  window._ADMIN_SECRET = '123456';
+</script>
 </head>
 <body id="body">
 <div class="xp-popup" id="xp-popup">+10 XP ⭐</div>
 <div class="card">
 
+<!-- ===== AUTH SCREEN ===== -->
+<div class="screen" id="screen-auth">
+  <div style="text-align:center;margin-bottom:20px">
+    <div style="font-size:48px">📚</div>
+    <h2 data-i18n="app_title" style="margin:8px 0 4px">So'z O'rgatuvchi</h2>
+    <p style="color:#888;font-size:13px" data-i18n="auth_subtitle">Ingliz tilini o'rgan!</p>
+  </div>
+
+  <!-- Til tanlash -->
+  <div class="lang-switcher" style="margin-bottom:16px">
+    <button onclick="setLang('uz')" id="lang-uz" class="lang-btn">🇺🇿 O'zbek</button>
+    <button onclick="setLang('ru')" id="lang-ru" class="lang-btn">🇷🇺 Русский</button>
+    <button onclick="setLang('en')" id="lang-en" class="lang-btn">🇬🇧 English</button>
+  </div>
+
+  <!-- Tablar -->
+  <div style="display:flex;gap:4px;margin-bottom:16px;background:#ffffff11;border-radius:12px;padding:4px">
+    <button class="auth-tab active" id="auth-tab-login" onclick="switchAuthTab('login')" data-i18n="auth_login">Kirish</button>
+    <button class="auth-tab" id="auth-tab-reg" onclick="switchAuthTab('reg')" data-i18n="auth_register">Ro'yxatdan o'tish</button>
+  </div>
+
+  <!-- LOGIN -->
+  <div id="auth-form-login" class="auth-form">
+    <input class="word-input" id="login-email" type="email" placeholder="Email" onkeydown="authKeydown(event,'login')" autocomplete="email"/>
+    <input class="word-input" id="login-pass" type="password" data-i18n-ph="auth_password" placeholder="Parol" onkeydown="authKeydown(event,'login')" autocomplete="current-password" style="margin-top:8px"/>
+    <p class="error-msg" id="login-error"></p>
+    <button class="btn" id="login-btn" onclick="doEmailLogin()" data-i18n="auth_login_btn">→ Kirish</button>
+    <div style="display:flex;align-items:center;gap:8px;margin:12px 0;color:#666;font-size:12px">
+      <hr style="flex:1;border-color:#ffffff22"><span data-i18n="auth_or">yoki</span><hr style="flex:1;border-color:#ffffff22">
+    </div>
+    <button class="btn btn-google" onclick="doGoogleLogin()">
+      <svg width="18" height="18" viewBox="0 0 48 48" style="margin-right:8px"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      <span data-i18n="auth_google">Google bilan kirish</span>
+    </button>
+  </div>
+
+  <!-- REGISTER -->
+  <div id="auth-form-reg" class="auth-form" style="display:none">
+    <input class="word-input" id="reg-name" type="text" data-i18n-ph="auth_name" placeholder="Ismingiz" onkeydown="authKeydown(event,'reg')"/>
+    <input class="word-input" id="reg-email" type="email" placeholder="Email" onkeydown="authKeydown(event,'reg')" style="margin-top:8px" autocomplete="email"/>
+    <input class="word-input" id="reg-pass" type="password" data-i18n-ph="auth_password" placeholder="Parol (min 6 ta belgi)" onkeydown="authKeydown(event,'reg')" style="margin-top:8px"/>
+    <input class="word-input" id="reg-pass2" type="password" data-i18n-ph="auth_pass_confirm" placeholder="Parolni takrorlang" onkeydown="authKeydown(event,'reg')" style="margin-top:8px"/>
+    <p class="error-msg" id="reg-error"></p>
+    <button class="btn" id="reg-btn" onclick="doEmailRegister()" data-i18n="auth_reg_btn">→ Ro'yxatdan o'tish</button>
+    <div style="display:flex;align-items:center;gap:8px;margin:12px 0;color:#666;font-size:12px">
+      <hr style="flex:1;border-color:#ffffff22"><span data-i18n="auth_or">yoki</span><hr style="flex:1;border-color:#ffffff22">
+    </div>
+    <button class="btn btn-google" onclick="doGoogleLogin()">
+      <svg width="18" height="18" viewBox="0 0 48 48" style="margin-right:8px"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      <span data-i18n="auth_google">Google bilan kirish</span>
+    </button>
+  </div>
+</div>
+
+<!-- ===== ADMIN SCREEN ===== -->
+<div class="screen" id="screen-admin"></div>
+
+
+
   <!-- HOME -->
   <div class="screen active" id="screen-home">
     <div class="home-top">
       <div class="streak-badge">🔥 <span id="streak-num">0</span> kun</div>
-      <div style="display:flex;gap:8px;">
+      <div style="display:flex;gap:6px;align-items:center">
+        <div class="lang-mini-switcher">
+          <button onclick="setLang('uz')" class="lang-mini" id="lm-uz">🇺🇿</button>
+          <button onclick="setLang('ru')" class="lang-mini" id="lm-ru">🇷🇺</button>
+          <button onclick="setLang('en')" class="lang-mini" id="lm-en">🇬🇧</button>
+        </div>
         <button class="btn-icon" onclick="showScreen('stats')" title="Statistika" style="width:36px;height:36px;font-size:16px;">📊</button>
         <button class="btn-icon" onclick="toggleTheme()" title="Tema" style="width:36px;height:36px;font-size:16px;" id="theme-btn">🌙</button>
+        <button class="btn-icon" onclick="doLogout()" title="Chiqish" style="width:36px;height:36px;font-size:14px;">🚪</button>
       </div>
     </div>
     <div style="font-size:44px">📚</div>
@@ -758,6 +983,23 @@ body.light .ai-explain-text { color: #374151; }
   </div>
 
 
+<!--
+  ╔════════════════════════════════════════════════╗
+  ║  JavaScript modullari — tartib muhim!          ║
+  ║  1. data.js     — barcha ma'lumotlar (avval)  ║
+  ║  2. core.js     — asosiy logika               ║
+  ║  3. Qolgan modullar — istalgan tartibda        ║
+  ╚════════════════════════════════════════════════╝
+-->
+
+<!-- 1. Ma'lumotlar (boshqa barcha modullar bunga bog'liq) -->
+<!-- 0. Supabase allaqachon yuklangan yuqorida -->
+
+<!-- 1. Ma'lumotlar (eng avval) -->
+<!-- 2. Asosiy logika (holat, tema, XP, ekranlar) -->
+<!-- 3. O'yin rejimlari -->
+<!-- 4. Qo'shimcha funksiyalar -->
+<!-- AI Tushuntirma — eng oxirida yuklansin (barcha funksiyalar tayyor bo'lgandan keyin) -->
 <script>
 
 // ===== data.js =====
@@ -1157,6 +1399,454 @@ const DEFAULT_UNITS = [
 /* --- Irregular Verbs Ma'lumotlari --- */
 const IRREGULAR_VERBS = [{"base": "be", "past": "was/were", "pp": "been", "uz": "bo'lmoq", "emoji": "🧍"}, {"base": "go", "past": "went", "pp": "gone", "uz": "bormoq", "emoji": "🚶"}, {"base": "come", "past": "came", "pp": "come", "uz": "kelmoq", "emoji": "🏃"}, {"base": "see", "past": "saw", "pp": "seen", "uz": "ko'rmoq", "emoji": "👀"}, {"base": "eat", "past": "ate", "pp": "eaten", "uz": "yemoq", "emoji": "🍽️"}, {"base": "drink", "past": "drank", "pp": "drunk", "uz": "ichmoq", "emoji": "🥤"}, {"base": "have", "past": "had", "pp": "had", "uz": "egalik qilmoq", "emoji": "🤲"}, {"base": "do", "past": "did", "pp": "done", "uz": "qilmoq", "emoji": "✅"}, {"base": "make", "past": "made", "pp": "made", "uz": "yasamoq", "emoji": "🔨"}, {"base": "take", "past": "took", "pp": "taken", "uz": "olmoq", "emoji": "✋"}, {"base": "give", "past": "gave", "pp": "given", "uz": "bermoq", "emoji": "🎁"}, {"base": "get", "past": "got", "pp": "got", "uz": "olmoq, qabul qilmoq", "emoji": "📦"}, {"base": "say", "past": "said", "pp": "said", "uz": "aytmoq", "emoji": "💬"}, {"base": "tell", "past": "told", "pp": "told", "uz": "aytib bermoq", "emoji": "🗣️"}, {"base": "think", "past": "thought", "pp": "thought", "uz": "o'ylamoq", "emoji": "🤔"}, {"base": "know", "past": "knew", "pp": "known", "uz": "bilmoq", "emoji": "💡"}, {"base": "find", "past": "found", "pp": "found", "uz": "topmoq", "emoji": "🔍"}, {"base": "feel", "past": "felt", "pp": "felt", "uz": "his qilmoq", "emoji": "❤️"}, {"base": "become", "past": "became", "pp": "become", "uz": "aylanmoq, bo'lmoq", "emoji": "🦋"}, {"base": "leave", "past": "left", "pp": "left", "uz": "ketmoq, qoldirmoq", "emoji": "🚪"}, {"base": "put", "past": "put", "pp": "put", "uz": "qo'ymoq", "emoji": "📥"}, {"base": "bring", "past": "brought", "pp": "brought", "uz": "olib kelmoq", "emoji": "🎒"}, {"base": "buy", "past": "bought", "pp": "bought", "uz": "sotib olmoq", "emoji": "🛍️"}, {"base": "begin", "past": "began", "pp": "begun", "uz": "boshlamoq", "emoji": "🏁"}, {"base": "write", "past": "wrote", "pp": "written", "uz": "yozmoq", "emoji": "✍️"}, {"base": "read", "past": "read", "pp": "read", "uz": "o'qimoq", "emoji": "📖"}, {"base": "run", "past": "ran", "pp": "run", "uz": "yugurmoq", "emoji": "🏃‍♂️"}, {"base": "speak", "past": "spoke", "pp": "spoken", "uz": "gapirmoq", "emoji": "🗨️"}, {"base": "sit", "past": "sat", "pp": "sat", "uz": "o'tirmoq", "emoji": "🪑"}, {"base": "stand", "past": "stood", "pp": "stood", "uz": "turmoq", "emoji": "🧍‍♂️"}, {"base": "sleep", "past": "slept", "pp": "slept", "uz": "uxlamoq", "emoji": "😴"}, {"base": "wake", "past": "woke", "pp": "woken", "uz": "uyg'onmoq", "emoji": "⏰"}, {"base": "fly", "past": "flew", "pp": "flown", "uz": "uchmoq", "emoji": "✈️"}, {"base": "drive", "past": "drove", "pp": "driven", "uz": "haydamoq", "emoji": "🚗"}, {"base": "ride", "past": "rode", "pp": "ridden", "uz": "minib yurmoq", "emoji": "🚲"}, {"base": "swim", "past": "swam", "pp": "swum", "uz": "suzmoq", "emoji": "🏊"}, {"base": "win", "past": "won", "pp": "won", "uz": "g'alaba qilmoq", "emoji": "🏆"}, {"base": "lose", "past": "lost", "pp": "lost", "uz": "yo'qotmoq", "emoji": "😢"}, {"base": "break", "past": "broke", "pp": "broken", "uz": "sindirmoq", "emoji": "💔"}, {"base": "build", "past": "built", "pp": "built", "uz": "qurmoq", "emoji": "🏗️"}, {"base": "buy", "past": "bought", "pp": "bought", "uz": "sotib olmoq", "emoji": "💰"}, {"base": "catch", "past": "caught", "pp": "caught", "uz": "ushlamoq", "emoji": "🥎"}, {"base": "choose", "past": "chose", "pp": "chosen", "uz": "tanlamoq", "emoji": "☑️"}, {"base": "cut", "past": "cut", "pp": "cut", "uz": "kesmoq", "emoji": "✂️"}, {"base": "draw", "past": "drew", "pp": "drawn", "uz": "chizmoq", "emoji": "🎨"}, {"base": "drop", "past": "dropped", "pp": "dropped", "uz": "tushirmoq", "emoji": "⬇️"}, {"base": "fall", "past": "fell", "pp": "fallen", "uz": "yiqilmoq", "emoji": "🍂"}, {"base": "feed", "past": "fed", "pp": "fed", "uz": "ovqatlantirmoq", "emoji": "🍼"}, {"base": "fight", "past": "fought", "pp": "fought", "uz": "jang qilmoq", "emoji": "⚔️"}, {"base": "forget", "past": "forgot", "pp": "forgotten", "uz": "unutmoq", "emoji": "🤷"}, {"base": "grow", "past": "grew", "pp": "grown", "uz": "o'smoq", "emoji": "🌱"}, {"base": "hear", "past": "heard", "pp": "heard", "uz": "eshitmoq", "emoji": "👂"}, {"base": "hide", "past": "hid", "pp": "hidden", "uz": "yashirmoq", "emoji": "🙈"}, {"base": "hold", "past": "held", "pp": "held", "uz": "ushlab turmoq", "emoji": "🤝"}, {"base": "hurt", "past": "hurt", "pp": "hurt", "uz": "jarohatlanmoq", "emoji": "🤕"}, {"base": "keep", "past": "kept", "pp": "kept", "uz": "saqlamoq", "emoji": "🔒"}, {"base": "meet", "past": "met", "pp": "met", "uz": "uchrashmoq", "emoji": "🤝"}, {"base": "pay", "past": "paid", "pp": "paid", "uz": "to'lamoq", "emoji": "💵"}, {"base": "send", "past": "sent", "pp": "sent", "uz": "yubormoq", "emoji": "📤"}, {"base": "show", "past": "showed", "pp": "shown", "uz": "ko'rsatmoq", "emoji": "👉"}, {"base": "sing", "past": "sang", "pp": "sung", "uz": "qo'shiq aytmoq", "emoji": "🎤"}, {"base": "steal", "past": "stole", "pp": "stolen", "uz": "o'g'irlamoq", "emoji": "🥷"}, {"base": "teach", "past": "taught", "pp": "taught", "uz": "o'qitmoq", "emoji": "👩‍🏫"}, {"base": "throw", "past": "threw", "pp": "thrown", "uz": "tashlamoq", "emoji": "🤾"}, {"base": "understand", "past": "understood", "pp": "understood", "uz": "tushunmoq", "emoji": "🧠"}, {"base": "wear", "past": "wore", "pp": "worn", "uz": "kiymoq", "emoji": "👕"}];
 
+
+
+// ===== i18n.js =====
+/* ============================================================
+   i18n.js — Ko'p tilli qo'llab-quvvatlash
+   Tarjimalar TO'G'RIDAN-TO'G'RI bu faylda (fetch yo'q)
+   Sabab: file:// protokolida va bitta HTML faylda fetch
+          /locales/*.json yo'lini topa olmaydi.
+   ============================================================ */
+
+// ===== BARCHA TARJIMALAR INLINE =====
+const _TRANSLATIONS = {
+  uz: {
+  "app_title": "So'z O'rgatuvchi",
+  "auth_subtitle": "Ingliz tilini o'rgan!",
+  "auth_login": "Kirish",
+  "auth_register": "Ro'yxatdan o'tish",
+  "auth_login_btn": "→ Kirish",
+  "auth_reg_btn": "→ Ro'yxatdan o'tish",
+  "auth_google": "Google bilan kirish",
+  "auth_or": "yoki",
+  "auth_fill_fields": "Barcha maydonlarni to'ldiring",
+  "auth_wrong_pass": "Email yoki parol noto'g'ri",
+  "auth_pass_mismatch": "Parollar mos kelmaydi",
+  "auth_pass_short": "Parol kamida 6 ta belgi bo'lishi kerak",
+  "auth_name": "Ismingiz",
+  "auth_password": "Parol",
+  "auth_pass_confirm": "Parolni takrorlang",
+  "logout": "Chiqish",
+  "level": "Level",
+  "streak_days": "kun",
+  "words": "ta so'z",
+  "units": "ta bo'lim",
+  "back": "← Orqaga",
+  "stop": "⏹ Tugatish",
+  "next": "Keyingisi →",
+  "prev": "← Oldingi",
+  "check": "Tekshir",
+  "correct": "✓ To'g'ri!",
+  "wrong_title": "✗ Xato!",
+  "correct_answer": "To'g'ri javob:",
+  "retry_note": "Bu so'z keyinroq qayta chiqadi",
+  "time_up": "✗ Vaqt tugadi!",
+  "write_word": "Inglizcha yozing...",
+  "know": "✓ Bildim",
+  "dont_know": "✗ Bilmadim",
+  "start": "Boshlash →",
+  "stats": "Statistika",
+  "sections": "⚙ Bo'limlar",
+  "share": "🔗 Ulashish",
+  "ai_explain_label": "AI Tushuntirma",
+  "ai_loading": "Tushuntirilmoqda",
+  "clear_stats": "🗑 Statistikani tozalash",
+  "clear_stats_confirm": "Haqiqatan ham tozalamoqchimisiz?",
+  "total_answers": "Jami javoblar:",
+  "correct_pct": "To'g'ri:",
+  "wrong_pct": "Xato:",
+  "most_errors": "Ko'p xato qilingan so'zlar:",
+  "no_errors": "Hali xato yo'q!",
+  "add_unit": "+ Bo'lim qo'shish",
+  "save": "💾 Saqlash",
+  "delete_unit": "O'chirish",
+  "import_btn": "📥 Import",
+  "done_great": "Ajoyib!",
+  "done_score": "ball",
+  "done_correct": "to'g'ri",
+  "done_wrong": "xato",
+  "select_correct": "TO'G'RI JAVOBNI TANLANG",
+  "fill_blank": "BO'SH JOYNI TO'LDIRING",
+  "true_false": "TO'G'RI YOKI XATO?",
+  "admin_panel": "Admin Panel",
+  "admin_total": "Jami foydalanuvchi",
+  "admin_online": "Hozir online",
+  "admin_sessions": "Jami sessiya",
+  "level_beginner": "Beginner",
+  "level_elementary": "Elementary",
+  "level_pre_int": "Pre-Intermediate",
+  "level_intermediate": "Intermediate",
+  "level_upper": "Upper-Intermediate",
+  "level_advanced": "Advanced",
+  "select_units": "Bo'limlarni tanlang",
+  "select_all": "Hammasini tanlash",
+  "launch": "Boshlash →",
+  "unit_words": "ta so'z",
+  "edit_unit": "✏️ Tahrirlash",
+  "unit_name": "Bo'lim nomi",
+  "words_hint": "Har qatorga: inglizcha - o'zbekcha",
+  "cancel": "Bekor qilish",
+  "confirm_delete": "Bu bo'limni o'chirishni tasdiqlaysizmi?",
+  "copy_code": "📋 Kodni nusxalash",
+  "copied": "Nusxalandi!",
+  "import_code": "Kodni bu yerga joylashtiring...",
+  "import_error_invalid": "Noto'g'ri kod!",
+  "import_success": "Muvaffaqiyatli import qilindi!",
+  "flashcard_mode": "🃏 Yod olish",
+  "flashcard_sub": "Flashcard + Audio",
+  "quiz_mode": "✍️ Test",
+  "quiz_sub": "So'z yozing",
+  "mcq_mode": "🎯 Variantli",
+  "mcq_sub": "4 ta variant",
+  "speed_mode": "⚡ Tezkor",
+  "speed_sub": "10 soniya!",
+  "exercises_mode": "📝 Grammar Mashqlar",
+  "exercises_sub": "Har unit uchun 30 ta mashq",
+  "irregular_mode": "🔀 Irregular Verbs",
+  "irregular_sub": "66 ta noto'g'ri fe'l — o'yin orqali yodlash",
+  "tap_to_flip": "Kartani ag'darish uchun bosing",
+  "session_result": "Sessiya natijasi",
+  "knew": "Bildim",
+  "didnt_know": "Bilmadim",
+  "restart_all": "🔄 Hammasini qayta boshlash",
+  "restart_wrong": "🔁 Xatolarni qayta boshlash",
+  "back_home": "← Bosh sahifa",
+  "exercise_select": "Bo'limni tanlang",
+  "exercise_progress": "ta mashq",
+  "irr_cards": "🃏 Kartalar",
+  "irr_match": "🔗 Juftlash",
+  "irr_fill": "✍️ Yozish",
+  "irr_quiz": "🎯 Test",
+  "irr_title": "Noto'g'ri fe'llar",
+  "type_noun": "ot",
+  "type_verb": "fe'l",
+  "type_adj": "sifat",
+  "type_adv": "ravish",
+  "type_prep": "predlog",
+  "type_phrase": "ibora",
+  "online_learners": "ta o'quvchi online"
+},
+  ru: {
+  "app_title": "Учим слова",
+  "auth_subtitle": "Учи английский язык!",
+  "auth_login": "Войти",
+  "auth_register": "Регистрация",
+  "auth_login_btn": "→ Войти",
+  "auth_reg_btn": "→ Зарегистрироваться",
+  "auth_google": "Войти через Google",
+  "auth_or": "или",
+  "auth_fill_fields": "Заполните все поля",
+  "auth_wrong_pass": "Неверный email или пароль",
+  "auth_pass_mismatch": "Пароли не совпадают",
+  "auth_pass_short": "Пароль должен содержать минимум 6 символов",
+  "auth_name": "Ваше имя",
+  "auth_password": "Пароль",
+  "auth_pass_confirm": "Повторите пароль",
+  "logout": "Выйти",
+  "level": "Уровень",
+  "streak_days": "дн",
+  "words": "слов",
+  "units": "разделов",
+  "back": "← Назад",
+  "stop": "⏹ Стоп",
+  "next": "Далее →",
+  "prev": "← Пред",
+  "check": "Проверить",
+  "correct": "✓ Правильно!",
+  "wrong_title": "✗ Ошибка!",
+  "correct_answer": "Правильный ответ:",
+  "retry_note": "Это слово появится снова",
+  "time_up": "✗ Время вышло!",
+  "write_word": "Напишите по-английски...",
+  "know": "✓ Знаю",
+  "dont_know": "✗ Не знаю",
+  "start": "Начать →",
+  "stats": "Статистика",
+  "sections": "⚙ Разделы",
+  "share": "🔗 Поделиться",
+  "ai_explain_label": "Объяснение AI",
+  "ai_loading": "Объясняю",
+  "clear_stats": "🗑 Очистить статистику",
+  "clear_stats_confirm": "Вы уверены?",
+  "total_answers": "Всего ответов:",
+  "correct_pct": "Правильно:",
+  "wrong_pct": "Ошибки:",
+  "most_errors": "Частые ошибки:",
+  "no_errors": "Ошибок пока нет!",
+  "add_unit": "+ Добавить раздел",
+  "save": "💾 Сохранить",
+  "delete_unit": "Удалить",
+  "import_btn": "📥 Импорт",
+  "done_great": "Отлично!",
+  "done_score": "очков",
+  "done_correct": "правильно",
+  "done_wrong": "ошибок",
+  "select_correct": "ВЫБЕРИТЕ ПРАВИЛЬНЫЙ ОТВЕТ",
+  "fill_blank": "ЗАПОЛНИТЕ ПРОПУСК",
+  "true_false": "ВЕРНО ИЛИ НЕТ?",
+  "admin_panel": "Панель администратора",
+  "admin_total": "Всего пользователей",
+  "admin_online": "Сейчас онлайн",
+  "admin_sessions": "Всего сессий",
+  "level_beginner": "Начинающий",
+  "level_elementary": "Элементарный",
+  "level_pre_int": "Ниже среднего",
+  "level_intermediate": "Средний",
+  "level_upper": "Выше среднего",
+  "level_advanced": "Продвинутый",
+  "select_units": "Выберите разделы",
+  "select_all": "Выбрать все",
+  "launch": "Начать →",
+  "unit_words": "слов",
+  "edit_unit": "✏️ Редактировать",
+  "unit_name": "Название раздела",
+  "words_hint": "Каждая строка: английский - русский",
+  "cancel": "Отмена",
+  "confirm_delete": "Удалить этот раздел?",
+  "copy_code": "📋 Копировать код",
+  "copied": "Скопировано!",
+  "import_code": "Вставьте код сюда...",
+  "import_error_invalid": "Неверный код!",
+  "import_success": "Успешно импортировано!",
+  "flashcard_mode": "🃏 Запоминание",
+  "flashcard_sub": "Флэшкарты + Аудио",
+  "quiz_mode": "✍️ Тест",
+  "quiz_sub": "Напишите слово",
+  "mcq_mode": "🎯 Варианты",
+  "mcq_sub": "4 варианта",
+  "speed_mode": "⚡ Быстрый",
+  "speed_sub": "10 секунд!",
+  "exercises_mode": "📝 Грамматика",
+  "exercises_sub": "30 упражнений на раздел",
+  "irregular_mode": "🔀 Неправильные глаголы",
+  "irregular_sub": "66 глаголов — через игру",
+  "tap_to_flip": "Нажмите чтобы перевернуть",
+  "session_result": "Результат сессии",
+  "knew": "Знал",
+  "didnt_know": "Не знал",
+  "restart_all": "🔄 Начать заново",
+  "restart_wrong": "🔁 Повторить ошибки",
+  "back_home": "← На главную",
+  "exercise_select": "Выберите раздел",
+  "exercise_progress": "упражнений",
+  "irr_cards": "🃏 Карточки",
+  "irr_match": "🔗 Сопоставить",
+  "irr_fill": "✍️ Написать",
+  "irr_quiz": "🎯 Тест",
+  "irr_title": "Неправильные глаголы",
+  "type_noun": "сущ.",
+  "type_verb": "гл.",
+  "type_adj": "прил.",
+  "type_adv": "нар.",
+  "type_prep": "предл.",
+  "type_phrase": "фраза",
+  "online_learners": "учеников онлайн"
+},
+  en: {
+  "app_title": "Word Learner",
+  "auth_subtitle": "Learn English words!",
+  "auth_login": "Sign In",
+  "auth_register": "Sign Up",
+  "auth_login_btn": "→ Sign In",
+  "auth_reg_btn": "→ Sign Up",
+  "auth_google": "Continue with Google",
+  "auth_or": "or",
+  "auth_fill_fields": "Please fill in all fields",
+  "auth_wrong_pass": "Wrong email or password",
+  "auth_pass_mismatch": "Passwords do not match",
+  "auth_pass_short": "Password must be at least 6 characters",
+  "auth_name": "Your name",
+  "auth_password": "Password",
+  "auth_pass_confirm": "Confirm password",
+  "logout": "Sign Out",
+  "level": "Level",
+  "streak_days": "days",
+  "words": "words",
+  "units": "units",
+  "back": "← Back",
+  "stop": "⏹ Stop",
+  "next": "Next →",
+  "prev": "← Prev",
+  "check": "Check",
+  "correct": "✓ Correct!",
+  "wrong_title": "✗ Wrong!",
+  "correct_answer": "Correct answer:",
+  "retry_note": "This word will appear again",
+  "time_up": "✗ Time's up!",
+  "write_word": "Type in English...",
+  "know": "✓ I know",
+  "dont_know": "✗ Don't know",
+  "start": "Start →",
+  "stats": "Statistics",
+  "sections": "⚙ Sections",
+  "share": "🔗 Share",
+  "ai_explain_label": "AI Explanation",
+  "ai_loading": "Explaining",
+  "clear_stats": "🗑 Clear stats",
+  "clear_stats_confirm": "Are you sure?",
+  "total_answers": "Total answers:",
+  "correct_pct": "Correct:",
+  "wrong_pct": "Wrong:",
+  "most_errors": "Most errors:",
+  "no_errors": "No errors yet!",
+  "add_unit": "+ Add unit",
+  "save": "💾 Save",
+  "delete_unit": "Delete",
+  "import_btn": "📥 Import",
+  "done_great": "Great job!",
+  "done_score": "pts",
+  "done_correct": "correct",
+  "done_wrong": "wrong",
+  "select_correct": "SELECT THE CORRECT ANSWER",
+  "fill_blank": "FILL IN THE BLANK",
+  "true_false": "TRUE OR FALSE?",
+  "admin_panel": "Admin Panel",
+  "admin_total": "Total users",
+  "admin_online": "Now online",
+  "admin_sessions": "Total sessions",
+  "level_beginner": "Beginner",
+  "level_elementary": "Elementary",
+  "level_pre_int": "Pre-Intermediate",
+  "level_intermediate": "Intermediate",
+  "level_upper": "Upper-Intermediate",
+  "level_advanced": "Advanced",
+  "select_units": "Select units",
+  "select_all": "Select all",
+  "launch": "Start →",
+  "unit_words": "words",
+  "edit_unit": "✏️ Edit",
+  "unit_name": "Unit name",
+  "words_hint": "Each line: english - uzbek",
+  "cancel": "Cancel",
+  "confirm_delete": "Delete this unit?",
+  "copy_code": "📋 Copy code",
+  "copied": "Copied!",
+  "import_code": "Paste code here...",
+  "import_error_invalid": "Invalid code!",
+  "import_success": "Successfully imported!",
+  "flashcard_mode": "🃏 Flashcards",
+  "flashcard_sub": "Flashcard + Audio",
+  "quiz_mode": "✍️ Quiz",
+  "quiz_sub": "Type the word",
+  "mcq_mode": "🎯 Multiple Choice",
+  "mcq_sub": "4 options",
+  "speed_mode": "⚡ Speed",
+  "speed_sub": "10 seconds!",
+  "exercises_mode": "📝 Grammar Exercises",
+  "exercises_sub": "30 exercises per unit",
+  "irregular_mode": "🔀 Irregular Verbs",
+  "irregular_sub": "66 verbs — learn through games",
+  "tap_to_flip": "Tap to flip",
+  "session_result": "Session result",
+  "knew": "Knew",
+  "didnt_know": "Didn't know",
+  "restart_all": "🔄 Restart all",
+  "restart_wrong": "🔁 Retry wrong",
+  "back_home": "← Home",
+  "exercise_select": "Select a unit",
+  "exercise_progress": "exercises",
+  "irr_cards": "🃏 Cards",
+  "irr_match": "🔗 Match",
+  "irr_fill": "✍️ Fill",
+  "irr_quiz": "🎯 Quiz",
+  "irr_title": "Irregular Verbs",
+  "type_noun": "noun",
+  "type_verb": "verb",
+  "type_adj": "adj",
+  "type_adv": "adv",
+  "type_prep": "prep",
+  "type_phrase": "phrase",
+  "online_learners": "learners online"
+}
+};
+
+const LANGS       = ['uz', 'ru', 'en'];
+const LANG_LABELS = { uz: "O'zbekcha", ru: "Русский", en: "English" };
+const LANG_FLAGS  = { uz: "🇺🇿", ru: "🇷🇺", en: "🇬🇧" };
+
+let _t    = _TRANSLATIONS['uz'];
+let _lang = localStorage.getItem('lang') || 'uz';
+
+// Tarjima qaytarish
+function T(key) {
+  return _t[key] !== undefined ? _t[key] : key;
+}
+
+// Tilni o'zgartirish
+async function setLang(l) {
+  if (!LANGS.includes(l)) l = 'uz';
+  _lang = l;
+  localStorage.setItem('lang', l);
+  loadLang(l);  // sync — fetch yo'q
+  applyLang();
+  updateLangButtons(l);
+  if (typeof tracker !== 'undefined' && typeof currentUser !== 'undefined' && currentUser) {
+    tracker.updateLang(l);
+  }
+}
+
+// Tarjimani yuklash (inline, sync)
+function loadLang(l) {
+  _t = _TRANSLATIONS[l] || _TRANSLATIONS['uz'];
+}
+
+// Barcha [data-i18n] elementlarni yangilash
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key  = el.getAttribute('data-i18n');
+    const attr = el.getAttribute('data-i18n-attr');
+    const val  = T(key);
+    if (attr) el.setAttribute(attr, val);
+    else el.textContent = val;
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    el.placeholder = T(el.getAttribute('data-i18n-ph'));
+  });
+  if (typeof document !== 'undefined') {
+    document.title = T('app_title');
+  }
+  renderLangBar();
+  updateLangButtons(_lang);
+}
+
+// Auth ekranidagi til tugmalar
+function updateLangButtons(l) {
+  LANGS.forEach(lang => {
+    document.querySelectorAll(
+      '#lang-' + lang + ', #lm-' + lang + ', .lang-btn-' + lang
+    ).forEach(btn => {
+      btn.classList.toggle('active', lang === l);
+    });
+  });
+}
+
+// Home ekranidagi mini lang bar
+function renderLangBar() {
+  const bar = document.getElementById('lang-bar');
+  if (!bar) return;
+  bar.innerHTML = LANGS.map(l =>
+    `<button class="lang-btn ${l === _lang ? 'active' : ''}"
+      onclick="setLang('${l}')">${LANG_FLAGS[l]} ${LANG_LABELS[l]}</button>`
+  ).join('');
+}
+
+// Daraja nomi
+function getLevelName(xpVal) {
+  const lv = Math.floor((xpVal || 0) / 100) + 1;
+  if (lv <= 2)  return T('level_beginner');
+  if (lv <= 5)  return T('level_elementary');
+  if (lv <= 10) return T('level_pre_int');
+  if (lv <= 20) return T('level_intermediate');
+  if (lv <= 35) return T('level_upper');
+  return T('level_advanced');
+}
+
+// INIT — sahifa yuklanishi bilan darhol ishlaydi
+(function initI18n() {
+  loadLang(_lang);
+  // DOM tayyor bo'lgach applyLang chaqiriladi (initAuth dan)
+})();
 
 
 // ===== core.js =====
@@ -2584,6 +3274,603 @@ irrQuizAnswer = function(chosen, btn, correctAnswer) {
 };
 
 
+// ===== tracker.js =====
+/* ============================================================
+   tracker.js — Online kuzatish va statistika sync
+   ============================================================ */
+
+const tracker = {
+  _heartbeatTimer: null,
+  _syncTimer:      null,
+  _prevCorrect:    0,
+  _prevWrong:      0,
+
+  async _post(action, extra = {}) {
+    if (!currentUser) return;
+    try {
+      await fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action,
+          userId:       currentUser.id,
+          name:         currentUser.name,
+          sessionId:    currentUser.sessionId,
+          lang:         currentUser.lang || _lang || 'uz',
+          xp:           typeof xp !== 'undefined' ? xp : 0,
+          streak:       typeof streak !== 'undefined' ? streak : 0,
+          totalCorrect: typeof totalCorrect !== 'undefined' ? totalCorrect : ld('totalCorrect', 0),
+          totalWrong:   (ld('totalAnswered', 0)) - (ld('totalCorrect', 0)),
+          ...extra
+        })
+      });
+    } catch {}
+  },
+
+  async registerSession(user) {
+    currentUser = user;
+    await this._post('session_start');
+  },
+
+  async endSession(sessionId) {
+    await this._post('session_end');
+    this.stopHeartbeat();
+  },
+
+  startHeartbeat() {
+    this.stopHeartbeat();
+    this._heartbeatTimer = setInterval(() => this._post('heartbeat'), 30000);
+    this._syncTimer      = setInterval(() => this.syncStats(), 60000);
+
+    window.addEventListener('beforeunload', () => {
+      if (!currentUser) return;
+      try {
+        navigator.sendBeacon('/api/track', JSON.stringify({
+          action: 'session_end',
+          userId: currentUser.id,
+          sessionId: currentUser.sessionId,
+          name: currentUser.name
+        }));
+      } catch {}
+    });
+  },
+
+  stopHeartbeat() {
+    if (this._heartbeatTimer) clearInterval(this._heartbeatTimer);
+    if (this._syncTimer)      clearInterval(this._syncTimer);
+    this._heartbeatTimer = null;
+    this._syncTimer = null;
+  },
+
+  async syncStats() {
+    await this._post('sync_stats');
+  },
+
+  async updateLang(l) {
+    if (!currentUser) return;
+    currentUser.lang = l;
+    saveUser(currentUser);
+    await this._post('update_lang', { lang: l });
+  }
+};
+
+
+// ===== auth.js =====
+/* ============================================================
+   auth.js — Supabase Auth (REST API, SDK siz)
+   Login: Email+Parol va Google OAuth
+   Session: localStorage + Supabase token
+   ============================================================ */
+
+let currentUser = null;
+let _sbToken = null; // Supabase access token
+
+// ---- HELPERS ----
+function uuid4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+function loadUser()  { try { const u = localStorage.getItem('sv_user'); return u ? JSON.parse(u) : null; } catch { return null; } }
+function saveUser(u) { localStorage.setItem('sv_user', JSON.stringify(u)); }
+function clearUser() { localStorage.removeItem('sv_user'); localStorage.removeItem('sv_token'); }
+function loadToken() { return localStorage.getItem('sv_token'); }
+function saveToken(t){ if (t) localStorage.setItem('sv_token', t); }
+
+// ---- SUPABASE REST ----
+async function sbAuth(endpoint, body) {
+  if (!window._SB_URL || !window._SB_ANON) throw new Error('Supabase not configured');
+  const res = await fetch(`${window._SB_URL}/auth/v1/${endpoint}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'apikey': window._SB_ANON },
+    body: JSON.stringify(body)
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error_description || data.msg || data.error || 'Auth error');
+  return data;
+}
+
+async function sbGetUser(token) {
+  if (!window._SB_URL || !window._SB_ANON) return null;
+  const res = await fetch(`${window._SB_URL}/auth/v1/user`, {
+    headers: { 'apikey': window._SB_ANON, 'Authorization': `Bearer ${token}` }
+  });
+  if (!res.ok) return null;
+  return await res.json();
+}
+
+async function sbRefreshToken(refreshToken) {
+  try {
+    const data = await sbAuth('token?grant_type=refresh_token', { refresh_token: refreshToken });
+    return data;
+  } catch { return null; }
+}
+
+// ---- ON AUTH SUCCESS ----
+async function _onLoginSuccess(sbUser, accessToken, refreshToken) {
+  _sbToken = accessToken;
+  saveToken(accessToken);
+  if (refreshToken) localStorage.setItem('sv_refresh', refreshToken);
+
+  const isAdmin = (sbUser.email === window._ADMIN_EMAIL);
+  const name = sbUser.user_metadata?.full_name
+    || sbUser.user_metadata?.name
+    || sbUser.email?.split('@')[0]
+    || 'User';
+
+  const user = {
+    id:        sbUser.id,
+    name,
+    email:     sbUser.email,
+    avatar:    sbUser.user_metadata?.avatar_url || null,
+    sessionId: uuid4(),
+    isAdmin,
+    lang:      _lang || 'uz',
+    loginTime: Date.now()
+  };
+
+  currentUser = user;
+  saveUser(user);
+  await tracker.registerSession(user);
+  tracker.startHeartbeat();
+
+  hideAuthScreen();
+
+  if (isAdmin) {
+    showScreen('admin');
+    renderAdminPanel();
+  } else {
+    showScreen('home');
+    renderHome();
+  }
+}
+
+// ---- EMAIL LOGIN ----
+async function doEmailLogin() {
+  const email = (document.getElementById('login-email')?.value || '').trim();
+  const pass  = (document.getElementById('login-pass')?.value || '').trim();
+  const errEl = document.getElementById('login-error');
+  if (errEl) errEl.textContent = '';
+
+  if (!email || !pass) {
+    if (errEl) errEl.textContent = T('auth_fill_fields');
+    return;
+  }
+
+  setAuthLoading('login', true);
+
+  try {
+    const data = await sbAuth('token?grant_type=password', { email, password: pass });
+    await _onLoginSuccess(data.user, data.access_token, data.refresh_token);
+  } catch (err) {
+    if (errEl) errEl.textContent = T('auth_wrong_pass');
+  } finally {
+    setAuthLoading('login', false);
+  }
+}
+
+// ---- EMAIL REGISTER ----
+async function doEmailRegister() {
+  const name  = (document.getElementById('reg-name')?.value || '').trim();
+  const email = (document.getElementById('reg-email')?.value || '').trim();
+  const pass  = (document.getElementById('reg-pass')?.value || '').trim();
+  const pass2 = (document.getElementById('reg-pass2')?.value || '').trim();
+  const errEl = document.getElementById('reg-error');
+  if (errEl) errEl.textContent = '';
+
+  if (!name || !email || !pass) { if (errEl) errEl.textContent = T('auth_fill_fields'); return; }
+  if (pass !== pass2)           { if (errEl) errEl.textContent = T('auth_pass_mismatch'); return; }
+  if (pass.length < 6)          { if (errEl) errEl.textContent = T('auth_pass_short'); return; }
+
+  setAuthLoading('reg', true);
+
+  try {
+    const data = await sbAuth('signup', { email, password: pass, data: { full_name: name } });
+    if (data.user && data.access_token) {
+      await _onLoginSuccess(data.user, data.access_token, data.refresh_token);
+    } else {
+      // Email tasdiqlash kerak bo'lsa
+      if (errEl) errEl.style.color = '#34d399';
+      if (errEl) errEl.textContent = 'Email yuborildi! Tasdiqlang va kiring.';
+    }
+  } catch (err) {
+    if (errEl) errEl.textContent = err.message || T('auth_fill_fields');
+  } finally {
+    setAuthLoading('reg', false);
+  }
+}
+
+// ---- GOOGLE LOGIN ----
+function doGoogleLogin() {
+  if (!window._SB_URL || !window._SB_ANON) {
+    alert('Google login faqat saytda ishlaydi');
+    return;
+  }
+  const origin = window.location.origin || window.location.href.split('?')[0].split('#')[0];
+  const redirectTo = encodeURIComponent(origin);
+  window.location.href = `${window._SB_URL}/auth/v1/authorize?provider=google&redirect_to=${redirectTo}`;
+}
+
+// ---- OAUTH CALLBACK ----
+async function checkOAuthCallback() {
+  const hash = window.location.hash;
+  if (!hash.includes('access_token=')) return false;
+
+  const params = new URLSearchParams(hash.substring(1));
+  const accessToken  = params.get('access_token');
+  const refreshToken = params.get('refresh_token');
+  if (!accessToken) return false;
+
+  // URL ni tozalash
+  window.history.replaceState({}, '', window.location.pathname);
+
+  try {
+    const sbUser = await sbGetUser(accessToken);
+    if (!sbUser?.id) return false;
+    await _onLoginSuccess(sbUser, accessToken, refreshToken);
+    return true;
+  } catch { return false; }
+}
+
+// ---- AUTO-LOGIN (token refresh) ----
+async function tryAutoLogin() {
+  // 1. Saved token bilan tekshirish
+  const token = loadToken();
+  const refreshToken = localStorage.getItem('sv_refresh');
+  const savedUser = loadUser();
+
+  if (token && savedUser) {
+    // Token hali ham amalda ekanini tekshir
+    const sbUser = await sbGetUser(token);
+    if (sbUser?.id) {
+      const isAdmin = (sbUser.email === window._ADMIN_EMAIL);
+      currentUser = { ...savedUser, sessionId: uuid4(), loginTime: Date.now(), isAdmin };
+      _sbToken = token;
+      saveUser(currentUser);
+      await tracker.registerSession(currentUser);
+      tracker.startHeartbeat();
+      hideAuthScreen();
+      if (isAdmin) { showScreen('admin'); renderAdminPanel(); }
+      else { showScreen('home'); renderHome(); }
+      return true;
+    }
+
+    // Token eskirgan — refresh qilish
+    if (refreshToken) {
+      const refreshed = await sbRefreshToken(refreshToken);
+      if (refreshed?.access_token) {
+        const sbUser2 = await sbGetUser(refreshed.access_token);
+        if (sbUser2?.id) {
+          await _onLoginSuccess(sbUser2, refreshed.access_token, refreshed.refresh_token);
+          return true;
+        }
+      }
+    }
+  }
+
+  // Hech narsa ishlamadi — localStorage tozalash
+  clearUser();
+  return false;
+}
+
+// ---- LOGOUT ----
+async function doLogout() {
+  if (currentUser) {
+    await tracker.endSession(currentUser.sessionId);
+  }
+  // Supabase token ni bekor qilish
+  if (_sbToken && window._SB_URL && window._SB_ANON) {
+    try {
+      await fetch(`${window._SB_URL}/auth/v1/logout`, {
+        method: 'POST',
+        headers: { 'apikey': window._SB_ANON, 'Authorization': `Bearer ${_sbToken}` }
+      });
+    } catch {}
+  }
+  _sbToken = null;
+  currentUser = null;
+  clearUser();
+  showAuthScreen('login');
+}
+
+// ---- AUTH SCREEN ----
+function showAuthScreen(tab) {
+  document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+  const s = document.getElementById('screen-auth');
+  if (s) s.classList.add('active');
+  switchAuthTab(tab || 'login');
+}
+
+function hideAuthScreen() {
+  const s = document.getElementById('screen-auth');
+  if (s) s.classList.remove('active');
+}
+
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  const tabEl = document.getElementById('auth-tab-' + tab);
+  if (tabEl) tabEl.classList.add('active');
+  document.querySelectorAll('.auth-form').forEach(f => f.style.display = 'none');
+  const formEl = document.getElementById('auth-form-' + tab);
+  if (formEl) formEl.style.display = 'block';
+  // Error larni tozalash
+  ['login-error', 'reg-error'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = ''; el.style.color = ''; }
+  });
+}
+
+function setAuthLoading(type, on) {
+  const btn = document.getElementById(type + '-btn');
+  if (btn) { btn.disabled = on; btn.style.opacity = on ? '0.7' : '1'; }
+}
+
+// ---- KEYBOARD ENTER ----
+function authKeydown(e, type) {
+  if (e.key === 'Enter') {
+    if (type === 'login') doEmailLogin();
+    else doEmailRegister();
+  }
+}
+
+// ---- INIT ----
+async function initAuth() {
+  // OAuth callback (Google login qaytishi)
+  const wasOAuth = await checkOAuthCallback();
+  if (wasOAuth) return;
+
+  // Auto-login (avvalgi session)
+  const autoLogged = await tryAutoLogin();
+  if (autoLogged) return;
+
+  // Yangi foydalanuvchi — login ekrani
+  showAuthScreen('login');
+}
+
+
+// ===== admin.js =====
+/* ============================================================
+   admin.js — Admin Panel UI
+   Faqat isAdmin === true foydalanuvchi uchun
+   ============================================================ */
+
+let _adminRefreshTimer = null;
+let _admTab = 'users';
+
+async function renderAdminPanel() {
+  if (!currentUser?.isAdmin) { showScreen('home'); return; }
+  showScreen('admin');
+
+  const screen = document.getElementById('screen-admin');
+  if (!screen) return;
+
+  screen.innerHTML = `
+    <div class="adm-header">
+      <span class="adm-title">🛡️ Admin Panel</span>
+      <button class="btn-icon" onclick="doLogout()" title="Chiqish" style="font-size:18px;width:36px;height:36px">🚪</button>
+    </div>
+
+    <div class="adm-top-stats" id="adm-top">
+      <div class="adm-stat-card"><div class="adm-stat-num" id="adm-n-users">—</div><div class="adm-stat-lbl">Foydalanuvchilar</div></div>
+      <div class="adm-stat-card online"><div class="adm-stat-num" id="adm-n-online">—</div><div class="adm-stat-lbl">🟢 Online</div></div>
+      <div class="adm-stat-card"><div class="adm-stat-num" id="adm-n-sessions">—</div><div class="adm-stat-lbl">Sessiyalar</div></div>
+    </div>
+
+    <div class="adm-tabs">
+      <button class="adm-tab active" id="admt-users"    onclick="admSwitchTab('users')">👥 Users</button>
+      <button class="adm-tab"        id="admt-online"   onclick="admSwitchTab('online')">🟢 Online</button>
+      <button class="adm-tab"        id="admt-sessions" onclick="admSwitchTab('sessions')">📋 Sessiyalar</button>
+    </div>
+
+    <div id="adm-content" style="overflow-x:auto;width:100%">
+      <div class="adm-loading">Yuklanmoqda...</div>
+    </div>
+    <div class="adm-footer">
+      🔄 Har 30 sonda yangilanadi •
+      <span id="adm-updated">—</span>
+    </div>`;
+
+  await admLoadData();
+
+  if (_adminRefreshTimer) clearInterval(_adminRefreshTimer);
+  _adminRefreshTimer = setInterval(admLoadData, 30000);
+}
+
+async function admLoadData() {
+  const content = document.getElementById('adm-content');
+  if (!content) return;
+
+  try {
+    const res = await fetch('/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ adminSecret: window._ADMIN_SECRET })
+    });
+
+    if (res.status === 403) {
+      content.innerHTML = '<div style="color:#f87171;text-align:center;padding:20px">⛔ Ruxsat yo\'q</div>';
+      return;
+    }
+
+    const d = await res.json();
+    if (d.error) throw new Error(d.error);
+
+    // Raqamlarni yangilash
+    const nu = document.getElementById('adm-n-users');
+    const no = document.getElementById('adm-n-online');
+    const ns = document.getElementById('adm-n-sessions');
+    if (nu) nu.textContent = d.stats.totalUsers;
+    if (no) no.textContent = d.stats.onlineCount;
+    if (ns) ns.textContent = d.stats.totalSessions;
+
+    const upd = document.getElementById('adm-updated');
+    if (upd) upd.textContent = new Date().toLocaleTimeString('uz-UZ');
+
+    // Jadval ko'rsatish
+    admRenderTab(_admTab, d);
+
+    // Tab ni window._admData ga saqlash
+    window._admData = d;
+
+  } catch(err) {
+    content.innerHTML = `<div style="color:#f87171;text-align:center;padding:20px">Xato: ${err.message}</div>`;
+  }
+}
+
+function admSwitchTab(tab) {
+  _admTab = tab;
+  document.querySelectorAll('.adm-tab').forEach(t => t.classList.remove('active'));
+  const bt = document.getElementById('admt-' + tab);
+  if (bt) bt.classList.add('active');
+  if (window._admData) admRenderTab(tab, window._admData);
+}
+
+function admRenderTab(tab, d) {
+  if (tab === 'users')    admRenderUsers(d.users);
+  if (tab === 'online')   admRenderOnline(d.online);
+  if (tab === 'sessions') admRenderSessions(d.allSessions);
+}
+
+function fmtDt(iso) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleString('uz-UZ', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+function levelBadge(lvl) {
+  const colors = {
+    'Beginner': '#6b7280', 'Elementary': '#3b82f6',
+    'Pre-Intermediate': '#8b5cf6', 'Intermediate': '#f59e0b',
+    'Upper-Intermediate': '#f97316', 'Advanced': '#ef4444'
+  };
+  const c = colors[lvl] || '#6b7280';
+  return `<span style="background:${c}22;color:${c};padding:2px 8px;border-radius:8px;font-size:11px;white-space:nowrap">${lvl||'Beginner'}</span>`;
+}
+
+function langFlag(l) { return ({uz:'🇺🇿',ru:'🇷🇺',en:'🇬🇧'})[l] || '🌐'; }
+
+function admRenderUsers(users) {
+  const el = document.getElementById('adm-content');
+  if (!el) return;
+  if (!users?.length) { el.innerHTML = '<div class="adm-empty">Foydalanuvchilar yo\'q</div>'; return; }
+
+  el.innerHTML = `<table class="adm-table">
+    <thead><tr>
+      <th>Ism</th><th>Daraja</th><th>XP</th><th>✓</th><th>✗</th><th>🔥</th><th>Til</th><th>Oxirgi</th>
+    </tr></thead>
+    <tbody>
+      ${users.map(u => `<tr>
+        <td><span style="font-weight:600">${escHtml(u.name||'—')}</span>${u.is_admin?' 🛡️':''}</td>
+        <td>${levelBadge(u.level)}</td>
+        <td style="color:#fbbf24;font-weight:700">${u.xp||0}</td>
+        <td style="color:#34d399">${u.total_correct||0}</td>
+        <td style="color:#f87171">${u.total_wrong||0}</td>
+        <td>${u.streak||0}</td>
+        <td>${langFlag(u.lang)}</td>
+        <td style="font-size:11px;color:#888;white-space:nowrap">${fmtDt(u.last_seen)}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+function admRenderOnline(sessions) {
+  const el = document.getElementById('adm-content');
+  if (!el) return;
+  if (!sessions?.length) {
+    el.innerHTML = '<div class="adm-empty">😴 Hozir hech kim online emas</div>';
+    return;
+  }
+  el.innerHTML = sessions.map(s => `
+    <div class="adm-online-card">
+      <div>
+        <div style="font-weight:700">${escHtml(s.user_name||'—')}</div>
+        <div style="font-size:11px;color:#888">Kirdi: ${fmtDt(s.login_at)}</div>
+        <div style="font-size:11px;color:#888">So'nggi: ${fmtDt(s.last_ping)}</div>
+        ${s.country ? `<div style="font-size:11px;color:#888">📍 ${s.country}</div>` : ''}
+      </div>
+      <div style="text-align:right">${langFlag(s.lang)}<br><span style="color:#34d399;font-size:12px">🟢 online</span></div>
+    </div>`).join('');
+}
+
+function admRenderSessions(sessions) {
+  const el = document.getElementById('adm-content');
+  if (!el) return;
+  if (!sessions?.length) { el.innerHTML = '<div class="adm-empty">Sessiyalar yo\'q</div>'; return; }
+
+  el.innerHTML = `<table class="adm-table">
+    <thead><tr>
+      <th>Ism</th><th>Kirdi</th><th>Chiqdi</th><th>📍</th><th>Til</th><th>Holat</th>
+    </tr></thead>
+    <tbody>
+      ${sessions.slice(0, 200).map(s => `<tr>
+        <td style="font-weight:600">${escHtml(s.user_name||'—')}</td>
+        <td style="font-size:11px;white-space:nowrap">${fmtDt(s.login_at)}</td>
+        <td style="font-size:11px;white-space:nowrap">${s.logout_at ? fmtDt(s.logout_at) : '—'}</td>
+        <td style="font-size:12px">${s.country||'—'}</td>
+        <td>${langFlag(s.lang)}</td>
+        <td>${s.is_active
+          ? '<span style="color:#34d399;font-size:12px">🟢</span>'
+          : '<span style="color:#6b7280;font-size:12px">⚫</span>'}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+
 </script>
+
+<!-- INIT -->
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  // 1. Til yuklash
+  const savedLang = localStorage.getItem('lang') || 'uz';
+  await loadLang(savedLang);
+  applyLang();
+  updateLangButtons(savedLang);
+
+  // 2. Mavjud i18n skriptni ishlat (setLang wrapper)
+  const origSetLang = setLang;
+  window.setLang = async (l) => {
+    await origSetLang(l);
+    updateLangButtons(l);
+  };
+
+  // 3. Auth tizimini ishga tushirish
+  await initAuth();
+});
+
+function updateLangButtons(l) {
+  ['uz','ru','en'].forEach(lang => {
+    document.querySelectorAll('#lang-' + lang + ', #lm-' + lang).forEach(btn => {
+      btn.classList.toggle('active', lang === l);
+    });
+  });
+}
+</script>
+
 </body>
 </html>
