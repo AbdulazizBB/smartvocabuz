@@ -18,7 +18,7 @@
 let quizWords=[],queue=[],mistakes={},score={correct:0,wrong:0},qstate=null,currentIdx=null;
 
 function startQuiz(){
-  quizWords=buildWordList();if(!quizWords.length){alert("So'z yo'q!");return;}
+  quizWords=buildWordList();if(!quizWords.length){alert(T('no_words'));return;}
   queue=shuffle(quizWords.map((_,i)=>i));
   mistakes={};score={correct:0,wrong:0};qstate=null;
   updateQScore();showScreen('quiz');showCurrent();
@@ -91,9 +91,9 @@ function showDone(c,w){
   document.getElementById('final-correct').textContent=c;
   document.getElementById('final-wrong').textContent=w;
   const earned=c*10;
-  document.getElementById('done-xp-earned').textContent=earned>0?'+'+ earned+' XP kazandingiz! ⭐':'';
-  document.getElementById('done-title').textContent=w===0?'Mukammal! 🌟':'Barakalla!';
-  document.getElementById('done-emoji').textContent=w===0?'🏆':'🎉';
+  document.getElementById('done-xp-earned').textContent = earned>0 ? ('+'+earned+' '+T('xp_label')) : '';
+  document.getElementById('done-title').textContent = w===0 ? T('done_perfect') : T('done_congrats');
+  document.getElementById('done-emoji').textContent = w===0 ? '🏆' : '🎉';
   showScreen('done');
 }
 

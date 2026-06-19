@@ -78,7 +78,7 @@ async function doEmailLogin() {
   const sb = getSB();
 
   if (!sb) {
-    if (errEl) errEl.textContent = 'Supabase ulanmagan';
+    if (errEl) errEl.textContent = T('supabase_unavailable');
     setAuthLoading('login', false);
     return;
   }
@@ -112,7 +112,7 @@ async function doEmailRegister() {
   const sb = getSB();
 
   if (!sb) {
-    if (errEl) errEl.textContent = 'Supabase ulanmagan';
+    if (errEl) errEl.textContent = T('supabase_unavailable');
     setAuthLoading('reg', false);
     return;
   }
@@ -130,7 +130,7 @@ async function doEmailRegister() {
 
   if (data.user && !data.user.confirmed_at && !data.session) {
     // Email tasdiqlash kutilmoqda
-    if (errEl) { errEl.style.color = '#34d399'; errEl.textContent = '✓ Email yuborildi! Tasdiqlang va kiring.'; }
+    if (errEl) { errEl.style.color = '#34d399'; errEl.textContent = T('email_sent'); }
     setAuthLoading('reg', false);
     return;
   }
@@ -142,7 +142,7 @@ async function doEmailRegister() {
 // ---- GOOGLE LOGIN ----
 async function doGoogleLogin() {
   const sb = getSB();
-  if (!sb) { alert('Supabase ulanmagan'); return; }
+  if (!sb) { alert(T('supabase_unavailable')); return; }
 
   const redirectTo = window.location.origin
     ? window.location.origin + window.location.pathname

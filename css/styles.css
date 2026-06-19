@@ -350,14 +350,22 @@ body.light .lang-btn { background: #f3f4f6; color: #555; border-color: #e5e7eb; 
 body.light .lang-btn.active { background: var(--btn); color: #fff; }
 
 /* MINI TIL TANLASH (home ekranida) */
-.lang-mini-switcher { display: flex; gap: 3px; }
+.lang-mini-switcher { display: flex; gap: 8px; align-items:center; }
 .lang-mini {
-  background: none; border: none; font-size: 16px;
-  cursor: pointer; opacity: 0.4; transition: opacity 0.2s;
-  padding: 3px; border-radius: 6px;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.9);
+  padding: 6px 10px; font-size:14px; font-weight:700;
+  border-radius: 999px; cursor:pointer; transition:all 220ms ease;
+  display:inline-flex;align-items:center;gap:6px;min-width:44px;justify-content:center;
 }
-.lang-mini.active { opacity: 1; }
-.lang-mini:hover { opacity: 0.8; }
+.lang-mini:hover{ transform:translateY(-2px); box-shadow:0 6px 20px rgba(118,75,162,0.12); }
+.lang-mini.active{
+  background: linear-gradient(90deg,#667eea,#764ba2);
+  color: #fff; box-shadow: 0 8px 30px rgba(118,75,162,0.25); border-color: transparent;
+}
+@media (max-width:460px){ .lang-mini{padding:6px 8px;font-size:13px;min-width:38px;} }
 
 /* ADMIN PANEL */
 .admin-top-stats {

@@ -14,7 +14,7 @@
 let mcqWords=[],mcqQueue=[],mcqIndex=0,mcqScore={correct:0,wrong:0},mcqAnswered=false;
 
 function startMcq(){
-  mcqWords=buildWordList();if(mcqWords.length<4){alert("Kamida 4 ta so'z kerak!");return;}
+  mcqWords=buildWordList();if(mcqWords.length<4){alert(T('need_min_4_words'));return;}
   mcqQueue=shuffle(mcqWords.map((_,i)=>i));
   mcqIndex=0;mcqScore={correct:0,wrong:0};mcqAnswered=false;
   showScreen('mcq');renderMcq();

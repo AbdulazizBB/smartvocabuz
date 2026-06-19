@@ -89,14 +89,7 @@ function showScreen(name){
 }
 function renderHome(){
   const total = units.reduce((s,u)=>s+u.words.length,0);
-
-  const unitWordText = _lang === 'ru'
-      ? `${units.length} разделов • ${total} слов`
-      : _lang === 'en'
-      ? `${units.length} units • ${total} words`
-      : `${units.length} ta bo'lim • ${total} ta so'z`;
-
-  document.getElementById('home-total').textContent = unitWordText;
+  document.getElementById('home-total').textContent = `${units.length} ${T('units')} • ${total} ${T('words')}`;
 
   updateXPBar();
 
@@ -106,8 +99,13 @@ function renderHome(){
 // ===== MODE =====
 function goMode(mode){
   currentMode=mode;
-  const labels={flashcard:'🃏 Yod olish',quiz:'✍️ Test',mcq:'🎯 Variantli',speed:'⚡ Tezkor'};
-  document.getElementById('mode-label').textContent=labels[mode]||mode;
+  const labels={
+    flashcard: T('flashcard_mode'),
+    quiz: T('quiz_mode'),
+    mcq: T('mcq_mode'),
+    speed: T('speed_mode')
+  };
+  document.getElementById('mode-label').textContent = labels[mode] || mode;
   selectedUnitIds=[];
   renderUnitSelect();showScreen('unit-select');
 }
@@ -117,7 +115,7 @@ function renderUnitSelect(){
     const div=document.createElement('div');div.className='unit-sel-item';div.id='sel_'+u.id;
     div.onclick=()=>toggleSel(u.id);
     div.innerHTML=`<span class="check" id="chk_${u.id}">○</span>
-      <div><div class="unit-name">${u.name}</div><div class="unit-count">${u.words.length} ta so'z</div></div>`;
+      <div><div class="unit-name">${u.name}</div><div class="unit-count">${u.words.length} ${T('unit_words')}</div></div>`;
     list.appendChild(div);
   });
 }
@@ -129,7 +127,7 @@ function toggleSel(id){
   document.getElementById('chk_'+id).textContent=sel?'✓':'○';
 }
 function launchMode(){
-  if(!selectedUnitIds.length){alert("Kamida bitta bo'lim tanlang!");return;}
+  if(!selectedUnitIds.length){alert(T('select_one_unit'));return;}
   checkStreak();
   if(currentMode==='flashcard')startFlashcard();
   else if(currentMode==='quiz')startQuiz();

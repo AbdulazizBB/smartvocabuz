@@ -17,7 +17,7 @@ let spWords=[],spQueue=[],spIndex=0,spScore={correct:0,wrong:0},spTimer=null,spT
 const SP_TIME=10;
 
 function startSpeed(){
-  spWords=buildWordList();if(!spWords.length){alert("So'z yo'q!");return;}
+  spWords=buildWordList();if(!spWords.length){alert(T('no_words'));return;}
   spQueue=shuffle(spWords.map((_,i)=>i));
   spIndex=0;spScore={correct:0,wrong:0};
   showScreen('speed');renderSpeed();

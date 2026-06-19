@@ -45,7 +45,7 @@ function renderExUnitList() {
     div.innerHTML = `<span style="font-size:24px">📝</span>
       <div>
         <div class="unit-name">${unit.unit}</div>
-        <div class="unit-count">${unit.exercises.length} ta mashq • ${unit.grammar.substring(0,40)}...</div>
+        <div class="unit-count">${unit.exercises.length} ${T('exercise_progress')} • ${unit.grammar.substring(0,40)}...</div>
       </div>`;
     list.appendChild(div);
   });
@@ -72,15 +72,15 @@ function renderEx() {
   // progress
   const pct = Math.round((exIndex / exList.length) * 100);
   document.getElementById('ex-progress').style.width = pct + '%';
-  document.getElementById('ex-progress-text').textContent = (exIndex+1) + ' / ' + exList.length + ' ta mashq';
+  document.getElementById('ex-progress-text').textContent = (exIndex+1) + ' / ' + exList.length + ' ' + T('exercise_progress');
   document.getElementById('ex-correct').textContent = exScore.correct;
   document.getElementById('ex-wrong').textContent = exScore.wrong;
 
   // type label
   const typeLabels = {
-    multiple_choice: '🔘 To\'g\'ri javobni tanlang',
-    gap_fill: '✏️ Bo\'sh joyni to\'ldiring',
-    true_false: '✅ To\'g\'ri yoki Xato?'
+    multiple_choice: T('select_correct'),
+    gap_fill: T('fill_blank'),
+    true_false: T('true_false')
   };
   document.getElementById('ex-type-label').textContent = typeLabels[ex.type] || '';
 
@@ -186,12 +186,12 @@ function showExFeedback(correct, ex) {
   if (correct) {
     fb.style.background = 'rgba(34,197,94,0.15)';
     fb.style.border = '1px solid rgba(34,197,94,0.4)';
-    fb.innerHTML = '<strong style="color:#4ade80">✓ To\'g\'ri!</strong>';
+    fb.innerHTML = '<strong style="color:#4ade80">' + T('correct_feedback') + '</strong>';
   } else {
     const expText = ex.explanation ? '<br><span style="color:#aaa;font-size:12px">' + ex.explanation + '</span>' : '';
     fb.style.background = 'rgba(248,113,113,0.1)';
     fb.style.border = '1px solid rgba(248,113,113,0.3)';
-    fb.innerHTML = '<strong style="color:#f87171">✗ Xato!</strong> To\'g\'ri javob: <strong style="color:#fff">' + ex.answer + '</strong>' + expText;
+    fb.innerHTML = '<strong style="color:#f87171">' + T('wrong_feedback') + '</strong> ' + T('correct_answer') + ' <strong style="color:#fff">' + ex.answer + '</strong>' + expText;
   }
   fb.style.display = 'block';
   document.getElementById('ex-next-btn').style.display = 'block';

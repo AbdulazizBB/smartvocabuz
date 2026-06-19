@@ -17,9 +17,11 @@ const _TRANSLATIONS = {
   "auth_google": "Google bilan kirish",
   "auth_or": "yoki",
   "auth_fill_fields": "Barcha maydonlarni to'ldiring",
+  "supabase_unavailable": "Supabase ulanmagan",
   "auth_wrong_pass": "Email yoki parol noto'g'ri",
   "auth_pass_mismatch": "Parollar mos kelmaydi",
   "auth_pass_short": "Parol kamida 6 ta belgi bo'lishi kerak",
+  "email_sent": "✓ Email yuborildi! Tasdiqlang va kiring.",
   "auth_name": "Ismingiz",
   "auth_password": "Parol",
   "auth_pass_confirm": "Parolni takrorlang",
@@ -47,6 +49,8 @@ const _TRANSLATIONS = {
   "share": "🔗 Ulashish",
   "ai_explain_label": "AI Tushuntirma",
   "ai_loading": "Tushuntirilmoqda",
+  "ai_server_error": "Server bilan bog'lanib bo'lmayapti. Bir ozdan keyin urinib ko'ring.",
+  "ai_load_error": "Tushuntirma yuklanmadi. Internet aloqasini tekshiring.",
   "clear_stats": "🗑 Statistikani tozalash",
   "clear_stats_confirm": "Haqiqatan ham tozalamoqchimisiz?",
   "total_answers": "Jami javoblar:",
@@ -59,6 +63,8 @@ const _TRANSLATIONS = {
   "delete_unit": "O'chirish",
   "import_btn": "📥 Import",
   "done_great": "Ajoyib!",
+  "done_perfect": "Mukammal! 🌟",
+  "done_congrats": "Barakalla!",
   "done_score": "ball",
   "done_correct": "to'g'ri",
   "done_wrong": "xato",
@@ -124,6 +130,55 @@ const _TRANSLATIONS = {
   "type_prep": "predlog",
   "type_phrase": "ibora",
   "online_learners": "ta o'quvchi online"
+  ,
+  "select_one_unit": "Kamida bitta bo'lim tanlang!",
+  "no_words": "So'z yo'q!",
+  "need_min_4_words": "Kamida 4 ta so'z kerak!",
+  "code_invalid": "Kod noto'g'ri yoki buzilgan!",
+  "new_unit": "Yangi bo'lim",
+  "edit": "Tahrirlash",
+  "enter_unit_name": "Bo'lim nomini kiriting!",
+  "at_least_one_word": "Kamida bitta so'z!",
+  "irr_match_done": "Juftlik o'yini tugadi!",
+  "irr_fill_done": "To'ldirish mashqi tugadi!",
+  "irr_quiz_done": "Variantli test tugadi!",
+  "no_users": "Foydalanuvchilar yo'q",
+  "no_online": "😴 Hozir hech kim online emas",
+  "no_sessions": "Sessiyalar yo'q",
+  "correct_feedback": "✓ To'g'ri!",
+  "wrong_feedback": "✗ Xato!",
+  "no_errors_yet": "Hali xato yo'q 🎉",
+  "no_units": "Bo'lim yo'q.",
+  "code_copied": "Kod nusxalandi! O'rtoqqa yuboring.",
+  "import_success": "muvaffaqiyatli import qilindi!",
+  "confirm_clear_stats": "Statistikani tozalaysizmi?",
+  "confirm_overwrite": "mavjud. Ustiga yozilsinmi?",
+  "confirm_delete_unit": "Bu bo'limni o'chirasizmi?",
+  "no_permission": "⛔ Ruxsat yo'q",
+  "placeholder_unit_example": "Masalan: Unit 5.3",
+  "placeholder_write_answer": "Javobingizni yozing...",
+  "past_simple": "PAST SIMPLE",
+  "past_participle": "PAST PARTICIPLE",
+  "select_form_suffix": "shaklini tanlang:"
+ ,
+  "streak_label": "Ketma-ket kun",
+  "mistake_times": "marta xato",
+  "loading": "Yuklanmoqda...",
+  "error": "Xato",
+  "name": "Ism",
+  "xp": "XP",
+  "wrong": "Xato",
+  "streak": "Ketma-ket",
+  "lang": "Til",
+  "last_seen": "Oxirgi",
+  "entered_at": "Kirdi",
+  "last_ping": "So'nggi",
+  "online_label": "🟢 online",
+  "exited_at": "Chiqdi",
+  "status": "Holat",
+  "admin_users": "Foydalanuvchilar",
+  "total_xp": "Jami XP",
+  "accuracy": "Aniqlik"
 },
   ru: {
   "app_title": "Учим слова",
@@ -135,9 +190,11 @@ const _TRANSLATIONS = {
   "auth_google": "Войти через Google",
   "auth_or": "или",
   "auth_fill_fields": "Заполните все поля",
+  "supabase_unavailable": "Supabase не подключён",
   "auth_wrong_pass": "Неверный email или пароль",
   "auth_pass_mismatch": "Пароли не совпадают",
   "auth_pass_short": "Пароль должен содержать минимум 6 символов",
+  "email_sent": "✓ Письмо отправлено! Подтвердите и войдите.",
   "auth_name": "Ваше имя",
   "auth_password": "Пароль",
   "auth_pass_confirm": "Повторите пароль",
@@ -165,6 +222,8 @@ const _TRANSLATIONS = {
   "share": "🔗 Поделиться",
   "ai_explain_label": "Объяснение AI",
   "ai_loading": "Объясняю",
+  "ai_server_error": "Не удалось связаться с сервером. Попробуйте позже.",
+  "ai_load_error": "Не удалось загрузить объяснение. Проверьте соединение." ,
   "clear_stats": "🗑 Очистить статистику",
   "clear_stats_confirm": "Вы уверены?",
   "total_answers": "Всего ответов:",
@@ -177,6 +236,8 @@ const _TRANSLATIONS = {
   "delete_unit": "Удалить",
   "import_btn": "📥 Импорт",
   "done_great": "Отлично!",
+  "done_perfect": "Идеально! 🌟",
+  "done_congrats": "Молодец!",
   "done_score": "очков",
   "done_correct": "правильно",
   "done_wrong": "ошибок",
@@ -242,6 +303,55 @@ const _TRANSLATIONS = {
   "type_prep": "предл.",
   "type_phrase": "фраза",
   "online_learners": "учеников онлайн"
+  ,
+  "select_one_unit": "Выберите хотя бы один раздел!",
+  "no_words": "Нет слов!",
+  "need_min_4_words": "Нужно как минимум 4 слова!",
+  "code_invalid": "Код неверен или повреждён!",
+  "new_unit": "Новый раздел",
+  "edit": "Редактировать",
+  "enter_unit_name": "Введите название раздела!",
+  "at_least_one_word": "Хотя бы одно слово!",
+  "irr_match_done": "Игра пар завершена!",
+  "irr_fill_done": "Упражнение на заполнение закончено!",
+  "irr_quiz_done": "Тест с вариантами завершён!",
+  "no_users": "Пользователей нет",
+  "no_online": "😴 Сейчас никто не онлайн",
+  "no_sessions": "Сессий нет",
+  "correct_feedback": "✓ Правильно!",
+  "wrong_feedback": "✗ Ошибка!",
+  "no_errors_yet": "Ошибок пока нет 🎉",
+  "no_units": "Разделов нет.",
+  "code_copied": "Код скопирован! Отправьте его друзьям.",
+  "import_success": "успешно импортировано!",
+  "confirm_clear_stats": "Вы уверены, что очистить статистику?",
+  "confirm_overwrite": "существует. Перезаписать?",
+  "confirm_delete_unit": "Вы уверены, что хотите удалить этот раздел?",
+  "no_permission": "⛔ Доступ запрещён",
+  "placeholder_unit_example": "Например: Unit 5.3",
+  "placeholder_write_answer": "Напишите ваш ответ...",
+  "past_simple": "PAST SIMPLE",
+  "past_participle": "PAST PARTICIPLE",
+  "select_form_suffix": "выберите форму:"
+ ,
+  "streak_label": "Серия дней",
+  "mistake_times": "раз(а) ошибка",
+  "loading": "Загрузка...",
+  "error": "Ошибка",
+  "name": "Имя",
+  "xp": "XP",
+  "wrong": "Ошибка",
+  "streak": "Серия",
+  "lang": "Язык",
+  "last_seen": "Последн.",
+  "entered_at": "Вход",
+  "last_ping": "Последний пинг",
+  "online_label": "🟢 онлайн",
+  "exited_at": "Вышел",
+  "status": "Статус",
+  "admin_users": "Пользователи",
+  "total_xp": "Всего XP",
+  "accuracy": "Точность"
 },
   en: {
   "app_title": "Word Learner",
@@ -253,9 +363,11 @@ const _TRANSLATIONS = {
   "auth_google": "Continue with Google",
   "auth_or": "or",
   "auth_fill_fields": "Please fill in all fields",
+  "supabase_unavailable": "Supabase is not available",
   "auth_wrong_pass": "Wrong email or password",
   "auth_pass_mismatch": "Passwords do not match",
   "auth_pass_short": "Password must be at least 6 characters",
+  "email_sent": "✓ Email sent! Confirm and sign in.",
   "auth_name": "Your name",
   "auth_password": "Password",
   "auth_pass_confirm": "Confirm password",
@@ -283,6 +395,8 @@ const _TRANSLATIONS = {
   "share": "🔗 Share",
   "ai_explain_label": "AI Explanation",
   "ai_loading": "Explaining",
+  "ai_server_error": "Unable to reach server. Please try again later.",
+  "ai_load_error": "Explanation failed to load. Check your connection.",
   "clear_stats": "🗑 Clear stats",
   "clear_stats_confirm": "Are you sure?",
   "total_answers": "Total answers:",
@@ -295,6 +409,8 @@ const _TRANSLATIONS = {
   "delete_unit": "Delete",
   "import_btn": "📥 Import",
   "done_great": "Great job!",
+  "done_perfect": "Perfect! 🌟",
+  "done_congrats": "Well done!",
   "done_score": "pts",
   "done_correct": "correct",
   "done_wrong": "wrong",
@@ -358,6 +474,55 @@ const _TRANSLATIONS = {
   "type_prep": "prep",
   "type_phrase": "phrase",
   "online_learners": "learners online"
+  ,
+  "select_one_unit": "Please select at least one unit!",
+  "no_words": "No words!",
+  "need_min_4_words": "At least 4 words required!",
+  "code_invalid": "The code is invalid or corrupted!",
+  "new_unit": "New unit",
+  "edit": "Edit",
+  "enter_unit_name": "Enter unit name!",
+  "at_least_one_word": "At least one word!",
+  "irr_match_done": "Match game finished!",
+  "irr_fill_done": "Fill exercise finished!",
+  "irr_quiz_done": "Multiple choice test finished!",
+  "no_users": "No users",
+  "no_online": "No one online right now",
+  "no_sessions": "No sessions",
+  "correct_feedback": "✓ Correct!",
+  "wrong_feedback": "✗ Wrong!",
+  "no_errors_yet": "No errors yet 🎉",
+  "no_units": "No units.",
+  "code_copied": "Code copied! Send it to your friends.",
+  "import_success": "successfully imported!",
+  "confirm_clear_stats": "Are you sure you want to clear statistics?",
+  "confirm_overwrite": "already exists. Overwrite?",
+  "confirm_delete_unit": "Are you sure you want to delete this unit?",
+  "no_permission": "⛔ Permission denied",
+  "placeholder_unit_example": "E.g.: Unit 5.3",
+  "placeholder_write_answer": "Write your answer...",
+  "past_simple": "PAST SIMPLE",
+  "past_participle": "PAST PARTICIPLE",
+  "select_form_suffix": "select the form:"
+ ,
+  "streak_label": "Streak",
+  "mistake_times": "times wrong",
+  "loading": "Loading...",
+  "error": "Error",
+  "name": "Name",
+  "xp": "XP",
+  "wrong": "Wrong",
+  "streak": "Streak",
+  "lang": "Lang",
+  "last_seen": "Last seen",
+  "entered_at": "Entered",
+  "last_ping": "Last ping",
+  "online_label": "🟢 online",
+  "exited_at": "Exited",
+  "status": "Status",
+  "admin_users": "Users",
+  "total_xp": "Total XP",
+  "accuracy": "Accuracy"
 }
 };
 
@@ -380,9 +545,28 @@ async function setLang(l) {
   localStorage.setItem('lang', l);
   loadLang(l);  // sync — fetch yo'q
   applyLang();
-  if (document.getElementById('screen-home')?.classList.contains('active')) {
-    renderHome();
-  }
+  // Re-render common screens if they're active so UI updates immediately
+  try {
+    if (document.getElementById('screen-home')?.classList.contains('active') && typeof renderHome === 'function') renderHome();
+    if (document.getElementById('screen-unit-select')?.classList.contains('active') && typeof renderUnitSelect === 'function') renderUnitSelect();
+    if (document.getElementById('screen-unit-manage')?.classList.contains('active') && typeof renderUnitManage === 'function') renderUnitManage();
+    if (document.getElementById('screen-share')?.classList.contains('active') && typeof renderShare === 'function') renderShare();
+    if (document.getElementById('screen-stats')?.classList.contains('active') && typeof renderStats === 'function') renderStats();
+    if (document.getElementById('screen-admin')?.classList.contains('active') && typeof renderAdminPanel === 'function') renderAdminPanel();
+    if (document.getElementById('screen-mcq')?.classList.contains('active') && typeof renderMcq === 'function') renderMcq();
+    if (document.getElementById('screen-exercise')?.classList.contains('active') && typeof renderEx === 'function') renderEx();
+    if (document.getElementById('screen-speed')?.classList.contains('active') && typeof renderSpeed === 'function') renderSpeed();
+    // Irregular verbs modes
+    if (document.getElementById('screen-irr-cards')?.classList.contains('active') && typeof renderIrrCard === 'function') renderIrrCard();
+    if (document.getElementById('screen-irr-match')?.classList.contains('active') && typeof renderIrrMatch === 'function') renderIrrMatch();
+    if (document.getElementById('screen-irr-fill')?.classList.contains('active') && typeof renderIrrFill === 'function') renderIrrFill();
+    if (document.getElementById('screen-irr-quiz')?.classList.contains('active') && typeof renderIrrQuiz === 'function') renderIrrQuiz();
+    // Flashcard / quiz: if available, try re-rendering by calling known renderers or updating labels
+    if (document.getElementById('screen-flashcard')?.classList.contains('active')){
+      if (typeof renderFlashcard === 'function') renderFlashcard();
+      if (typeof updateXPBar === 'function') updateXPBar();
+    }
+  } catch (e) { /* non-fatal */ }
   updateLangButtons(l);
   if (typeof tracker !== 'undefined' && typeof currentUser !== 'undefined' && currentUser) {
     tracker.updateLang(l);
@@ -409,6 +593,8 @@ function applyLang() {
   if (typeof document !== 'undefined') {
     document.title = T('app_title');
   }
+  // Update AI explain headers (they are rendered dynamically)
+  document.querySelectorAll('.ai-label').forEach(el=>{ el.textContent = T('ai_explain_label'); });
   renderLangBar();
   updateLangButtons(_lang);
 }
@@ -429,7 +615,7 @@ function renderLangBar() {
   const bar = document.getElementById('lang-bar');
   if (!bar) return;
   bar.innerHTML = LANGS.map(l =>
-    `<button class="lang-btn ${l === _lang ? 'active' : ''}"
+    `<button id="lm-${l}" class="lang-mini lang-btn lang-btn-${l} ${l === _lang ? 'active' : ''}"
       onclick="setLang('${l}')">${LANG_FLAGS[l]} ${LANG_LABELS[l]}</button>`
   ).join('');
 }

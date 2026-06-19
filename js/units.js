@@ -15,11 +15,11 @@
 // ===== UNIT MANAGE =====
 function renderUnitManage(){
   const list=document.getElementById('unit-list');list.innerHTML='';
-  if(!units.length){list.innerHTML='<p style="color:#666;font-size:13px">Bo\'lim yo\'q.</p>';return;}
+  if(!units.length){list.innerHTML='<p style="color:#666;font-size:13px">'+T('no_units')+'</p>';return;}
   units.forEach(u=>{
     const div=document.createElement('div');div.className='unit-card';
     div.innerHTML=`<div onclick="editUnit('${u.id}')" style="flex:1;cursor:pointer">
-        <div class="unit-name">${u.name}</div><div class="unit-count">${u.words.length} ta so'z</div>
+        <div class="unit-name">${u.name}</div><div class="unit-count">${u.words.length} ${T('unit_words')}</div>
       </div>
       <div class="unit-actions">
         <button class="icon-btn" onclick="editUnit('${u.id}')">✏️</button>
@@ -30,7 +30,7 @@ function renderUnitManage(){
 }
 function showAddUnit(){
   editingUnitId=null;
-  document.getElementById('edit-unit-title').textContent="Yangi bo'lim";
+  document.getElementById('edit-unit-title').textContent=T('new_unit');
   document.getElementById('unit-name-input').value='';
   document.getElementById('words-input').value='';
   document.getElementById('edit-error').style.display='none';
@@ -40,7 +40,7 @@ function showAddUnit(){
 function editUnit(id){
   const u=units.find(x=>x.id===id);if(!u)return;
   editingUnitId=id;
-  document.getElementById('edit-unit-title').textContent='Tahrirlash';
+  document.getElementById('edit-unit-title').textContent=T('edit');
   document.getElementById('unit-name-input').value=u.name;
   document.getElementById('words-input').value='';
   document.getElementById('edit-error').style.display='none';
@@ -60,7 +60,7 @@ function editUnit(id){
   showScreen('unit-edit');
 }
 function removeWord(uid,idx){const u=units.find(x=>x.id===uid);if(!u)return;u.words.splice(idx,1);sv('vocab_v5',units);editUnit(uid);}
-function deleteUnit(id){if(!confirm("Bu bo'limni o'chirasizmi?"))return;units=units.filter(x=>x.id!==id);sv('vocab_v5',units);renderUnitManage();}
+function deleteUnit(id){if(!confirm(T('confirm_delete_unit')))return;units=units.filter(x=>x.id!==id);sv('vocab_v5',units);renderUnitManage();}
 function parseWords(text){
   return text.split('\n').map(l=>l.trim()).filter(l=>l).map(line=>{
     const eq=line.lastIndexOf('=');
@@ -74,11 +74,11 @@ function saveUnit(){
   const name=document.getElementById('unit-name-input').value.trim();
   const text=document.getElementById('words-input').value.trim();
   const errEl=document.getElementById('edit-error');errEl.style.display='none';
-  if(!name){errEl.textContent="Bo'lim nomini kiriting!";errEl.style.display='block';return;}
+  if(!name){errEl.textContent=T('enter_unit_name');errEl.style.display='block';return;}
   let nw=[];
   if(text){try{nw=parseWords(text);}catch(e){errEl.textContent=e.message;errEl.style.display='block';return;}}
   if(editingUnitId){const u=units.find(x=>x.id===editingUnitId);u.name=name;u.words=[...u.words,...nw];}
-  else{if(!nw.length){errEl.textContent="Kamida bitta so'z!";errEl.style.display='block';return;}units.push({id:uid(),name,words:nw});}
+  else{if(!nw.length){errEl.textContent=T('at_least_one_word');errEl.style.display='block';return;}units.push({id:uid(),name,words:nw});}
   sv('vocab_v5',units);showScreen('unit-manage');
 }
 function uid(){return 'u_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);}

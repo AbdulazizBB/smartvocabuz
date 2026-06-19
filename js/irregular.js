@@ -138,7 +138,7 @@ function irrMatchClick(i) {
       setTimeout(() => {
         document.getElementById('irr-final-correct').textContent = irrMatchFound;
         document.getElementById('irr-final-wrong').textContent = 0;
-        document.getElementById('irr-done-sub').textContent = 'Juftlik o\'yini tugadi!';
+        document.getElementById('irr-done-sub').textContent = T('irr_match_done');
         showScreen('irr-done');
       }, 700);
     }
@@ -234,7 +234,7 @@ function irrFillNext() {
 function irrFillFinish() {
   document.getElementById('irr-final-correct').textContent = irrFillScore.correct;
   document.getElementById('irr-final-wrong').textContent = irrFillScore.wrong;
-  document.getElementById('irr-done-sub').textContent = 'To\'ldirish mashqi tugadi!';
+  document.getElementById('irr-done-sub').textContent = T('irr_fill_done');
   showScreen('irr-done');
 }
 
@@ -261,7 +261,7 @@ function renderIrrQuiz() {
   const correctAnswer = (irrQuizTarget === 'past' ? v.past : v.pp).split(/[;/]/)[0].trim();
 
   document.getElementById('irr-quiz-emoji').textContent = v.emoji;
-  document.getElementById('irr-quiz-label').textContent = (irrQuizTarget === 'past' ? 'PAST SIMPLE' : 'PAST PARTICIPLE') + ' shaklini tanlang:';
+  document.getElementById('irr-quiz-label').textContent = T(irrQuizTarget === 'past' ? 'past_simple' : 'past_participle') + ' ' + T('select_form_suffix');
   document.getElementById('irr-quiz-word').textContent = v.base;
   document.getElementById('irr-quiz-uz').textContent = v.uz;
 
@@ -329,7 +329,7 @@ function irrQuizNext() {
 function irrQuizFinish() {
   document.getElementById('irr-final-correct').textContent = irrQuizScore.correct;
   document.getElementById('irr-final-wrong').textContent = irrQuizScore.wrong;
-  document.getElementById('irr-done-sub').textContent = 'Variantli test tugadi!';
+  document.getElementById('irr-done-sub').textContent = T('irr_quiz_done');
   showScreen('irr-done');
 }
 

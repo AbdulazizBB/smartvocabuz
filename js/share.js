@@ -27,7 +27,7 @@ function renderShare(){
 function copyUnit(id){
   const u=units.find(x=>x.id===id);if(!u)return;
   const code=btoa(unescape(encodeURIComponent(JSON.stringify({name:u.name,words:u.words}))));
-  navigator.clipboard.writeText(code).then(()=>alert("Kod nusxalandi! O'rtoqqa yuboring.")).catch(()=>{
+  navigator.clipboard.writeText(code).then(()=>alert(T('code_copied'))).catch(()=>{
     prompt("Bu kodni nusxalang:",code);
   });
 }
@@ -38,10 +38,10 @@ function doImport(){
     const json=JSON.parse(decodeURIComponent(escape(atob(raw))));
     if(!json.name||!Array.isArray(json.words))throw new Error();
     const exists=units.find(u=>u.name===json.name);
-    if(exists){if(!confirm(json.name+" mavjud. Ustiga yozilsinmi?"))return;exists.words=json.words;}
+    if(exists){if(!confirm(json.name + ' ' + T('confirm_overwrite')))return;exists.words=json.words;}
     else units.push({id:uid(),name:json.name,words:json.words});
     sv('vocab_v5',units);document.getElementById('import-code').value='';
-    alert("✅ "+json.name+" muvaffaqiyatli import qilindi!");
-  }catch{errEl.textContent="Kod noto'g'ri yoki buzilgan!";errEl.style.display='block';}
+    alert('✅ '+json.name+' '+T('import_success'));
+  }catch{errEl.textContent=T('code_invalid');errEl.style.display='block';}
 }
 

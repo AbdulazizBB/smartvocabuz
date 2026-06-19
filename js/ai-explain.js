@@ -19,16 +19,16 @@ async function showAIExplain(ctx, containerId) {
 
   container.style.display = 'block';
   container.innerHTML = `
-    <div class="ai-explain-box loading">
-      <span class="ai-icon">🤖</span>
-      <span class="ai-dots">Tushuntirilmoqda<span class="dot1">.</span><span class="dot2">.</span><span class="dot3">.</span></span>
-    </div>`;
+      <div class="ai-explain-box loading">
+        <span class="ai-icon">🤖</span>
+        <span class="ai-dots">${T('ai_loading')}<span class="dot1">.</span><span class="dot2">.</span><span class="dot3">.</span></span>
+      </div>`;
 
   try {
     const res = await fetch('/api/explain', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(ctx)
+        body: JSON.stringify(Object.assign({ lang: (typeof _lang !== 'undefined' ? _lang : 'en') }, ctx))
     });
 
     if (!res.ok) throw new Error('server_error');
@@ -44,7 +44,7 @@ async function showAIExplain(ctx, containerId) {
       <div class="ai-explain-box">
         <div class="ai-explain-header">
           <span class="ai-icon">🤖</span>
-          <span class="ai-label">AI Tushuntirma</span>
+          <span class="ai-label">${T('ai_explain_label')}</span>
           <button class="ai-close-btn" onclick="hideAIExplain('${containerId}')">✕</button>
         </div>
         <div class="ai-explain-text">${html}</div>
@@ -52,8 +52,8 @@ async function showAIExplain(ctx, containerId) {
 
   } catch (err) {
     const msg = err.message === 'server_error'
-      ? 'Server bilan bog\'lanib bo\'lmadi. Bir ozdan keyin urinib ko\'ring.'
-      : 'Tushuntirma yuklanmadi. Internet aloqasini tekshiring.';
+      ? T('ai_server_error')
+      : T('ai_load_error');
     container.innerHTML = `
       <div class="ai-explain-box error">
         <span class="ai-icon">⚠️</span>
@@ -66,6 +66,17 @@ function hideAIExplain(containerId) {
   const el = document.getElementById(containerId);
   if (el) { el.style.display = 'none'; el.innerHTML = ''; }
 }
+
+// Attach to flashcard "Don't know" button if present (delegated)
+document.addEventListener('click', function(e){
+  const btn = e.target.closest('.fc-dontknow');
+  if(!btn) return;
+  const wordEl = document.querySelector('.flashcard-word');
+  const trEl = document.querySelector('.flashcard-tr');
+  const en = wordEl?.textContent?.trim() || '';
+  const uz = trEl?.textContent?.trim() || '';
+  if(en) showAIExplain({ type:'vocab', uz, correct: en, wrong: '' }, 'flashcard-ai-explain');
+});
 
 // ===== PATCH: barcha rejimlarga AI tushuntirma ulash =====
 
