@@ -88,9 +88,19 @@ function showScreen(name){
   if(name==='share-screen')renderShare();
 }
 function renderHome(){
-  const total=units.reduce((s,u)=>s+u.words.length,0);
-  document.getElementById('home-total').textContent=units.length+" ta bo'lim • "+total+" ta so'z";
+  const total = units.reduce((s,u)=>s+u.words.length,0);
+
+  const unitWordText = _lang === 'ru'
+      ? `${units.length} разделов • ${total} слов`
+      : _lang === 'en'
+      ? `${units.length} units • ${total} words`
+      : `${units.length} ta bo'lim • ${total} ta so'z`;
+
+  document.getElementById('home-total').textContent = unitWordText;
+
   updateXPBar();
+
+  applyLang();
 }
 
 // ===== MODE =====
