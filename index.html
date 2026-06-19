@@ -39,95 +39,34 @@
 
 <!-- Barcha stillar -->
 <link rel="stylesheet" href="css/styles.css">
-
-<!-- Config: Bu qiymatlarni o'zingizning Supabase loyihangizdan oling -->
+<!-- Supabase config: set these at build/deploy time or replace with real values. -->
 <script>
-  window._SB_URL    = 'https://wzxihgjrdyokwvkpxtmf.supabase.co';
-  window._SB_ANON   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6eGloZ2pyZHlva3d2a3B4dG1mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3NDM3NzksImV4cCI6MjA5NzMxOTc3OX0.X3x9jLN3qiyfcg30vQ4NO7B1CJ9jqubd7htibi60j8U';
-  window._ADMIN_EMAIL  = 'admin@gmail.com';
-  window._ADMIN_SECRET = '123456';
+  // IMPORTANT: Replace with your Supabase project URL and anon key
+  // Example (do NOT commit real keys to public repos):
+  // window._SB_URL = 'https://your-project.supabase.co';
+  // window._SB_ANON = 'public-anon-key';
+  // For local development you can set these here or inject via build env.
+  window._SB_URL = window._SB_URL || '';
+  window._SB_ANON = window._SB_ANON || '';
+  window._ADMIN_EMAIL = window._ADMIN_EMAIL || '';
+  window._ADMIN_SECRET = window._ADMIN_SECRET || '';
 </script>
 </head>
 <body id="body">
 <div class="xp-popup" id="xp-popup">+10 XP ⭐</div>
 <div class="card">
 
-<!-- ===== AUTH SCREEN ===== -->
-<div class="screen" id="screen-auth">
-  <div style="text-align:center;margin-bottom:20px">
-    <div style="font-size:48px">📚</div>
-    <h2 data-i18n="app_title" style="margin:8px 0 4px">So'z O'rgatuvchi</h2>
-    <p style="color:#888;font-size:13px" data-i18n="auth_subtitle">Ingliz tilini o'rgan!</p>
-  </div>
-
-  <!-- Til tanlash -->
-  <div class="lang-switcher" style="margin-bottom:16px">
-    <button onclick="setLang('uz')" id="lang-uz" class="lang-btn">🇺🇿 O'zbek</button>
-    <button onclick="setLang('ru')" id="lang-ru" class="lang-btn">🇷🇺 Русский</button>
-    <button onclick="setLang('en')" id="lang-en" class="lang-btn">🇬🇧 English</button>
-  </div>
-
-  <!-- Tablar -->
-  <div style="display:flex;gap:4px;margin-bottom:16px;background:#ffffff11;border-radius:12px;padding:4px">
-    <button class="auth-tab active" id="auth-tab-login" onclick="switchAuthTab('login')" data-i18n="auth_login">Kirish</button>
-    <button class="auth-tab" id="auth-tab-reg" onclick="switchAuthTab('reg')" data-i18n="auth_register">Ro'yxatdan o'tish</button>
-  </div>
-
-  <!-- LOGIN -->
-  <div id="auth-form-login" class="auth-form">
-    <input class="word-input" id="login-email" type="email" placeholder="Email" onkeydown="authKeydown(event,'login')" autocomplete="email"/>
-    <input class="word-input" id="login-pass" type="password" data-i18n-ph="auth_password" placeholder="Parol" onkeydown="authKeydown(event,'login')" autocomplete="current-password" style="margin-top:8px"/>
-    <p class="error-msg" id="login-error"></p>
-    <button class="btn" id="login-btn" onclick="doEmailLogin()" data-i18n="auth_login_btn">→ Kirish</button>
-    <div style="display:flex;align-items:center;gap:8px;margin:12px 0;color:#666;font-size:12px">
-      <hr style="flex:1;border-color:#ffffff22"><span data-i18n="auth_or">yoki</span><hr style="flex:1;border-color:#ffffff22">
-    </div>
-    <button class="btn btn-google" onclick="doGoogleLogin()">
-      <svg width="18" height="18" viewBox="0 0 48 48" style="margin-right:8px"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-      <span data-i18n="auth_google">Google bilan kirish</span>
-    </button>
-  </div>
-
-  <!-- REGISTER -->
-  <div id="auth-form-reg" class="auth-form" style="display:none">
-    <input class="word-input" id="reg-name" type="text" data-i18n-ph="auth_name" placeholder="Ismingiz" onkeydown="authKeydown(event,'reg')"/>
-    <input class="word-input" id="reg-email" type="email" placeholder="Email" onkeydown="authKeydown(event,'reg')" style="margin-top:8px" autocomplete="email"/>
-    <input class="word-input" id="reg-pass" type="password" data-i18n-ph="auth_password" placeholder="Parol (min 6 ta belgi)" onkeydown="authKeydown(event,'reg')" style="margin-top:8px"/>
-    <input class="word-input" id="reg-pass2" type="password" data-i18n-ph="auth_pass_confirm" placeholder="Parolni takrorlang" onkeydown="authKeydown(event,'reg')" style="margin-top:8px"/>
-    <p class="error-msg" id="reg-error"></p>
-    <button class="btn" id="reg-btn" onclick="doEmailRegister()" data-i18n="auth_reg_btn">→ Ro'yxatdan o'tish</button>
-    <div style="display:flex;align-items:center;gap:8px;margin:12px 0;color:#666;font-size:12px">
-      <hr style="flex:1;border-color:#ffffff22"><span data-i18n="auth_or">yoki</span><hr style="flex:1;border-color:#ffffff22">
-    </div>
-    <button class="btn btn-google" onclick="doGoogleLogin()">
-      <svg width="18" height="18" viewBox="0 0 48 48" style="margin-right:8px"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-      <span data-i18n="auth_google">Google bilan kirish</span>
-    </button>
-  </div>
-</div>
-
-<!-- ===== ADMIN SCREEN ===== -->
-<div class="screen" id="screen-admin"></div>
-
-
-
   <!-- HOME -->
   <div class="screen active" id="screen-home">
     <div class="home-top">
       <div class="streak-badge">🔥 <span id="streak-num">0</span> kun</div>
-      <div style="display:flex;gap:6px;align-items:center">
-        <div class="lang-mini-switcher">
-          <button onclick="setLang('uz')" class="lang-mini" id="lm-uz">🇺🇿</button>
-          <button onclick="setLang('ru')" class="lang-mini" id="lm-ru">🇷🇺</button>
-          <button onclick="setLang('en')" class="lang-mini" id="lm-en">🇬🇧</button>
-        </div>
+      <div style="display:flex;gap:8px;">
         <button class="btn-icon" onclick="showScreen('stats')" title="Statistika" style="width:36px;height:36px;font-size:16px;">📊</button>
         <button class="btn-icon" onclick="toggleTheme()" title="Tema" style="width:36px;height:36px;font-size:16px;" id="theme-btn">🌙</button>
-        <button class="btn-icon" onclick="doLogout()" title="Chiqish" style="width:36px;height:36px;font-size:14px;">🚪</button>
       </div>
     </div>
     <div style="font-size:44px">📚</div>
-    <h1>So'z O'rganuv</h1>
+    <h1>So'z O'rgatuvchigit add .</h1>
     <p class="sub" id="home-total"></p>
     <!-- XP / Level -->
     <div style="width:100%">
@@ -240,7 +179,6 @@
       <p class="wrong-title">✗ Xato!</p>
       <p class="wrong-answer">To'g'ri javob: <strong id="irr-fill-answer"></strong></p>
     </div>
-    <div id="irr-fill-ai-explain" class="ai-explain-wrap"></div>
     <button class="btn" id="irr-fill-check-btn" onclick="irrFillCheck()">Tekshir</button>
     <button class="btn" id="irr-fill-next-btn" style="display:none" onclick="irrFillNext()">Keyingisi →</button>
   </div>
@@ -261,7 +199,6 @@
       <p class="flashcard-tr" id="irr-quiz-uz"></p>
     </div>
     <div id="irr-quiz-options" style="width:100%;display:grid;grid-template-columns:1fr 1fr;gap:9px"></div>
-    <div id="irr-quiz-ai-explain" class="ai-explain-wrap"></div>
     <button class="btn" id="irr-quiz-next-btn" style="display:none" onclick="irrQuizNext()">Keyingisi →</button>
   </div>
 
@@ -305,7 +242,6 @@
       <button class="fc-know" onclick="exTFAnswer(true)">✓ To'g'ri (True)</button>
     </div>
     <div id="ex-feedback" style="display:none;width:100%;border-radius:12px;padding:12px 14px"></div>
-    <div id="ex-ai-explain" class="ai-explain-wrap"></div>
     <button class="btn" id="ex-next-btn" style="display:none" onclick="exNext()">Keyingisi →</button>
     <button class="btn" id="ex-check-btn" style="display:none" onclick="exCheckGap()">Tekshir</button>
   </div>
@@ -446,7 +382,6 @@
       <p class="wrong-tr" id="correct-tr"></p>
       <p class="retry-note">Bu so'z keyinroq qayta chiqadi</p>
     </div>
-    <div id="quiz-ai-explain" class="ai-explain-wrap"></div>
     <div class="row">
       <button class="btn" id="btn-check" style="display:none" onclick="handleSubmit()">Tekshir</button>
       <button class="btn" id="btn-next" style="display:none" onclick="handleNext()">Keyingisi →</button>
@@ -471,7 +406,6 @@
       <div class="wtype" id="mcq-type" style="display:none;margin-top:6px"></div>
     </div>
     <div class="mcq-options" id="mcq-options"></div>
-    <div id="mcq-ai-explain" class="ai-explain-wrap"></div>
     <button class="btn" id="mcq-next-btn" style="display:none" onclick="mcqNext()">Keyingisi →</button>
   </div>
 
@@ -498,7 +432,6 @@
       <p class="wrong-title">✗ Vaqt tugadi!</p>
       <p class="wrong-answer">To'g'ri javob: <strong id="sp-correct-answer"></strong></p>
     </div>
-    <div id="speed-ai-explain" class="ai-explain-wrap"></div>
   </div>
 
   <!-- QUIZ/SPEED/MCQ DONE -->
@@ -554,20 +487,13 @@
 -->
 
 <!-- 1. Ma'lumotlar (boshqa barcha modullar bunga bog'liq) -->
-<!-- 0. Supabase allaqachon yuklangan yuqorida -->
-
-<!-- 0. Supabase SDK (eng birinchi) -->
-<script src="js/supabase.min.js"></script>
-
-<!-- 1. Ma'lumotlar (eng avval) -->
 <script src="js/data.js"></script>
-<script src="js/i18n.js"></script>
 
 <!-- 2. Asosiy logika (holat, tema, XP, ekranlar) -->
 <script src="js/core.js"></script>
 
 <!-- 3. O'yin rejimlari -->
-<script src="js/flashcard.js"></script>
+<!-- <script src="js/flashcard.js"></script> -->
 <script src="js/quiz.js"></script>
 <script src="js/mcq.js"></script>
 <script src="js/speed.js"></script>
@@ -579,39 +505,16 @@
 <script src="js/exercises.js"></script>
 <script src="js/irregular.js"></script>
 
-<!-- AI Tushuntirma — eng oxirida yuklansin (barcha funksiyalar tayyor bo'lgandan keyin) -->
-<script src="js/ai-explain.js"></script>
+<!-- i18n, Supabase and auth scripts (required for login, tracker and translations) -->
+<script src="js/i18n.js"></script>
+<script src="js/supabase.min.js"></script>
 <script src="js/tracker.js"></script>
 <script src="js/auth.js"></script>
-<script src="js/admin.js"></script>
-
-<!-- INIT -->
 <script>
-document.addEventListener('DOMContentLoaded', async () => {
-  // 1. Til yuklash
-  const savedLang = localStorage.getItem('lang') || 'uz';
-  await loadLang(savedLang);
-  applyLang();
-  updateLangButtons(savedLang);
-
-  // 2. Mavjud i18n skriptni ishlat (setLang wrapper)
-  const origSetLang = setLang;
-  window.setLang = async (l) => {
-    await origSetLang(l);
-    updateLangButtons(l);
-  };
-
-  // 3. Auth tizimini ishga tushirish
-  await initAuth();
-});
-
-function updateLangButtons(l) {
-  ['uz','ru','en'].forEach(lang => {
-    document.querySelectorAll('#lang-' + lang + ', #lm-' + lang).forEach(btn => {
-      btn.classList.toggle('active', lang === l);
-    });
-  });
-}
+  // Initialize auth if available
+  if (typeof initAuth === 'function') {
+    try { initAuth(); } catch (e) { console.error('initAuth error', e); }
+  }
 </script>
 
 </body>
