@@ -69,6 +69,8 @@ const _TRANSLATIONS = {
   "admin_total": "Jami foydalanuvchi",
   "admin_online": "Hozir online",
   "admin_sessions": "Jami sessiya",
+  "theme": "Tema",
+  "xp_label": "XP",
   "level_beginner": "Beginner",
   "level_elementary": "Elementary",
   "level_pre_int": "Pre-Intermediate",
@@ -185,6 +187,8 @@ const _TRANSLATIONS = {
   "admin_total": "Всего пользователей",
   "admin_online": "Сейчас онлайн",
   "admin_sessions": "Всего сессий",
+  "theme": "Тема",
+  "xp_label": "XP",
   "level_beginner": "Начинающий",
   "level_elementary": "Элементарный",
   "level_pre_int": "Ниже среднего",
@@ -376,6 +380,9 @@ async function setLang(l) {
   localStorage.setItem('lang', l);
   loadLang(l);  // sync — fetch yo'q
   applyLang();
+  if (document.getElementById('screen-home')?.classList.contains('active')) {
+    renderHome();
+  }
   updateLangButtons(l);
   if (typeof tracker !== 'undefined' && typeof currentUser !== 'undefined' && currentUser) {
     tracker.updateLang(l);

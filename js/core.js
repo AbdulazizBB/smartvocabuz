@@ -72,10 +72,10 @@ function updateXPBar(){
   const base=xpForLevel(lv);
   const next=xpForLevel(lv+1);
   const pct=Math.round(((xp-base)/(next-base))*100);
-  document.getElementById('level-label').textContent='Level '+lv;
-  document.getElementById('xp-label').textContent=(xp-base)+' / '+(next-base)+' XP';
-  document.getElementById('xp-bar').style.width=pct+'%';
-  document.getElementById('streak-num').textContent=streak;
+  document.getElementById('level-label').textContent = T('level') + ' ' + lv;
+  document.getElementById('xp-label').textContent = (xp-base) + ' / ' + (next-base) + ' ' + T('xp_label');
+  document.getElementById('xp-bar').style.width = pct + '%';
+  document.getElementById('streak-num').textContent = streak;
 }
 
 // ===== SCREENS =====

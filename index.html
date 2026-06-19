@@ -553,20 +553,20 @@ body.light .adm-table td { border-color: #e5e7eb; }
   <!-- HOME -->
   <div class="screen active" id="screen-home">
     <div class="home-top">
-      <div class="streak-badge">🔥 <span id="streak-num">0</span> kun</div>
+      <div class="streak-badge">🔥 <span id="streak-num">0</span> <span id="streak-label" data-i18n="streak_days">kun</span></div>
       <div style="display:flex;gap:6px;align-items:center">
         <div class="lang-mini-switcher">
           <button onclick="setLang('uz')" class="lang-mini" id="lm-uz">🇺🇿</button>
           <button onclick="setLang('ru')" class="lang-mini" id="lm-ru">🇷🇺</button>
           <button onclick="setLang('en')" class="lang-mini" id="lm-en">🇬🇧</button>
         </div>
-        <button class="btn-icon" onclick="showScreen('stats')" title="Statistika" style="width:36px;height:36px;font-size:16px;">📊</button>
-        <button class="btn-icon" onclick="toggleTheme()" title="Tema" style="width:36px;height:36px;font-size:16px;" id="theme-btn">🌙</button>
-        <button class="btn-icon" onclick="doLogout()" title="Chiqish" style="width:36px;height:36px;font-size:14px;">🚪</button>
+        <button class="btn-icon" onclick="showScreen('stats')" data-i18n-attr="title" data-i18n="stats" style="width:36px;height:36px;font-size:16px;">📊</button>
+        <button class="btn-icon" onclick="toggleTheme()" data-i18n-attr="title" data-i18n="theme" style="width:36px;height:36px;font-size:16px;" id="theme-btn">🌙</button>
+        <button class="btn-icon" onclick="doLogout()" data-i18n-attr="title" data-i18n="logout" style="width:36px;height:36px;font-size:14px;">🚪</button>
       </div>
     </div>
     <div style="font-size:44px">📚</div>
-    <h1>So'z O'rganuv</h1>
+    <h1 data-i18n="app_title">So'z O'rganuv</h1>
     <p class="sub" id="home-total"></p>
     <!-- XP / Level -->
     <div style="width:100%">
@@ -574,16 +574,16 @@ body.light .adm-table td { border-color: #e5e7eb; }
       <div class="xp-bar-wrap" style="margin-top:5px"><div class="xp-bar" id="xp-bar" style="width:0%"></div></div>
     </div>
     <div class="mode-grid">
-      <div class="mode-card" onclick="goMode('flashcard')"><div class="mode-icon">🃏</div><div class="mode-name">Yod olish</div><div class="mode-desc">Flashcard + Audio</div></div>
-      <div class="mode-card" onclick="goMode('quiz')"><div class="mode-icon">✍️</div><div class="mode-name">Test</div><div class="mode-desc">So'z yozing</div></div>
-      <div class="mode-card" onclick="goMode('mcq')"><div class="mode-icon">🎯</div><div class="mode-name">Variantli</div><div class="mode-desc">4 ta variant</div></div>
-      <div class="mode-card" onclick="goMode('speed')"><div class="mode-icon">⚡</div><div class="mode-name">Tezkor</div><div class="mode-desc">10 soniya!</div></div>
-      <div class="mode-card" onclick="showExScreen()" style="grid-column:span 2"><div class="mode-icon">📝</div><div class="mode-name">Grammar Mashqlar</div><div class="mode-desc">Har unit uchun 30 ta mashq</div></div>
-      <div class="mode-card" onclick="showIrrScreen()" style="grid-column:span 2;background:linear-gradient(135deg,rgba(167,139,250,0.15),rgba(118,75,162,0.15));border-color:rgba(167,139,250,0.4)"><div class="mode-icon">🔀</div><div class="mode-name">Irregular Verbs</div><div class="mode-desc">66 ta noto'g'ri fe'l — o'yin orqali yodlash</div></div>
+      <div class="mode-card" onclick="goMode('flashcard')"><div class="mode-icon">🃏</div><div class="mode-name" data-i18n="flashcard_mode">Yod olish</div><div class="mode-desc" data-i18n="flashcard_sub">Flashcard + Audio</div></div>
+      <div class="mode-card" onclick="goMode('quiz')"><div class="mode-icon">✍️</div><div class="mode-name" data-i18n="quiz_mode">Test</div><div class="mode-desc" data-i18n="quiz_sub">So'z yozing</div></div>
+      <div class="mode-card" onclick="goMode('mcq')"><div class="mode-icon">🎯</div><div class="mode-name" data-i18n="mcq_mode">Variantli</div><div class="mode-desc" data-i18n="mcq_sub">4 ta variant</div></div>
+      <div class="mode-card" onclick="goMode('speed')"><div class="mode-icon">⚡</div><div class="mode-name" data-i18n="speed_mode">Tezkor</div><div class="mode-desc" data-i18n="speed_sub">10 soniya!</div></div>
+      <div class="mode-card" onclick="showExScreen()" style="grid-column:span 2"><div class="mode-icon">📝</div><div class="mode-name" data-i18n="exercises_mode">Grammar Mashqlar</div><div class="mode-desc" data-i18n="exercises_sub">Har unit uchun 30 ta mashq</div></div>
+      <div class="mode-card" onclick="showIrrScreen()" style="grid-column:span 2;background:linear-gradient(135deg,rgba(167,139,250,0.15),rgba(118,75,162,0.15));border-color:rgba(167,139,250,0.4)"><div class="mode-icon">🔀</div><div class="mode-name" data-i18n="irregular_mode">Irregular Verbs</div><div class="mode-desc" data-i18n="irregular_sub">66 ta noto'g'ri fe'l — o'yin orqali yodlash</div></div>
     </div>
     <div class="row">
-      <button class="btn btn-sec" onclick="showScreen('unit-manage')" style="font-size:13px;">⚙ Bo'limlar</button>
-      <button class="btn btn-sec" onclick="showScreen('share-screen')" style="font-size:13px;">🔗 Ulashish</button>
+      <button class="btn btn-sec" onclick="showScreen('unit-manage')" style="font-size:13px;" data-i18n="sections">⚙ Bo'limlar</button>
+      <button class="btn btn-sec" onclick="showScreen('share-screen')" style="font-size:13px;" data-i18n="share">🔗 Ulashish</button>
     </div>
     <div style="margin-top:15px;font-size:13px;color:#aaa;text-align:center;width:100%;">
   Developed by 17_______B ❤️
@@ -1800,6 +1800,9 @@ async function setLang(l) {
   localStorage.setItem('lang', l);
   loadLang(l);  // sync — fetch yo'q
   applyLang();
+  if (document.getElementById('screen-home')?.classList.contains('active')) {
+    renderHome();
+  }
   updateLangButtons(l);
   if (typeof tracker !== 'undefined' && typeof currentUser !== 'undefined' && currentUser) {
     tracker.updateLang(l);
@@ -1944,10 +1947,10 @@ function updateXPBar(){
   const base=xpForLevel(lv);
   const next=xpForLevel(lv+1);
   const pct=Math.round(((xp-base)/(next-base))*100);
-  document.getElementById('level-label').textContent='Level '+lv;
-  document.getElementById('xp-label').textContent=(xp-base)+' / '+(next-base)+' XP';
-  document.getElementById('xp-bar').style.width=pct+'%';
-  document.getElementById('streak-num').textContent=streak;
+  document.getElementById('level-label').textContent = T('level') + ' ' + lv;
+  document.getElementById('xp-label').textContent = (xp-base) + ' / ' + (next-base) + ' ' + T('xp_label');
+  document.getElementById('xp-bar').style.width = pct + '%';
+  document.getElementById('streak-num').textContent = streak;
 }
 
 // ===== SCREENS =====
@@ -1960,8 +1963,9 @@ function showScreen(name){
   if(name==='share-screen')renderShare();
 }
 function renderHome(){
-  const total=units.reduce((s,u)=>s+u.words.length,0);
-  document.getElementById('home-total').textContent=units.length+" ta bo'lim • "+total+" ta so'z";
+  const total = units.reduce((s,u)=>s+u.words.length,0);
+  const unitWordText = `${units.length} ${T('units')} • ${total} ${T('words')}`;
+  document.getElementById('home-total').textContent = unitWordText;
   updateXPBar();
 }
 

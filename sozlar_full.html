@@ -1800,6 +1800,9 @@ async function setLang(l) {
   localStorage.setItem('lang', l);
   loadLang(l);  // sync — fetch yo'q
   applyLang();
+  if (document.getElementById('screen-home')?.classList.contains('active')) {
+    renderHome();
+  }
   updateLangButtons(l);
   if (typeof tracker !== 'undefined' && typeof currentUser !== 'undefined' && currentUser) {
     tracker.updateLang(l);
@@ -1944,10 +1947,10 @@ function updateXPBar(){
   const base=xpForLevel(lv);
   const next=xpForLevel(lv+1);
   const pct=Math.round(((xp-base)/(next-base))*100);
-  document.getElementById('level-label').textContent='Level '+lv;
-  document.getElementById('xp-label').textContent=(xp-base)+' / '+(next-base)+' XP';
-  document.getElementById('xp-bar').style.width=pct+'%';
-  document.getElementById('streak-num').textContent=streak;
+  document.getElementById('level-label').textContent = T('level') + ' ' + lv;
+  document.getElementById('xp-label').textContent = (xp-base) + ' / ' + (next-base) + ' ' + T('xp_label');
+  document.getElementById('xp-bar').style.width = pct + '%';
+  document.getElementById('streak-num').textContent = streak;
 }
 
 // ===== SCREENS =====
@@ -1960,8 +1963,9 @@ function showScreen(name){
   if(name==='share-screen')renderShare();
 }
 function renderHome(){
-  const total=units.reduce((s,u)=>s+u.words.length,0);
-  document.getElementById('home-total').textContent=units.length+" ta bo'lim • "+total+" ta so'z";
+  const total = units.reduce((s,u)=>s+u.words.length,0);
+  const unitWordText = `${units.length} ${T('units')} • ${total} ${T('words')}`;
+  document.getElementById('home-total').textContent = unitWordText;
   updateXPBar();
 }
 
