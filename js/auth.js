@@ -157,8 +157,16 @@ async function doGoogleLogin() {
   });
 
   if (error) {
-    console.error('Google OAuth error:', error.message);
-    alert('Google login xatosi: ' + error.message);
+    console.error('Google OAuth error object:', error);
+    const msg = error.message || (error.status ? `${error.status}` : 'Unknown error');
+    let userMsg = 'Google login xatosi: ' + msg;
+    // Common Supabase error: provider disabled or redirect mismatch
+    if (msg.includes('Unsupported provider') || msg.toLowerCase().includes('provider is not enabled')) {
+      userMsg += '\n\nSababi: Google provider Supabase sozlamalarida yoqilmagan yoki redirect URL mos emas.';
+      userMsg += '\nIltimos Supabase project → Authentication → Providers → Google ni yoqing.';
+      userMsg += '\nVa Auth settings → Redirect URLs ga ushbu URL ni qo'shing: ' + redirectTo;
+    }
+    alert(userMsg);
   }
 }
 
