@@ -4,7 +4,7 @@
    ============================================================ */
 
 let currentUser = null;
-let _sbClient   = null;
+let _sbClient = null;
 
 // Supabase client (bir marta yaratiladi)
 function getSB() {
@@ -13,10 +13,10 @@ function getSB() {
   if (!window.supabase) return null;
   _sbClient = window.supabase.createClient(window._SB_URL, window._SB_ANON, {
     auth: {
-      autoRefreshToken:    true,
-      persistSession:      true,
-      detectSessionInUrl:  true,
-      storageKey:          'sv_supabase_session'
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true,
+      storageKey: 'sv_supabase_session'
     }
   });
   return _sbClient;
@@ -29,7 +29,7 @@ function uuid4() {
   });
 }
 
-function loadUser()  { try { return JSON.parse(localStorage.getItem('sv_user') || 'null'); } catch { return null; } }
+function loadUser() { try { return JSON.parse(localStorage.getItem('sv_user') || 'null'); } catch { return null; } }
 function saveUser(u) { localStorage.setItem('sv_user', JSON.stringify(u)); }
 function clearUser() { localStorage.removeItem('sv_user'); }
 
@@ -38,19 +38,19 @@ async function _onLoginSuccess(sbUser) {
   if (!sbUser?.id) return;
 
   const isAdmin = (sbUser.email === window._ADMIN_EMAIL);
-  const name    = sbUser.user_metadata?.full_name
-                || sbUser.user_metadata?.name
-                || sbUser.email?.split('@')[0]
-                || 'User';
+  const name = sbUser.user_metadata?.full_name
+    || sbUser.user_metadata?.name
+    || sbUser.email?.split('@')[0]
+    || 'User';
 
   const user = {
-    id:        sbUser.id,
+    id: sbUser.id,
     name,
-    email:     sbUser.email || '',
-    avatar:    sbUser.user_metadata?.avatar_url || null,
+    email: sbUser.email || '',
+    avatar: sbUser.user_metadata?.avatar_url || null,
     sessionId: uuid4(),
     isAdmin,
-    lang:      _lang || 'uz',
+    lang: _lang || 'uz',
     loginTime: Date.now()
   };
 
@@ -62,13 +62,13 @@ async function _onLoginSuccess(sbUser) {
   hideAuthScreen();
 
   if (isAdmin) { showScreen('admin'); renderAdminPanel(); }
-  else         { showScreen('home');  renderHome(); }
+  else { showScreen('home'); renderHome(); }
 }
 
 // ---- EMAIL LOGIN ----
 async function doEmailLogin() {
   const email = (document.getElementById('login-email')?.value || '').trim();
-  const pass  = (document.getElementById('login-pass')?.value  || '').trim();
+  const pass = (document.getElementById('login-pass')?.value || '').trim();
   const errEl = document.getElementById('login-error');
   if (errEl) errEl.textContent = '';
 
@@ -97,16 +97,16 @@ async function doEmailLogin() {
 
 // ---- EMAIL REGISTER ----
 async function doEmailRegister() {
-  const name  = (document.getElementById('reg-name')?.value  || '').trim();
+  const name = (document.getElementById('reg-name')?.value || '').trim();
   const email = (document.getElementById('reg-email')?.value || '').trim();
-  const pass  = (document.getElementById('reg-pass')?.value  || '').trim();
+  const pass = (document.getElementById('reg-pass')?.value || '').trim();
   const pass2 = (document.getElementById('reg-pass2')?.value || '').trim();
   const errEl = document.getElementById('reg-error');
   if (errEl) { errEl.textContent = ''; errEl.style.color = ''; }
 
   if (!name || !email || !pass) { if (errEl) errEl.textContent = T('auth_fill_fields'); return; }
-  if (pass !== pass2)           { if (errEl) errEl.textContent = T('auth_pass_mismatch'); return; }
-  if (pass.length < 6)          { if (errEl) errEl.textContent = T('auth_pass_short'); return; }
+  if (pass !== pass2) { if (errEl) errEl.textContent = T('auth_pass_mismatch'); return; }
+  if (pass.length < 6) { if (errEl) errEl.textContent = T('auth_pass_short'); return; }
 
   setAuthLoading('reg', true);
   const sb = getSB();
@@ -164,7 +164,7 @@ async function doGoogleLogin() {
     if (msg.includes('Unsupported provider') || msg.toLowerCase().includes('provider is not enabled')) {
       userMsg += '\n\nSababi: Google provider Supabase sozlamalarida yoqilmagan yoki redirect URL mos emas.';
       userMsg += '\nIltimos Supabase project → Authentication → Providers → Google ni yoqing.';
-      userMsg += '\nVa Auth settings → Redirect URLs ga ushbu URL ni qo'shing: ' + redirectTo;
+      userMsg += '\nVa Auth settings → Redirect URLs ga ushbu URL ni qoshing: ' + redirectTo;
     }
     alert(userMsg);
   }
@@ -200,7 +200,7 @@ function switchAuthTab(tab) {
   document.querySelectorAll('.auth-form').forEach(f => f.style.display = 'none');
   const formEl = document.getElementById('auth-form-' + tab);
   if (formEl) formEl.style.display = 'block';
-  ['login-error','reg-error'].forEach(id => {
+  ['login-error', 'reg-error'].forEach(id => {
     const el = document.getElementById(id);
     if (el) { el.textContent = ''; el.style.color = ''; }
   });
