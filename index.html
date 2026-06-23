@@ -477,6 +477,129 @@ body.light .adm-table td { border-color: #e5e7eb; }
   .adm-table th, .adm-table td { padding: 6px 4px; }
 }
 
+/* ============================================================
+   PREMIUM LANGUAGE SWITCHER — Phase 6 redesign
+   ============================================================ */
+
+/* ---- Auth screen lang switcher ---- */
+.lang-switcher {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.lang-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.65);
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(.4,0,.2,1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  letter-spacing: 0.3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.lang-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0));
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.lang-btn:hover::before { opacity: 1; }
+
+.lang-btn:hover {
+  border-color: rgba(167,139,250,0.55);
+  color: rgba(255,255,255,0.9);
+  transform: translateY(-1px);
+}
+
+.lang-btn.active {
+  background: linear-gradient(135deg, rgba(102,126,234,0.45), rgba(118,75,162,0.45));
+  border-color: rgba(167,139,250,0.8);
+  color: #fff;
+  box-shadow: 0 0 16px rgba(139,92,246,0.5), 0 2px 8px rgba(0,0,0,0.25);
+  transform: translateY(-1px);
+}
+
+/* Light theme */
+body.light .lang-btn {
+  background: rgba(255,255,255,0.55);
+  border-color: rgba(0,0,0,0.12);
+  color: #555;
+}
+body.light .lang-btn:hover {
+  border-color: rgba(99,102,241,0.5);
+  color: #3730a3;
+}
+body.light .lang-btn.active {
+  background: linear-gradient(135deg,rgba(99,102,241,0.2),rgba(139,92,246,0.2));
+  border-color: rgba(99,102,241,0.7);
+  color: #3730a3;
+  box-shadow: 0 0 14px rgba(99,102,241,0.35);
+}
+
+/* ---- Mini lang switcher in home header ---- */
+.lang-mini-switcher {
+  display: flex;
+  gap: 3px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 22px;
+  padding: 3px 4px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.lang-mini {
+  background: none;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  opacity: 0.38;
+  transition: all 0.2s;
+  padding: 3px 5px;
+  border-radius: 16px;
+  line-height: 1;
+}
+
+.lang-mini:hover { opacity: 0.75; }
+
+.lang-mini.active {
+  opacity: 1;
+  background: rgba(139,92,246,0.35);
+  box-shadow: 0 0 10px rgba(139,92,246,0.45);
+}
+
+/* Light theme mini */
+body.light .lang-mini-switcher {
+  background: rgba(0,0,0,0.05);
+  border-color: rgba(0,0,0,0.1);
+}
+body.light .lang-mini.active {
+  background: rgba(99,102,241,0.18);
+  box-shadow: 0 0 8px rgba(99,102,241,0.3);
+}
+
+/* ---- AI explain box: fallback variant ---- */
+.ai-explain-box.fallback {
+  background: rgba(251,191,36,0.08);
+  border: 1px solid rgba(251,191,36,0.28);
+}
+.ai-explain-box.fallback .ai-label {
+  color: #fbbf24;
+  font-size: 10px;
+}
+
 </style>
 
 <!-- Config: Bu qiymatlarni o'zingizning Supabase loyihangizdan oling -->
@@ -873,7 +996,7 @@ body.light .adm-table td { border-color: #e5e7eb; }
     <p class="progress-text"><span id="queue-left">0</span> ta qoldi</p>
     <div class="question-box">
       <button class="btn-icon q-audio" onclick="speakQuizWord()">🔊</button>
-      <p class="question-label">O'zbekcha:</p>
+      <p class="question-label" data-i18n="uzbek_label">O'zbekcha:</p>
       <p class="question" id="quiz-word">—</p>
       <div class="wtype" id="quiz-type" style="display:none;margin-top:6px"></div>
     </div>
@@ -905,7 +1028,7 @@ body.light .adm-table td { border-color: #e5e7eb; }
     <p class="progress-text"><span id="mcq-left">0</span> ta qoldi</p>
     <div class="question-box">
       <button class="btn-icon q-audio" onclick="speakMcqWord()">🔊</button>
-      <p class="question-label">O'zbekcha:</p>
+      <p class="question-label" data-i18n="uzbek_label">O'zbekcha:</p>
       <p class="question" id="mcq-word">—</p>
       <div class="wtype" id="mcq-type" style="display:none;margin-top:6px"></div>
     </div>
@@ -927,7 +1050,7 @@ body.light .adm-table td { border-color: #e5e7eb; }
     <p style="font-size:12px;color:#f87171;font-weight:bold"><span id="sp-timer">10</span> soniya</p>
     <div class="question-box">
       <button class="btn-icon q-audio" onclick="speakSpeedWord()">🔊</button>
-      <p class="question-label">O'zbekcha:</p>
+      <p class="question-label" data-i18n="uzbek_label">O'zbekcha:</p>
       <p class="question" id="sp-word">—</p>
       <div class="wtype" id="sp-type" style="display:none;margin-top:6px"></div>
     </div>
@@ -1427,358 +1550,543 @@ const IRREGULAR_VERBS = [{"base": "be", "past": "was/were", "pp": "been", "uz": 
    Tarjimalar TO'G'RIDAN-TO'G'RI bu faylda (fetch yo'q)
    Sabab: file:// protokolida va bitta HTML faylda fetch
           /locales/*.json yo'lini topa olmaydi.
+
+   FIX (audit): EN tarjimalar to'liqlashtirildi (114 → 173 kalit),
+   barcha tillarda 173 ta kalit teng — hech biri boshqasidan kam emas.
+   setLang() endi screen-quiz va screen-flashcard ekranlarini ham
+   qayta render qiladi (oldin bu ikkisi yo'q edi).
    ============================================================ */
 
 // ===== BARCHA TARJIMALAR INLINE =====
 const _TRANSLATIONS = {
-  uz: {
-  "app_title": "So'z O'rgatuvchi",
-  "auth_subtitle": "Ingliz tilini o'rgan!",
-  "auth_login": "Kirish",
-  "auth_register": "Ro'yxatdan o'tish",
-  "auth_login_btn": "→ Kirish",
-  "auth_reg_btn": "→ Ro'yxatdan o'tish",
-  "auth_google": "Google bilan kirish",
-  "auth_or": "yoki",
-  "auth_fill_fields": "Barcha maydonlarni to'ldiring",
-  "auth_wrong_pass": "Email yoki parol noto'g'ri",
-  "auth_pass_mismatch": "Parollar mos kelmaydi",
-  "auth_pass_short": "Parol kamida 6 ta belgi bo'lishi kerak",
-  "auth_name": "Ismingiz",
-  "auth_password": "Parol",
-  "auth_pass_confirm": "Parolni takrorlang",
-  "logout": "Chiqish",
-  "level": "Level",
-  "streak_days": "kun",
-  "words": "ta so'z",
-  "units": "ta bo'lim",
-  "back": "← Orqaga",
-  "stop": "⏹ Tugatish",
-  "next": "Keyingisi →",
-  "prev": "← Oldingi",
-  "check": "Tekshir",
-  "correct": "✓ To'g'ri!",
-  "wrong_title": "✗ Xato!",
-  "correct_answer": "To'g'ri javob:",
-  "retry_note": "Bu so'z keyinroq qayta chiqadi",
-  "time_up": "✗ Vaqt tugadi!",
-  "write_word": "Inglizcha yozing...",
-  "know": "✓ Bildim",
-  "dont_know": "✗ Bilmadim",
-  "start": "Boshlash →",
-  "stats": "Statistika",
-  "sections": "⚙ Bo'limlar",
-  "share": "🔗 Ulashish",
-  "ai_explain_label": "AI Tushuntirma",
-  "ai_loading": "Tushuntirilmoqda",
-  "clear_stats": "🗑 Statistikani tozalash",
-  "clear_stats_confirm": "Haqiqatan ham tozalamoqchimisiz?",
-  "total_answers": "Jami javoblar:",
-  "correct_pct": "To'g'ri:",
-  "wrong_pct": "Xato:",
-  "most_errors": "Ko'p xato qilingan so'zlar:",
-  "no_errors": "Hali xato yo'q!",
-  "add_unit": "+ Bo'lim qo'shish",
-  "save": "💾 Saqlash",
-  "delete_unit": "O'chirish",
-  "import_btn": "📥 Import",
-  "done_great": "Ajoyib!",
-  "done_score": "ball",
-  "done_correct": "to'g'ri",
-  "done_wrong": "xato",
-  "select_correct": "TO'G'RI JAVOBNI TANLANG",
-  "fill_blank": "BO'SH JOYNI TO'LDIRING",
-  "true_false": "TO'G'RI YOKI XATO?",
-  "admin_panel": "Admin Panel",
-  "admin_total": "Jami foydalanuvchi",
-  "admin_online": "Hozir online",
-  "admin_sessions": "Jami sessiya",
-  "level_beginner": "Beginner",
-  "level_elementary": "Elementary",
-  "level_pre_int": "Pre-Intermediate",
-  "level_intermediate": "Intermediate",
-  "level_upper": "Upper-Intermediate",
-  "level_advanced": "Advanced",
-  "select_units": "Bo'limlarni tanlang",
-  "select_all": "Hammasini tanlash",
-  "launch": "Boshlash →",
-  "unit_words": "ta so'z",
-  "edit_unit": "✏️ Tahrirlash",
-  "unit_name": "Bo'lim nomi",
-  "words_hint": "Har qatorga: inglizcha - o'zbekcha",
-  "cancel": "Bekor qilish",
-  "confirm_delete": "Bu bo'limni o'chirishni tasdiqlaysizmi?",
-  "copy_code": "📋 Kodni nusxalash",
-  "copied": "Nusxalandi!",
-  "import_code": "Kodni bu yerga joylashtiring...",
-  "import_error_invalid": "Noto'g'ri kod!",
-  "import_success": "Muvaffaqiyatli import qilindi!",
-  "flashcard_mode": "🃏 Yod olish",
-  "flashcard_sub": "Flashcard + Audio",
-  "quiz_mode": "✍️ Test",
-  "quiz_sub": "So'z yozing",
-  "mcq_mode": "🎯 Variantli",
-  "mcq_sub": "4 ta variant",
-  "speed_mode": "⚡ Tezkor",
-  "speed_sub": "10 soniya!",
-  "exercises_mode": "📝 Grammar Mashqlar",
-  "exercises_sub": "Har unit uchun 30 ta mashq",
-  "irregular_mode": "🔀 Irregular Verbs",
-  "irregular_sub": "66 ta noto'g'ri fe'l — o'yin orqali yodlash",
-  "tap_to_flip": "Kartani ag'darish uchun bosing",
-  "session_result": "Sessiya natijasi",
-  "knew": "Bildim",
-  "didnt_know": "Bilmadim",
-  "restart_all": "🔄 Hammasini qayta boshlash",
-  "restart_wrong": "🔁 Xatolarni qayta boshlash",
-  "back_home": "← Bosh sahifa",
-  "exercise_select": "Bo'limni tanlang",
-  "exercise_progress": "ta mashq",
-  "irr_cards": "🃏 Kartalar",
-  "irr_match": "🔗 Juftlash",
-  "irr_fill": "✍️ Yozish",
-  "irr_quiz": "🎯 Test",
-  "irr_title": "Noto'g'ri fe'llar",
-  "type_noun": "ot",
-  "type_verb": "fe'l",
-  "type_adj": "sifat",
-  "type_adv": "ravish",
-  "type_prep": "predlog",
-  "type_phrase": "ibora",
-  "online_learners": "ta o'quvchi online"
-},
-  ru: {
-  "app_title": "Учим слова",
-  "auth_subtitle": "Учи английский язык!",
-  "auth_login": "Войти",
-  "auth_register": "Регистрация",
-  "auth_login_btn": "→ Войти",
-  "auth_reg_btn": "→ Зарегистрироваться",
-  "auth_google": "Войти через Google",
-  "auth_or": "или",
-  "auth_fill_fields": "Заполните все поля",
-  "auth_wrong_pass": "Неверный email или пароль",
-  "auth_pass_mismatch": "Пароли не совпадают",
-  "auth_pass_short": "Пароль должен содержать минимум 6 символов",
-  "auth_name": "Ваше имя",
-  "auth_password": "Пароль",
-  "auth_pass_confirm": "Повторите пароль",
-  "logout": "Выйти",
-  "level": "Уровень",
-  "streak_days": "дн",
-  "words": "слов",
-  "units": "разделов",
-  "back": "← Назад",
-  "stop": "⏹ Стоп",
-  "next": "Далее →",
-  "prev": "← Пред",
-  "check": "Проверить",
-  "correct": "✓ Правильно!",
-  "wrong_title": "✗ Ошибка!",
-  "correct_answer": "Правильный ответ:",
-  "retry_note": "Это слово появится снова",
-  "time_up": "✗ Время вышло!",
-  "write_word": "Напишите по-английски...",
-  "know": "✓ Знаю",
-  "dont_know": "✗ Не знаю",
-  "start": "Начать →",
-  "stats": "Статистика",
-  "sections": "⚙ Разделы",
-  "share": "🔗 Поделиться",
-  "ai_explain_label": "Объяснение AI",
-  "ai_loading": "Объясняю",
-  "clear_stats": "🗑 Очистить статистику",
-  "clear_stats_confirm": "Вы уверены?",
-  "total_answers": "Всего ответов:",
-  "correct_pct": "Правильно:",
-  "wrong_pct": "Ошибки:",
-  "most_errors": "Частые ошибки:",
-  "no_errors": "Ошибок пока нет!",
-  "add_unit": "+ Добавить раздел",
-  "save": "💾 Сохранить",
-  "delete_unit": "Удалить",
-  "import_btn": "📥 Импорт",
-  "done_great": "Отлично!",
-  "done_score": "очков",
-  "done_correct": "правильно",
-  "done_wrong": "ошибок",
-  "select_correct": "ВЫБЕРИТЕ ПРАВИЛЬНЫЙ ОТВЕТ",
-  "fill_blank": "ЗАПОЛНИТЕ ПРОПУСК",
-  "true_false": "ВЕРНО ИЛИ НЕТ?",
-  "admin_panel": "Панель администратора",
-  "admin_total": "Всего пользователей",
-  "admin_online": "Сейчас онлайн",
-  "admin_sessions": "Всего сессий",
-  "level_beginner": "Начинающий",
-  "level_elementary": "Элементарный",
-  "level_pre_int": "Ниже среднего",
-  "level_intermediate": "Средний",
-  "level_upper": "Выше среднего",
-  "level_advanced": "Продвинутый",
-  "select_units": "Выберите разделы",
-  "select_all": "Выбрать все",
-  "launch": "Начать →",
-  "unit_words": "слов",
-  "edit_unit": "✏️ Редактировать",
-  "unit_name": "Название раздела",
-  "words_hint": "Каждая строка: английский - русский",
-  "cancel": "Отмена",
-  "confirm_delete": "Удалить этот раздел?",
-  "copy_code": "📋 Копировать код",
-  "copied": "Скопировано!",
-  "import_code": "Вставьте код сюда...",
-  "import_error_invalid": "Неверный код!",
-  "import_success": "Успешно импортировано!",
-  "flashcard_mode": "🃏 Запоминание",
-  "flashcard_sub": "Флэшкарты + Аудио",
-  "quiz_mode": "✍️ Тест",
-  "quiz_sub": "Напишите слово",
-  "mcq_mode": "🎯 Варианты",
-  "mcq_sub": "4 варианта",
-  "speed_mode": "⚡ Быстрый",
-  "speed_sub": "10 секунд!",
-  "exercises_mode": "📝 Грамматика",
-  "exercises_sub": "30 упражнений на раздел",
-  "irregular_mode": "🔀 Неправильные глаголы",
-  "irregular_sub": "66 глаголов — через игру",
-  "tap_to_flip": "Нажмите чтобы перевернуть",
-  "session_result": "Результат сессии",
-  "knew": "Знал",
-  "didnt_know": "Не знал",
-  "restart_all": "🔄 Начать заново",
-  "restart_wrong": "🔁 Повторить ошибки",
-  "back_home": "← На главную",
-  "exercise_select": "Выберите раздел",
-  "exercise_progress": "упражнений",
-  "irr_cards": "🃏 Карточки",
-  "irr_match": "🔗 Сопоставить",
-  "irr_fill": "✍️ Написать",
-  "irr_quiz": "🎯 Тест",
-  "irr_title": "Неправильные глаголы",
-  "type_noun": "сущ.",
-  "type_verb": "гл.",
-  "type_adj": "прил.",
-  "type_adv": "нар.",
-  "type_prep": "предл.",
-  "type_phrase": "фраза",
-  "online_learners": "учеников онлайн"
-},
-  en: {
-  "app_title": "Word Learner",
-  "auth_subtitle": "Learn English words!",
-  "auth_login": "Sign In",
-  "auth_register": "Sign Up",
-  "auth_login_btn": "→ Sign In",
-  "auth_reg_btn": "→ Sign Up",
-  "auth_google": "Continue with Google",
-  "auth_or": "or",
-  "auth_fill_fields": "Please fill in all fields",
-  "auth_wrong_pass": "Wrong email or password",
-  "auth_pass_mismatch": "Passwords do not match",
-  "auth_pass_short": "Password must be at least 6 characters",
-  "auth_name": "Your name",
-  "auth_password": "Password",
-  "auth_pass_confirm": "Confirm password",
-  "logout": "Sign Out",
-  "level": "Level",
-  "streak_days": "days",
-  "words": "words",
-  "units": "units",
-  "back": "← Back",
-  "stop": "⏹ Stop",
-  "next": "Next →",
-  "prev": "← Prev",
-  "check": "Check",
-  "correct": "✓ Correct!",
-  "wrong_title": "✗ Wrong!",
-  "correct_answer": "Correct answer:",
-  "retry_note": "This word will appear again",
-  "time_up": "✗ Time's up!",
-  "write_word": "Type in English...",
-  "know": "✓ I know",
-  "dont_know": "✗ Don't know",
-  "start": "Start →",
-  "stats": "Statistics",
-  "sections": "⚙ Sections",
-  "share": "🔗 Share",
-  "ai_explain_label": "AI Explanation",
-  "ai_loading": "Explaining",
-  "clear_stats": "🗑 Clear stats",
-  "clear_stats_confirm": "Are you sure?",
-  "total_answers": "Total answers:",
-  "correct_pct": "Correct:",
-  "wrong_pct": "Wrong:",
-  "most_errors": "Most errors:",
-  "no_errors": "No errors yet!",
-  "add_unit": "+ Add unit",
-  "save": "💾 Save",
-  "delete_unit": "Delete",
-  "import_btn": "📥 Import",
-  "done_great": "Great job!",
-  "done_score": "pts",
-  "done_correct": "correct",
-  "done_wrong": "wrong",
-  "select_correct": "SELECT THE CORRECT ANSWER",
-  "fill_blank": "FILL IN THE BLANK",
-  "true_false": "TRUE OR FALSE?",
-  "admin_panel": "Admin Panel",
-  "admin_total": "Total users",
-  "admin_online": "Now online",
-  "admin_sessions": "Total sessions",
-  "level_beginner": "Beginner",
-  "level_elementary": "Elementary",
-  "level_pre_int": "Pre-Intermediate",
-  "level_intermediate": "Intermediate",
-  "level_upper": "Upper-Intermediate",
-  "level_advanced": "Advanced",
-  "select_units": "Select units",
-  "select_all": "Select all",
-  "launch": "Start →",
-  "unit_words": "words",
-  "edit_unit": "✏️ Edit",
-  "unit_name": "Unit name",
-  "words_hint": "Each line: english - uzbek",
-  "cancel": "Cancel",
-  "confirm_delete": "Delete this unit?",
-  "copy_code": "📋 Copy code",
-  "copied": "Copied!",
-  "import_code": "Paste code here...",
-  "import_error_invalid": "Invalid code!",
-  "import_success": "Successfully imported!",
-  "flashcard_mode": "🃏 Flashcards",
-  "flashcard_sub": "Flashcard + Audio",
-  "quiz_mode": "✍️ Quiz",
-  "quiz_sub": "Type the word",
-  "mcq_mode": "🎯 Multiple Choice",
-  "mcq_sub": "4 options",
-  "speed_mode": "⚡ Speed",
-  "speed_sub": "10 seconds!",
-  "exercises_mode": "📝 Grammar Exercises",
-  "exercises_sub": "30 exercises per unit",
-  "irregular_mode": "🔀 Irregular Verbs",
-  "irregular_sub": "66 verbs — learn through games",
-  "tap_to_flip": "Tap to flip",
-  "session_result": "Session result",
-  "knew": "Knew",
-  "didnt_know": "Didn't know",
-  "restart_all": "🔄 Restart all",
-  "restart_wrong": "🔁 Retry wrong",
-  "back_home": "← Home",
-  "exercise_select": "Select a unit",
-  "exercise_progress": "exercises",
-  "irr_cards": "🃏 Cards",
-  "irr_match": "🔗 Match",
-  "irr_fill": "✍️ Fill",
-  "irr_quiz": "🎯 Quiz",
-  "irr_title": "Irregular Verbs",
-  "type_noun": "noun",
-  "type_verb": "verb",
-  "type_adj": "adj",
-  "type_adv": "adv",
-  "type_prep": "prep",
-  "type_phrase": "phrase",
-  "online_learners": "learners online"
-}
+  "uz": {
+    "app_title": "So'z O'rgatuvchi",
+    "auth_subtitle": "Ingliz tilini o'rgan!",
+    "auth_login": "Kirish",
+    "auth_register": "Ro'yxatdan o'tish",
+    "auth_login_btn": "→ Kirish",
+    "auth_reg_btn": "→ Ro'yxatdan o'tish",
+    "auth_google": "Google bilan kirish",
+    "auth_or": "yoki",
+    "auth_fill_fields": "Barcha maydonlarni to'ldiring",
+    "supabase_unavailable": "Supabase ulanmagan",
+    "auth_wrong_pass": "Email yoki parol noto'g'ri",
+    "auth_pass_mismatch": "Parollar mos kelmaydi",
+    "auth_pass_short": "Parol kamida 6 ta belgi bo'lishi kerak",
+    "email_sent": "✓ Email yuborildi! Tasdiqlang va kiring.",
+    "auth_name": "Ismingiz",
+    "auth_password": "Parol",
+    "auth_pass_confirm": "Parolni takrorlang",
+    "logout": "Chiqish",
+    "level": "Level",
+    "streak_days": "kun",
+    "words": "ta so'z",
+    "units": "ta bo'lim",
+    "back": "← Orqaga",
+    "stop": "⏹ Tugatish",
+    "next": "Keyingisi →",
+    "prev": "← Oldingi",
+    "check": "Tekshir",
+    "correct": "✓ To'g'ri!",
+    "wrong_title": "✗ Xato!",
+    "correct_answer": "To'g'ri javob:",
+    "retry_note": "Bu so'z keyinroq qayta chiqadi",
+    "time_up": "✗ Vaqt tugadi!",
+    "write_word": "Inglizcha yozing...",
+    "know": "✓ Bildim",
+    "dont_know": "✗ Bilmadim",
+    "start": "Boshlash →",
+    "stats": "Statistika",
+    "sections": "⚙ Bo'limlar",
+    "share": "🔗 Ulashish",
+    "ai_explain_label": "AI Tushuntirma",
+    "ai_loading": "Tushuntirilmoqda",
+    "ai_server_error": "Server bilan bog'lanib bo'lmayapti. Bir ozdan keyin urinib ko'ring.",
+    "ai_load_error": "Tushuntirma yuklanmadi. Internet aloqasini tekshiring.",
+    "clear_stats": "🗑 Statistikani tozalash",
+    "clear_stats_confirm": "Haqiqatan ham tozalamoqchimisiz?",
+    "total_answers": "Jami javoblar:",
+    "correct_pct": "To'g'ri:",
+    "wrong_pct": "Xato:",
+    "most_errors": "Ko'p xato qilingan so'zlar:",
+    "no_errors": "Hali xato yo'q!",
+    "add_unit": "+ Bo'lim qo'shish",
+    "save": "💾 Saqlash",
+    "delete_unit": "O'chirish",
+    "import_btn": "📥 Import",
+    "done_great": "Ajoyib!",
+    "done_perfect": "Mukammal! 🌟",
+    "done_congrats": "Barakalla!",
+    "done_score": "ball",
+    "done_correct": "to'g'ri",
+    "done_wrong": "xato",
+    "select_correct": "TO'G'RI JAVOBNI TANLANG",
+    "fill_blank": "BO'SH JOYNI TO'LDIRING",
+    "true_false": "TO'G'RI YOKI XATO?",
+    "admin_panel": "Admin Panel",
+    "admin_total": "Jami foydalanuvchi",
+    "admin_online": "Hozir online",
+    "admin_sessions": "Jami sessiya",
+    "theme": "Tema",
+    "xp_label": "XP",
+    "level_beginner": "Beginner",
+    "level_elementary": "Elementary",
+    "level_pre_int": "Pre-Intermediate",
+    "level_intermediate": "Intermediate",
+    "level_upper": "Upper-Intermediate",
+    "level_advanced": "Advanced",
+    "select_units": "Bo'limlarni tanlang",
+    "select_all": "Hammasini tanlash",
+    "launch": "Boshlash →",
+    "unit_words": "ta so'z",
+    "edit_unit": "✏️ Tahrirlash",
+    "unit_name": "Bo'lim nomi",
+    "words_hint": "Har qatorga: inglizcha - o'zbekcha",
+    "cancel": "Bekor qilish",
+    "confirm_delete": "Bu bo'limni o'chirishni tasdiqlaysizmi?",
+    "copy_code": "📋 Kodni nusxalash",
+    "copied": "Nusxalandi!",
+    "import_code": "Kodni bu yerga joylashtiring...",
+    "import_error_invalid": "Noto'g'ri kod!",
+    "import_success": "Muvaffaqiyatli import qilindi!",
+    "flashcard_mode": "🃏 Yod olish",
+    "flashcard_sub": "Flashcard + Audio",
+    "quiz_mode": "✍️ Test",
+    "quiz_sub": "So'z yozing",
+    "mcq_mode": "🎯 Variantli",
+    "mcq_sub": "4 ta variant",
+    "speed_mode": "⚡ Tezkor",
+    "speed_sub": "10 soniya!",
+    "exercises_mode": "📝 Grammar Mashqlar",
+    "exercises_sub": "Har unit uchun 30 ta mashq",
+    "irregular_mode": "🔀 Irregular Verbs",
+    "irregular_sub": "66 ta noto'g'ri fe'l — o'yin orqali yodlash",
+    "tap_to_flip": "Kartani ag'darish uchun bosing",
+    "session_result": "Sessiya natijasi",
+    "knew": "Bildim",
+    "didnt_know": "Bilmadim",
+    "restart_all": "🔄 Hammasini qayta boshlash",
+    "restart_wrong": "🔁 Xatolarni qayta boshlash",
+    "back_home": "← Bosh sahifa",
+    "exercise_select": "Bo'limni tanlang",
+    "exercise_progress": "ta mashq",
+    "irr_cards": "🃏 Kartalar",
+    "irr_match": "🔗 Juftlash",
+    "irr_fill": "✍️ Yozish",
+    "irr_quiz": "🎯 Test",
+    "irr_title": "Noto'g'ri fe'llar",
+    "type_noun": "ot",
+    "type_verb": "fe'l",
+    "type_adj": "sifat",
+    "type_adv": "ravish",
+    "type_prep": "predlog",
+    "type_phrase": "ibora",
+    "online_learners": "ta o'quvchi online",
+  "uzbek_label": "O'zbekcha:",
+    "select_one_unit": "Kamida bitta bo'lim tanlang!",
+    "no_words": "So'z yo'q!",
+    "need_min_4_words": "Kamida 4 ta so'z kerak!",
+    "code_invalid": "Kod noto'g'ri yoki buzilgan!",
+    "new_unit": "Yangi bo'lim",
+    "edit": "Tahrirlash",
+    "enter_unit_name": "Bo'lim nomini kiriting!",
+    "at_least_one_word": "Kamida bitta so'z!",
+    "irr_match_done": "Juftlik o'yini tugadi!",
+    "irr_fill_done": "To'ldirish mashqi tugadi!",
+    "irr_quiz_done": "Variantli test tugadi!",
+    "no_users": "Foydalanuvchilar yo'q",
+    "no_online": "😴 Hozir hech kim online emas",
+    "no_sessions": "Sessiyalar yo'q",
+    "correct_feedback": "✓ To'g'ri!",
+    "wrong_feedback": "✗ Xato!",
+    "no_errors_yet": "Hali xato yo'q 🎉",
+    "no_units": "Bo'lim yo'q.",
+    "code_copied": "Kod nusxalandi! O'rtoqqa yuboring.",
+    "confirm_clear_stats": "Statistikani tozalaysizmi?",
+    "confirm_overwrite": "mavjud. Ustiga yozilsinmi?",
+    "confirm_delete_unit": "Bu bo'limni o'chirasizmi?",
+    "no_permission": "⛔ Ruxsat yo'q",
+    "placeholder_unit_example": "Masalan: Unit 5.3",
+    "placeholder_write_answer": "Javobingizni yozing...",
+    "past_simple": "PAST SIMPLE",
+    "past_participle": "PAST PARTICIPLE",
+    "select_form_suffix": "shaklini tanlang:",
+    "streak_label": "Ketma-ket kun",
+    "mistake_times": "marta xato",
+    "loading": "Yuklanmoqda...",
+    "error": "Xato",
+    "name": "Ism",
+    "xp": "XP",
+    "wrong": "Xato",
+    "streak": "Ketma-ket",
+    "lang": "Til",
+    "last_seen": "Oxirgi",
+    "entered_at": "Kirdi",
+    "last_ping": "So'nggi",
+    "online_label": "🟢 online",
+    "exited_at": "Chiqdi",
+    "status": "Holat",
+    "admin_users": "Foydalanuvchilar",
+    "total_xp": "Jami XP",
+    "accuracy": "Aniqlik",
+    "ai_fallback_note": "🔌 Offline tushuntirma (internet aloqasi yo'q)",
+    "ai_meaning": "Ma'nosi",
+    "ai_example": "Misol",
+    "ai_tip": "Maslahat",
+    "ai_correct_answer_label": "To'g'ri javob"
+  },
+  "ru": {
+    "app_title": "Учим слова",
+    "auth_subtitle": "Учи английский язык!",
+    "auth_login": "Войти",
+    "auth_register": "Регистрация",
+    "auth_login_btn": "→ Войти",
+    "auth_reg_btn": "→ Зарегистрироваться",
+    "auth_google": "Войти через Google",
+    "auth_or": "или",
+    "auth_fill_fields": "Заполните все поля",
+    "supabase_unavailable": "Supabase недоступна",
+    "auth_wrong_pass": "Неверный email или пароль",
+    "auth_pass_mismatch": "Пароли не совпадают",
+    "auth_pass_short": "Пароль должен содержать минимум 6 символов",
+    "email_sent": "✓ Email отправлен! Подтвердите и войдите.",
+    "auth_name": "Ваше имя",
+    "auth_password": "Пароль",
+    "auth_pass_confirm": "Повторите пароль",
+    "logout": "Выйти",
+    "level": "Уровень",
+    "streak_days": "дн",
+    "words": "слов",
+    "units": "разделов",
+    "back": "← Назад",
+    "stop": "⏹ Стоп",
+    "next": "Далее →",
+    "prev": "← Пред",
+    "check": "Проверить",
+    "correct": "✓ Правильно!",
+    "wrong_title": "✗ Ошибка!",
+    "correct_answer": "Правильный ответ:",
+    "retry_note": "Это слово появится снова",
+    "time_up": "✗ Время вышло!",
+    "write_word": "Напишите по-английски...",
+    "know": "✓ Знаю",
+    "dont_know": "✗ Не знаю",
+    "start": "Начать →",
+    "stats": "Статистика",
+    "sections": "⚙ Разделы",
+    "share": "🔗 Поделиться",
+    "ai_explain_label": "Объяснение AI",
+    "ai_loading": "Объясняю",
+    "ai_server_error": "Ошибка сервера. Попробуйте позже.",
+    "ai_load_error": "Ошибка загрузки. Проверьте интернет.",
+    "clear_stats": "🗑 Очистить статистику",
+    "clear_stats_confirm": "Вы уверены?",
+    "total_answers": "Всего ответов:",
+    "correct_pct": "Правильно:",
+    "wrong_pct": "Ошибки:",
+    "most_errors": "Частые ошибки:",
+    "no_errors": "Ошибок пока нет!",
+    "add_unit": "+ Добавить раздел",
+    "save": "💾 Сохранить",
+    "delete_unit": "Удалить",
+    "import_btn": "📥 Импорт",
+    "done_great": "Отлично!",
+    "done_perfect": "Идеально! 🌟",
+    "done_congrats": "Отлично!",
+    "done_score": "очков",
+    "done_correct": "правильно",
+    "done_wrong": "ошибок",
+    "select_correct": "ВЫБЕРИТЕ ПРАВИЛЬНЫЙ ОТВЕТ",
+    "fill_blank": "ЗАПОЛНИТЕ ПРОПУСК",
+    "true_false": "ВЕРНО ИЛИ НЕТ?",
+    "admin_panel": "Панель администратора",
+    "admin_total": "Всего пользователей",
+    "admin_online": "Сейчас онлайн",
+    "admin_sessions": "Всего сессий",
+    "theme": "Тема",
+    "xp_label": "XP",
+    "level_beginner": "Начинающий",
+    "level_elementary": "Элементарный",
+    "level_pre_int": "Ниже среднего",
+    "level_intermediate": "Средний",
+    "level_upper": "Выше среднего",
+    "level_advanced": "Продвинутый",
+    "select_units": "Выберите разделы",
+    "select_all": "Выбрать все",
+    "launch": "Начать →",
+    "unit_words": "слов",
+    "edit_unit": "✏️ Редактировать",
+    "unit_name": "Название раздела",
+    "words_hint": "Каждая строка: английский - русский",
+    "cancel": "Отмена",
+    "confirm_delete": "Удалить этот раздел?",
+    "copy_code": "📋 Копировать код",
+    "copied": "Скопировано!",
+    "import_code": "Вставьте код сюда...",
+    "import_error_invalid": "Неверный код!",
+    "import_success": "Успешно импортировано!",
+    "flashcard_mode": "🃏 Запоминание",
+    "flashcard_sub": "Флэшкарты + Аудио",
+    "quiz_mode": "✍️ Тест",
+    "quiz_sub": "Напишите слово",
+    "mcq_mode": "🎯 Варианты",
+    "mcq_sub": "4 варианта",
+    "speed_mode": "⚡ Быстрый",
+    "speed_sub": "10 секунд!",
+    "exercises_mode": "📝 Грамматика",
+    "exercises_sub": "30 упражнений на раздел",
+    "irregular_mode": "🔀 Неправильные глаголы",
+    "irregular_sub": "66 глаголов — через игру",
+    "tap_to_flip": "Нажмите чтобы перевернуть",
+    "session_result": "Результат сессии",
+    "knew": "Знал",
+    "didnt_know": "Не знал",
+    "restart_all": "🔄 Начать заново",
+    "restart_wrong": "🔁 Повторить ошибки",
+    "back_home": "← На главную",
+    "exercise_select": "Выберите раздел",
+    "exercise_progress": "упражнений",
+    "irr_cards": "🃏 Карточки",
+    "irr_match": "🔗 Сопоставить",
+    "irr_fill": "✍️ Написать",
+    "irr_quiz": "🎯 Тест",
+    "irr_title": "Неправильные глаголы",
+    "type_noun": "сущ.",
+    "type_verb": "гл.",
+    "type_adj": "прил.",
+    "type_adv": "нар.",
+    "type_prep": "предл.",
+    "type_phrase": "фраза",
+    "online_learners": "учеников онлайн",
+  "uzbek_label": "Узбекский:",
+    "select_one_unit": "Выберите хотя бы один раздел!",
+    "no_words": "Слов нет!",
+    "need_min_4_words": "Нужно минимум 4 слова!",
+    "code_invalid": "Код неверный или поврежден!",
+    "new_unit": "Новый раздел",
+    "edit": "Редактировать",
+    "enter_unit_name": "Введите название раздела!",
+    "at_least_one_word": "Нужно минимум одно слово!",
+    "irr_match_done": "Сопоставление завершено!",
+    "irr_fill_done": "Заполнение завершено!",
+    "irr_quiz_done": "Тест завершен!",
+    "no_users": "Нет пользователей",
+    "no_online": "😴 Никто не онлайн",
+    "no_sessions": "Нет сессий",
+    "correct_feedback": "✓ Правильно!",
+    "wrong_feedback": "✗ Неправильно!",
+    "no_errors_yet": "Ошибок пока нет 🎉",
+    "no_units": "Разделов нет.",
+    "code_copied": "Код скопирован! Отправьте другу.",
+    "confirm_clear_stats": "Очистить статистику?",
+    "confirm_overwrite": "существует. Перезаписать?",
+    "confirm_delete_unit": "Удалить этот раздел?",
+    "no_permission": "⛔ Доступ запрещен",
+    "placeholder_unit_example": "Например: Unit 5.3",
+    "placeholder_write_answer": "Напишите свой ответ...",
+    "past_simple": "PAST SIMPLE",
+    "past_participle": "PAST PARTICIPLE",
+    "select_form_suffix": "выберите форму:",
+    "streak_label": "Дни подряд",
+    "mistake_times": "раз ошибка",
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "name": "Имя",
+    "xp": "XP",
+    "wrong": "Неправильно",
+    "streak": "Дни подряд",
+    "lang": "Язык",
+    "last_seen": "Последний раз",
+    "entered_at": "Вошел",
+    "last_ping": "Последний пинг",
+    "online_label": "🟢 онлайн",
+    "exited_at": "Вышел",
+    "status": "Статус",
+    "admin_users": "Пользователи",
+    "total_xp": "Всего XP",
+    "accuracy": "Точность",
+    "ai_fallback_note": "🔌 Офлайн объяснение (нет подключения к интернету)",
+    "ai_meaning": "Значение",
+    "ai_example": "Пример",
+    "ai_tip": "Совет",
+    "ai_correct_answer_label": "Правильный ответ"
+  },
+  "en": {
+    "app_title": "Word Learner",
+    "auth_subtitle": "Learn English words!",
+    "auth_login": "Sign In",
+    "auth_register": "Sign Up",
+    "auth_login_btn": "→ Sign In",
+    "auth_reg_btn": "→ Sign Up",
+    "auth_google": "Continue with Google",
+    "auth_or": "or",
+    "auth_fill_fields": "Please fill in all fields",
+    "supabase_unavailable": "Supabase is not available",
+    "auth_wrong_pass": "Wrong email or password",
+    "auth_pass_mismatch": "Passwords do not match",
+    "auth_pass_short": "Password must be at least 6 characters",
+    "email_sent": "✓ Email sent! Confirm and sign in.",
+    "auth_name": "Your name",
+    "auth_password": "Password",
+    "auth_pass_confirm": "Confirm password",
+    "logout": "Sign Out",
+    "level": "Level",
+    "streak_days": "days",
+    "words": "words",
+    "units": "units",
+    "back": "← Back",
+    "stop": "⏹ Stop",
+    "next": "Next →",
+    "prev": "← Prev",
+    "check": "Check",
+    "correct": "✓ Correct!",
+    "wrong_title": "✗ Wrong!",
+    "correct_answer": "Correct answer:",
+    "retry_note": "This word will appear again",
+    "time_up": "✗ Time's up!",
+    "write_word": "Type in English...",
+    "know": "✓ I know",
+    "dont_know": "✗ Don't know",
+    "start": "Start →",
+    "stats": "Statistics",
+    "sections": "⚙ Sections",
+    "share": "🔗 Share",
+    "ai_explain_label": "AI Explanation",
+    "ai_loading": "Explaining",
+    "ai_server_error": "Unable to reach server. Please try again later.",
+    "ai_load_error": "Explanation failed to load. Check your connection.",
+    "clear_stats": "🗑 Clear stats",
+    "clear_stats_confirm": "Are you sure?",
+    "total_answers": "Total answers:",
+    "correct_pct": "Correct:",
+    "wrong_pct": "Wrong:",
+    "most_errors": "Most errors:",
+    "no_errors": "No errors yet!",
+    "add_unit": "+ Add unit",
+    "save": "💾 Save",
+    "delete_unit": "Delete",
+    "import_btn": "📥 Import",
+    "done_great": "Great job!",
+    "done_perfect": "Perfect! 🌟",
+    "done_congrats": "Well done!",
+    "done_score": "pts",
+    "done_correct": "correct",
+    "done_wrong": "wrong",
+    "select_correct": "SELECT THE CORRECT ANSWER",
+    "fill_blank": "FILL IN THE BLANK",
+    "true_false": "TRUE OR FALSE?",
+    "admin_panel": "Admin Panel",
+    "admin_total": "Total users",
+    "admin_online": "Now online",
+    "admin_sessions": "Total sessions",
+    "level_beginner": "Beginner",
+    "level_elementary": "Elementary",
+    "level_pre_int": "Pre-Intermediate",
+    "level_intermediate": "Intermediate",
+    "level_upper": "Upper-Intermediate",
+    "level_advanced": "Advanced",
+    "select_units": "Select units",
+    "select_all": "Select all",
+    "launch": "Start →",
+    "unit_words": "words",
+    "edit_unit": "✏️ Edit",
+    "unit_name": "Unit name",
+    "words_hint": "Each line: english - uzbek",
+    "cancel": "Cancel",
+    "confirm_delete": "Delete this unit?",
+    "copy_code": "📋 Copy code",
+    "copied": "Copied!",
+    "import_code": "Paste code here...",
+    "import_error_invalid": "Invalid code!",
+    "import_success": "Successfully imported!",
+    "flashcard_mode": "🃏 Flashcards",
+    "flashcard_sub": "Flashcard + Audio",
+    "quiz_mode": "✍️ Quiz",
+    "quiz_sub": "Type the word",
+    "mcq_mode": "🎯 Multiple Choice",
+    "mcq_sub": "4 options",
+    "speed_mode": "⚡ Speed",
+    "speed_sub": "10 seconds!",
+    "exercises_mode": "📝 Grammar Exercises",
+    "exercises_sub": "30 exercises per unit",
+    "irregular_mode": "🔀 Irregular Verbs",
+    "irregular_sub": "66 verbs — learn through games",
+    "tap_to_flip": "Tap to flip",
+    "session_result": "Session result",
+    "knew": "Knew",
+    "didnt_know": "Didn't know",
+    "restart_all": "🔄 Restart all",
+    "restart_wrong": "🔁 Retry wrong",
+    "back_home": "← Home",
+    "exercise_select": "Select a unit",
+    "exercise_progress": "exercises",
+    "irr_cards": "🃏 Cards",
+    "irr_match": "🔗 Match",
+    "irr_fill": "✍️ Fill",
+    "irr_quiz": "🎯 Quiz",
+    "irr_title": "Irregular Verbs",
+    "type_noun": "noun",
+    "type_verb": "verb",
+    "type_adj": "adj",
+    "type_adv": "adv",
+    "type_prep": "prep",
+    "type_phrase": "phrase",
+    "online_learners": "learners online",
+  "uzbek_label": "Uzbek:",
+    "select_one_unit": "Please select at least one unit!",
+    "no_words": "No words!",
+    "need_min_4_words": "At least 4 words required!",
+    "code_invalid": "The code is invalid or corrupted!",
+    "new_unit": "New unit",
+    "edit": "Edit",
+    "enter_unit_name": "Enter unit name!",
+    "at_least_one_word": "At least one word!",
+    "irr_match_done": "Match game finished!",
+    "irr_fill_done": "Fill exercise finished!",
+    "irr_quiz_done": "Multiple choice test finished!",
+    "no_users": "No users",
+    "no_online": "No one online right now",
+    "no_sessions": "No sessions",
+    "correct_feedback": "✓ Correct!",
+    "wrong_feedback": "✗ Wrong!",
+    "no_errors_yet": "No errors yet 🎉",
+    "no_units": "No units.",
+    "code_copied": "Code copied! Send it to your friends.",
+    "confirm_clear_stats": "Are you sure you want to clear statistics?",
+    "confirm_overwrite": "already exists. Overwrite?",
+    "confirm_delete_unit": "Are you sure you want to delete this unit?",
+    "no_permission": "⛔ Permission denied",
+    "placeholder_unit_example": "E.g.: Unit 5.3",
+    "placeholder_write_answer": "Write your answer...",
+    "past_simple": "PAST SIMPLE",
+    "past_participle": "PAST PARTICIPLE",
+    "select_form_suffix": "select the form:",
+    "streak_label": "Streak",
+    "mistake_times": "times wrong",
+    "loading": "Loading...",
+    "error": "Error",
+    "name": "Name",
+    "xp": "XP",
+    "wrong": "Wrong",
+    "streak": "Streak",
+    "lang": "Lang",
+    "last_seen": "Last seen",
+    "entered_at": "Entered",
+    "last_ping": "Last ping",
+    "online_label": "🟢 online",
+    "exited_at": "Exited",
+    "status": "Status",
+    "admin_users": "Users",
+    "total_xp": "Total XP",
+    "accuracy": "Accuracy",
+    "theme": "Theme",
+    "xp_label": "XP",
+    "ai_fallback_note": "🔌 Offline explanation (no internet connection)",
+    "ai_meaning": "Meaning",
+    "ai_example": "Example",
+    "ai_tip": "Tip",
+    "ai_correct_answer_label": "Correct answer"
+  }
 };
 
 const LANGS       = ['uz', 'ru', 'en'];
@@ -1793,16 +2101,33 @@ function T(key) {
   return _t[key] !== undefined ? _t[key] : key;
 }
 
-// Tilni o'zgartirish
+// Tilni o'zgartirish — barcha ochiq ekranlarni darhol qayta chizadi
 async function setLang(l) {
   if (!LANGS.includes(l)) l = 'uz';
   _lang = l;
   localStorage.setItem('lang', l);
   loadLang(l);  // sync — fetch yo'q
   applyLang();
-  if (document.getElementById('screen-home')?.classList.contains('active')) {
-    renderHome();
-  }
+
+  // Barcha aktiv ekranlarni darhol qayta render qilish (sahifa yangilanmasdan)
+  try {
+    if (document.getElementById('screen-home')?.classList.contains('active') && typeof renderHome === 'function') renderHome();
+    if (document.getElementById('screen-unit-select')?.classList.contains('active') && typeof renderUnitSelect === 'function') renderUnitSelect();
+    if (document.getElementById('screen-unit-manage')?.classList.contains('active') && typeof renderUnitManage === 'function') renderUnitManage();
+    if (document.getElementById('screen-share-screen')?.classList.contains('active') && typeof renderShare === 'function') renderShare();
+    if (document.getElementById('screen-stats')?.classList.contains('active') && typeof renderStats === 'function') renderStats();
+    if (document.getElementById('screen-admin')?.classList.contains('active') && typeof renderAdminPanel === 'function') renderAdminPanel();
+    if (document.getElementById('screen-quiz')?.classList.contains('active') && typeof showCurrent === 'function') showCurrent();
+    if (document.getElementById('screen-flashcard')?.classList.contains('active') && typeof renderFcCard === 'function') renderFcCard();
+    if (document.getElementById('screen-mcq')?.classList.contains('active') && typeof renderMcq === 'function') renderMcq();
+    if (document.getElementById('screen-exercise')?.classList.contains('active') && typeof renderEx === 'function') renderEx();
+    if (document.getElementById('screen-speed')?.classList.contains('active') && typeof renderSpeed === 'function') renderSpeed();
+    if (document.getElementById('screen-irr-cards')?.classList.contains('active') && typeof renderIrrCard === 'function') renderIrrCard();
+    if (document.getElementById('screen-irr-match')?.classList.contains('active') && typeof renderIrrMatch === 'function') renderIrrMatch();
+    if (document.getElementById('screen-irr-fill')?.classList.contains('active') && typeof renderIrrFill === 'function') renderIrrFill();
+    if (document.getElementById('screen-irr-quiz')?.classList.contains('active') && typeof renderIrrQuiz === 'function') renderIrrQuiz();
+  } catch (e) { /* non-fatal */ }
+
   updateLangButtons(l);
   if (typeof tracker !== 'undefined' && typeof currentUser !== 'undefined' && currentUser) {
     tracker.updateLang(l);
@@ -1849,8 +2174,8 @@ function renderLangBar() {
   const bar = document.getElementById('lang-bar');
   if (!bar) return;
   bar.innerHTML = LANGS.map(l =>
-    `<button class="lang-btn ${l === _lang ? 'active' : ''}"
-      onclick="setLang('${l}')">${LANG_FLAGS[l]} ${LANG_LABELS[l]}</button>`
+    `<button class="lang-btn $${l === _lang ? 'active' : ''}"
+      onclick="setLang('$${l}')">$${LANG_FLAGS[l]} $${LANG_LABELS[l]}</button>`
   ).join('');
 }
 
@@ -1870,8 +2195,6 @@ function getLevelName(xpVal) {
   loadLang(_lang);
   // DOM tayyor bo'lgach applyLang chaqiriladi (initAuth dan)
 })();
-
-
 // ===== core.js =====
 /* ============================================================
    So'z O'rgatuvchi — Asosiy logika (Core)
@@ -2643,15 +2966,15 @@ function renderEx() {
   // progress
   const pct = Math.round((exIndex / exList.length) * 100);
   document.getElementById('ex-progress').style.width = pct + '%';
-  document.getElementById('ex-progress-text').textContent = (exIndex+1) + ' / ' + exList.length + ' ta mashq';
+  document.getElementById('ex-progress-text').textContent = (exIndex+1) + ' / ' + exList.length + ' ' + T('exercise_progress');
   document.getElementById('ex-correct').textContent = exScore.correct;
   document.getElementById('ex-wrong').textContent = exScore.wrong;
 
   // type label
   const typeLabels = {
-    multiple_choice: '🔘 To\'g\'ri javobni tanlang',
-    gap_fill: '✏️ Bo\'sh joyni to\'ldiring',
-    true_false: '✅ To\'g\'ri yoki Xato?'
+    multiple_choice: T('select_correct'),
+    gap_fill: T('fill_blank'),
+    true_false: T('true_false')
   };
   document.getElementById('ex-type-label').textContent = typeLabels[ex.type] || '';
 
@@ -2961,7 +3284,7 @@ function renderIrrFill() {
   document.getElementById('irr-fill-emoji').textContent = v.emoji;
   document.getElementById('irr-fill-base').textContent = v.base;
   document.getElementById('irr-fill-uz').textContent = v.uz;
-  document.getElementById('irr-fill-target-label').textContent = irrFillTarget === 'past' ? 'PAST SIMPLE' : 'PAST PARTICIPLE';
+  document.getElementById('irr-fill-target-label').textContent = irrFillTarget === 'past' ? T('past_simple') : T('past_participle');
 
   const inp = document.getElementById('irr-fill-input');
   inp.value = '';
@@ -3050,7 +3373,7 @@ function renderIrrQuiz() {
   const correctAnswer = (irrQuizTarget === 'past' ? v.past : v.pp).split(/[;/]/)[0].trim();
 
   document.getElementById('irr-quiz-emoji').textContent = v.emoji;
-  document.getElementById('irr-quiz-label').textContent = (irrQuizTarget === 'past' ? 'PAST SIMPLE' : 'PAST PARTICIPLE') + ' shaklini tanlang:';
+  document.getElementById('irr-quiz-label').textContent = (irrQuizTarget === 'past' ? T('past_simple') : T('past_participle')) + ' ' + T('select_form_suffix');
   document.getElementById('irr-quiz-word').textContent = v.base;
   document.getElementById('irr-quiz-uz').textContent = v.uz;
 
@@ -3126,20 +3449,174 @@ function irrQuizFinish() {
 
 // ===== ai-explain.js =====
 /* ============================================================
-   So'z O'rgatuvchi — AI Tushuntirma moduli
-   Fayl     : js/ai-explain.js
-   Bog'liqlik: core.js (barcha modullardan KEYIN yuklansin)
-   API      : /api/explain → netlify/functions/explain.js
-              (Gemini API key server tomonida yashirinadi)
+   AI tushuntirma moduli
+   FIX (audit):
+   1. Barcha hardcoded Uzbek strings → T() orqali
+   2. API fail bo'lganda: to'liq local fallback (context dan)
+   3. Gemini prompt foydalanuvchi tili bilan mos keladi
    ============================================================ */
 
-// ===== AI EXPLAIN =====
+// ===== LOCAL FALLBACK GENERATOR =====
+function buildLocalExplanation(ctx) {
+  const lang = _lang || 'uz';
 
-/**
- * AI tushuntirmani ko'rsatadi
- * @param {Object} ctx  { type, word, correct, wrong, uz, extra }
- * @param {string} containerId  — tushuntirma joylashadigan div ID
- */
+  if (ctx.type === 'vocab' || !ctx.type) {
+    const meaningLabel = T('ai_meaning');
+    const exampleLabel = T('ai_example');
+    const tipLabel     = T('ai_tip');
+    const correctLabel = T('ai_correct_answer_label');
+
+    if (lang === 'ru') {
+      return `**${correctLabel}:** ${ctx.correct}
+
+**${meaningLabel}:** «${ctx.correct}» по-узбекски — «${ctx.uz || '?'}».
+
+**${exampleLabel}:** I know the word «${ctx.correct}» very well.
+
+**${tipLabel}:** Повторите это слово несколько раз вслух.`;
+    }
+    if (lang === 'en') {
+      return `**${correctLabel}:** ${ctx.correct}
+
+**${meaningLabel}:** «${ctx.correct}» means «${ctx.uz || '?'}» in Uzbek.
+
+**${exampleLabel}:** I can use «${ctx.correct}» in a sentence correctly.
+
+**${tipLabel}:** Practice this word a few more times.`;
+    }
+    // uz (default)
+    return `**${correctLabel}:** ${ctx.correct}
+
+**${meaningLabel}:** «${ctx.correct}» so'zining o'zbekcha ma'nosi — «${ctx.uz || '?'}».
+
+**${exampleLabel}:** I know the word «${ctx.correct}» very well.
+
+**${tipLabel}:** Bu so'zni bir necha bor takrorlang.`;
+  }
+
+  if (ctx.type === 'irregular') {
+    const correctLabel = T('ai_correct_answer_label');
+    const exampleLabel = T('ai_example');
+    if (lang === 'ru') {
+      return `**${correctLabel}:** ${ctx.correct}
+
+Глагол «${ctx.word}» (${ctx.uz || ''}) — неправильный. Его нужно запомнить отдельно.
+
+**${exampleLabel}:** Yesterday she ${ctx.correct} to the store.`;
+    }
+    if (lang === 'en') {
+      return `**${correctLabel}:** ${ctx.correct}
+
+«${ctx.word}» (${ctx.uz || ''}) is an irregular verb — memorise its forms.
+
+**${exampleLabel}:** Yesterday she ${ctx.correct} to the store.`;
+    }
+    return `**${correctLabel}:** ${ctx.correct}
+
+«${ctx.word}» (${ctx.uz || ''}) — noto'g'ri fe'l, uni alohida eslab qolish kerak.
+
+**Misol:** Yesterday she ${ctx.correct} to the store.`;
+  }
+
+  if (ctx.type === 'exercise') {
+    const correctLabel = T('ai_correct_answer_label');
+    const tipLabel     = T('ai_tip');
+    if (lang === 'ru') {
+      return `**${correctLabel}:** ${ctx.correct}
+
+Вопрос: «${ctx.word}»
+Правильный ответ: «${ctx.correct}».
+
+**${tipLabel}:** ${ctx.extra || 'Повторите это правило.'}`;
+    }
+    if (lang === 'en') {
+      return `**${correctLabel}:** ${ctx.correct}
+
+Question: «${ctx.word}»
+The correct answer is «${ctx.correct}».
+
+**${tipLabel}:** ${ctx.extra || 'Review this grammar rule.'}`;
+    }
+    return `**${correctLabel}:** ${ctx.correct}
+
+Savol: «${ctx.word}»
+To'g'ri javob: «${ctx.correct}».
+
+**Maslahat:** ${ctx.extra || 'Bu qoidani qaytadan ko\'rib chiqing.'}`;
+  }
+
+  return `**${T('ai_correct_answer_label')}:** ${ctx.correct}`;
+}
+
+// ===== PROMPT BUILDER (localized) =====
+function buildExplainPrompt(ctx, lang) {
+  const instrMap = {
+    uz: "Javobni FAQAT o'zbek tilida ber. Qisqa va tushunarli bo'lsin (3-5 jumla). Tuzilma: 1) Nima uchun xato 2) To'g'ri qoida 3) Qisqa misol.",
+    ru: "Отвечай ТОЛЬКО на русском языке. Коротко и понятно (3-5 предложений). Структура: 1) Почему ошибка 2) Правило 3) Пример.",
+    en: "Answer ONLY in English. Short and clear (3-5 sentences). Structure: 1) Why it's wrong 2) The correct rule 3) Example sentence."
+  };
+  const base = instrMap[lang] || instrMap.uz;
+
+  if (ctx.type === 'irregular') {
+    return `${base}
+
+Irregular Verb: "${ctx.word}" (${ctx.uz || ''})
+Correct form: "${ctx.correct}"
+User wrote: "${ctx.wrong || '(blank)'}"
+
+Explain why "${ctx.correct}" is correct. Give all three forms (base/past/past participle).`;
+  }
+  if (ctx.type === 'exercise') {
+    return `${base}
+
+Topic: ${ctx.extra || 'Grammar'}
+Question: "${ctx.word}"
+Correct answer: "${ctx.correct}"
+User answered: "${ctx.wrong || '(none)'}"
+
+Explain why "${ctx.correct}" is correct. Give the grammar rule as a formula.`;
+  }
+  return `${base}
+
+Word in Uzbek: "${ctx.uz || ''}"
+Correct English: "${ctx.correct}"
+User wrote: "${ctx.wrong || '(blank)'}"
+
+Explain the meaning and usage. Give an example sentence to remember it.`;
+}
+
+// ===== RENDER HELPERS =====
+function _renderExplainBox(container, html, label, containerId) {
+  container.innerHTML = `
+    <div class="ai-explain-box">
+      <div class="ai-explain-header">
+        <span class="ai-icon">🤖</span>
+        <span class="ai-label">${label}</span>
+        <button class="ai-close-btn" onclick="hideAIExplain('${containerId}')">✕</button>
+      </div>
+      <div class="ai-explain-text">${html}</div>
+    </div>`;
+}
+
+function _renderFallbackBox(container, html, containerId) {
+  container.innerHTML = `
+    <div class="ai-explain-box fallback">
+      <div class="ai-explain-header">
+        <span class="ai-icon">📖</span>
+        <span class="ai-label">${T('ai_fallback_note')}</span>
+        <button class="ai-close-btn" onclick="hideAIExplain('${containerId}')">✕</button>
+      </div>
+      <div class="ai-explain-text">${html}</div>
+    </div>`;
+}
+
+function _mdToHtml(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+}
+
+// ===== MAIN FUNCTION =====
 async function showAIExplain(ctx, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -3148,44 +3625,28 @@ async function showAIExplain(ctx, containerId) {
   container.innerHTML = `
     <div class="ai-explain-box loading">
       <span class="ai-icon">🤖</span>
-      <span class="ai-dots">Tushuntirilmoqda<span class="dot1">.</span><span class="dot2">.</span><span class="dot3">.</span></span>
+      <span class="ai-dots">${T('ai_loading')}<span class="dot1">.</span><span class="dot2">.</span><span class="dot3">.</span></span>
     </div>`;
+
+  const lang = _lang || 'uz';
 
   try {
     const res = await fetch('/api/explain', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(ctx)
+      body: JSON.stringify({ ...ctx, lang })
     });
 
     if (!res.ok) throw new Error('server_error');
     const data = await res.json();
     if (!data.explanation) throw new Error('empty');
 
-    // Markdown bold (**text**) ni <strong> ga aylantiramiz
-    const html = data.explanation
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\n/g, '<br>');
+    _renderExplainBox(container, _mdToHtml(data.explanation), T('ai_explain_label'), containerId);
 
-    container.innerHTML = `
-      <div class="ai-explain-box">
-        <div class="ai-explain-header">
-          <span class="ai-icon">🤖</span>
-          <span class="ai-label">AI Tushuntirma</span>
-          <button class="ai-close-btn" onclick="hideAIExplain('${containerId}')">✕</button>
-        </div>
-        <div class="ai-explain-text">${html}</div>
-      </div>`;
-
-  } catch (err) {
-    const msg = err.message === 'server_error'
-      ? 'Server bilan bog\'lanib bo\'lmadi. Bir ozdan keyin urinib ko\'ring.'
-      : 'Tushuntirma yuklanmadi. Internet aloqasini tekshiring.';
-    container.innerHTML = `
-      <div class="ai-explain-box error">
-        <span class="ai-icon">⚠️</span>
-        <span>${msg}</span>
-      </div>`;
+  } catch (_err) {
+    // PHASE 4 FIX: Always show something useful — never just an error message
+    const fallback = buildLocalExplanation(ctx);
+    _renderFallbackBox(container, _mdToHtml(fallback), containerId);
   }
 }
 
@@ -3296,8 +3757,6 @@ irrQuizAnswer = function(chosen, btn, correctAnswer) {
     }, 'irr-quiz-ai-explain');
   }
 };
-
-
 // ===== tracker.js =====
 /* ============================================================
    tracker.js — Online kuzatish va statistika sync

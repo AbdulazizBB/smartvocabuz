@@ -1,43 +1,24 @@
 /* ============================================================
    Netlify Function — Gemini AI Tushuntirma
-   Fayl     : netlify/functions/explain.js
-   Maqsad   : Gemini API ga xavfsiz murojaat qilish
-               (API key foydalanuvchidan yashirinadi)
-   So'rov   : POST /api/explain
-   Body     : { type, word, correct, wrong, uz, extra }
-   Javob    : { explanation: "..." }
+   FIX (audit): prompt endi foydalanuvchi tili bilan mos keladi
+   (ctx.lang qabul qilinadi — uz/ru/en)
    ============================================================ */
 
 exports.handler = async (event) => {
-  // Faqat POST qabul qilinadi
   if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ error: "Faqat POST so'rov qabul qilinadi" })
-    };
+    return { statusCode: 405, body: JSON.stringify({ error: 'POST only' }) };
   }
 
-  // API key environment dan olinadi (Netlify dashboard da saqlanadi)
   const GEMINI_KEY = process.env.GEMINI_API_KEY;
   if (!GEMINI_KEY) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: "API kalit sozlanmagan" })
-    };
+    return { statusCode: 500, body: JSON.stringify({ error: 'API kalit sozlanmagan' }) };
   }
 
   let ctx;
-  try {
-    ctx = JSON.parse(event.body);
-  } catch {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ error: "Noto'g'ri so'rov formati" })
-    };
-  }
+  try { ctx = JSON.parse(event.body); }
+  catch { return { statusCode: 400, body: JSON.stringify({ error: "Noto'g'ri format" }) }; }
 
-  // Prompt yasash
-  const prompt = buildPrompt(ctx);
+  const prompt = buildPrompt(ctx, ctx.lang || 'uz');
 
   try {
     const res = await fetch(
@@ -47,75 +28,38 @@ exports.handler = async (event) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 300
-          }
+          generationConfig: { temperature: 0.7, maxOutputTokens: 350 }
         })
       }
     );
 
     const data = await res.json();
-
-    // Gemini javobini ajratib olish
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-
-    if (!text) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "AI javob bermadi" })
-      };
-    }
+    if (!text) return { statusCode: 500, body: JSON.stringify({ error: 'AI javob bermadi' }) };
 
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ explanation: text.trim() })
     };
-
   } catch (err) {
-    return {
-      statusCode: 502,
-      body: JSON.stringify({ error: "AI serveriga ulanib bo'lmadi" })
-    };
+    return { statusCode: 502, body: JSON.stringify({ error: err.message }) };
   }
 };
 
-/* ── Prompt yasovchi funksiya ── */
-function buildPrompt(ctx) {
-  const base = `Siz ingliz tili o'qituvchisiz. Javobni FAQAT o'zbek tilida bering. 
-Qisqa va tushunarli bo'lsin (3-4 jumla). Murakkab atamalar ishlatmang.
-Tuzilma: 1) Nima uchun xato 2) To'g'ri qoida/formula 3) Qisqa misol gap.`;
+function buildPrompt(ctx, lang) {
+  const instrMap = {
+    uz: "Javobni FAQAT o'zbek tilida ber. Qisqa (3-5 jumla). Tuzilma: 1) Nima uchun xato 2) To'g'ri qoida/formula 3) Qisqa misol gap.",
+    ru: "Отвечай ТОЛЬКО на русском языке. Кратко (3-5 предложений). Структура: 1) Почему ошибка 2) Правило/формула 3) Пример.",
+    en: "Answer ONLY in English. Short (3-5 sentences). Structure: 1) Why it's wrong 2) The rule/formula 3) Example sentence."
+  };
+  const base = instrMap[lang] || instrMap.uz;
 
   if (ctx.type === 'irregular') {
-    return `${base}
-
-Mavzu: Noto'g'ri fe'llar (Irregular Verbs)
-Fe'l (base): "${ctx.word}" — o'zbekcha: "${ctx.uz}"
-To'g'ri javob: "${ctx.correct}"
-Foydalanuvchi yozdi: "${ctx.wrong || '(bo\'sh qoldirdi)'}"
-
-Nima uchun "${ctx.correct}" to'g'ri ekanini tushuntir. Fe'lning uchta shaklini (base/past/pp) ayt.`;
+    return `${base}\n\nIrregular Verb: "${ctx.word}" (meaning: "${ctx.uz || ''}")\nCorrect form: "${ctx.correct}"\nUser wrote: "${ctx.wrong || '(blank)'}"\n\nExplain why "${ctx.correct}" is correct. Include all three verb forms (base / past / past participle).`;
   }
-
   if (ctx.type === 'exercise') {
-    return `${base}
-
-Mavzu: ${ctx.extra || 'Grammar'}
-Savol: "${ctx.word}"
-To'g'ri javob: "${ctx.correct}"
-Foydalanuvchi tanladi: "${ctx.wrong || '(tanlamadi)'}"
-
-Nima uchun "${ctx.correct}" to'g'ri ekanini tushuntir. Grammatik qoidani formula shaklida ber.`;
+    return `${base}\n\nGrammar topic: ${ctx.extra || 'Grammar'}\nQuestion: "${ctx.word}"\nCorrect answer: "${ctx.correct}"\nUser answered: "${ctx.wrong || '(none)'}"\n\nExplain why "${ctx.correct}" is correct. Give the rule as a short formula (e.g. Subject + verb-s).`;
   }
-
-  // vocab
-  return `${base}
-
-Mavzu: Ingliz so'zlari
-O'zbekcha ma'no: "${ctx.uz}"
-To'g'ri inglizcha: "${ctx.correct}"
-Foydalanuvchi yozdi: "${ctx.wrong || '(bo\'sh qoldirdi)'}"
-
-Bu so'zning ma'nosi va to'g'ri ishlatilishini tushuntir. Eslab qolish uchun misol gap keltir.`;
+  return `${base}\n\nUzbek meaning: "${ctx.uz || ''}"\nCorrect English word: "${ctx.correct}"\nUser wrote: "${ctx.wrong || '(blank)'}"\n\nExplain the word's meaning, how to use it, and give one example sentence. If the user's answer was close but wrong, explain the difference.`;
 }

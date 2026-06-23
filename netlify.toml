@@ -1,7 +1,11 @@
+# SmartVocab — Netlify konfiguratsiyasi
+# Tarjimalar index.html ichida inline (locales/ papkasi yo'q)
+
 [build]
   publish = "."
   functions = "netlify/functions"
 
+# API marshrut yo'naltirishlari
 [[redirects]]
   from = "/api/explain"
   to   = "/.netlify/functions/explain"
@@ -17,13 +21,10 @@
   to   = "/.netlify/functions/admin"
   status = 200
 
-[[headers]]
-  for = "/locales/*"
-  [headers.values]
-    Cache-Control = "no-cache"
-
+# Xavfsizlik sarlavhalari
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
