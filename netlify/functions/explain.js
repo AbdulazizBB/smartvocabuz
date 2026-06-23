@@ -1,65 +1,122 @@
 /* ============================================================
    Netlify Function — Gemini AI Tushuntirma
-   FIX (audit): prompt endi foydalanuvchi tili bilan mos keladi
-   (ctx.lang qabul qilinadi — uz/ru/en)
+   FIX: response parsing, CORS headers, model fallback,
+        safety filter handling, lang-aware prompts
    ============================================================ */
 
+const CORS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Content-Type': 'application/json'
+};
+
 exports.handler = async (event) => {
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers: CORS, body: '' };
+  }
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: JSON.stringify({ error: 'POST only' }) };
+    return { statusCode: 405, headers: CORS, body: JSON.stringify({ error: 'POST only' }) };
   }
 
   const GEMINI_KEY = process.env.GEMINI_API_KEY;
   if (!GEMINI_KEY) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'API kalit sozlanmagan' }) };
+    return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: 'GEMINI_API_KEY sozlanmagan' }) };
   }
 
   let ctx;
   try { ctx = JSON.parse(event.body); }
-  catch { return { statusCode: 400, body: JSON.stringify({ error: "Noto'g'ri format" }) }; }
+  catch { return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: "Noto'g'ri format" }) }; }
 
-  const prompt = buildPrompt(ctx, ctx.lang || 'uz');
+  const lang = ctx.lang || 'uz';
+  const prompt = buildPrompt(ctx, lang);
 
-  try {
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.7, maxOutputTokens: 350 }
-        })
+  // Try gemini-1.5-flash first (more stable), then 2.0-flash as fallback
+  const models = ['gemini-1.5-flash', 'gemini-2.0-flash'];
+
+  for (const model of models) {
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.7,
+              maxOutputTokens: 400,
+              candidateCount: 1
+            },
+            safetySettings: [
+              { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
+              { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
+              { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
+              { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' }
+            ]
+          })
+        }
+      );
+
+      if (!res.ok) {
+        const errBody = await res.text();
+        console.error(`${model} HTTP ${res.status}:`, errBody);
+        continue; // try next model
       }
-    );
 
-    const data = await res.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    if (!text) return { statusCode: 500, body: JSON.stringify({ error: 'AI javob bermadi' }) };
+      const data = await res.json();
 
-    return {
-      statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ explanation: text.trim() })
-    };
-  } catch (err) {
-    return { statusCode: 502, body: JSON.stringify({ error: err.message }) };
+      // Handle blocked responses
+      const candidate = data?.candidates?.[0];
+      if (!candidate) {
+        console.error(`${model}: no candidates`, JSON.stringify(data));
+        continue;
+      }
+
+      // Some responses have finishReason=SAFETY with no content
+      if (candidate.finishReason === 'SAFETY' || candidate.finishReason === 'RECITATION') {
+        console.warn(`${model}: blocked by safety filter`);
+        continue;
+      }
+
+      const text = candidate?.content?.parts?.[0]?.text || '';
+      if (!text.trim()) {
+        console.error(`${model}: empty text, full response:`, JSON.stringify(data));
+        continue;
+      }
+
+      return {
+        statusCode: 200,
+        headers: CORS,
+        body: JSON.stringify({ explanation: text.trim() })
+      };
+
+    } catch (err) {
+      console.error(`${model} error:`, err.message);
+      // continue to next model
+    }
   }
+
+  // All models failed
+  return {
+    statusCode: 502,
+    headers: CORS,
+    body: JSON.stringify({ error: 'Gemini API javob bermadi. Offline tushuntirma ko\'rsatilmoqda.' })
+  };
 };
 
 function buildPrompt(ctx, lang) {
   const instrMap = {
-    uz: "Javobni FAQAT o'zbek tilida ber. Qisqa (3-5 jumla). Tuzilma: 1) Nima uchun xato 2) To'g'ri qoida/formula 3) Qisqa misol gap.",
-    ru: "Отвечай ТОЛЬКО на русском языке. Кратко (3-5 предложений). Структура: 1) Почему ошибка 2) Правило/формула 3) Пример.",
-    en: "Answer ONLY in English. Short (3-5 sentences). Structure: 1) Why it's wrong 2) The rule/formula 3) Example sentence."
+    uz: "Javobni FAQAT o'zbek tilida ber. Qisqa (3-5 jumla). Tuzilma: 1) Nima uchun xato 2) To'g'ri qoida 3) Qisqa misol.",
+    ru: "Отвечай ТОЛЬКО на русском языке. Кратко (3-5 предложений). Структура: 1) Почему ошибка 2) Правило 3) Пример.",
+    en: "Answer ONLY in English. Short (3-5 sentences). Structure: 1) Why wrong 2) The rule 3) Example."
   };
-  const base = instrMap[lang] || instrMap.uz;
+  const instr = instrMap[lang] || instrMap.uz;
 
   if (ctx.type === 'irregular') {
-    return `${base}\n\nIrregular Verb: "${ctx.word}" (meaning: "${ctx.uz || ''}")\nCorrect form: "${ctx.correct}"\nUser wrote: "${ctx.wrong || '(blank)'}"\n\nExplain why "${ctx.correct}" is correct. Include all three verb forms (base / past / past participle).`;
+    return `${instr}\n\nFe'l: "${ctx.word}" (ma'nosi: "${ctx.uz || ''}")\nTo'g'ri shakl: "${ctx.correct}"\nFoydalanuvchi yozdi: "${ctx.wrong || '(bo\\'sh)'}"\n\nBu noto'g'ri fe'lning barcha uch shaklini (base/past/past participle) ko'rsat.`;
   }
   if (ctx.type === 'exercise') {
-    return `${base}\n\nGrammar topic: ${ctx.extra || 'Grammar'}\nQuestion: "${ctx.word}"\nCorrect answer: "${ctx.correct}"\nUser answered: "${ctx.wrong || '(none)'}"\n\nExplain why "${ctx.correct}" is correct. Give the rule as a short formula (e.g. Subject + verb-s).`;
+    return `${instr}\n\nMavzu: ${ctx.extra || 'Grammar'}\nSavol: "${ctx.word}"\nTo'g'ri javob: "${ctx.correct}"\nFoydalanuvchi javobi: "${ctx.wrong || '(hech narsa)'}"\n\nQoidani qisqa formula ko'rinishida ber.`;
   }
-  return `${base}\n\nUzbek meaning: "${ctx.uz || ''}"\nCorrect English word: "${ctx.correct}"\nUser wrote: "${ctx.wrong || '(blank)'}"\n\nExplain the word's meaning, how to use it, and give one example sentence. If the user's answer was close but wrong, explain the difference.`;
+  return `${instr}\n\nO'zbekcha: "${ctx.uz || ''}"\nTo'g'ri inglizcha: "${ctx.correct}"\nFoydalanuvchi yozdi: "${ctx.wrong || '(bo\\'sh)'}"\n\nSo'zning ma'nosini va ishlatilishini tushuntir. Misol gap ber.`;
 }
